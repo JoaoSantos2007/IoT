@@ -1,4 +1,4 @@
- 
+int estado = 0; 
 /* Headers */ 
 #include <WiFi.h> /* Header para uso das funcionalidades de wi-fi do ESP32 */
 #include <PubSubClient.h>  /*  Header para uso da biblioteca PubSubClient */
@@ -68,6 +68,7 @@ void setup()
     init_wifi();
     init_mqtt();
     init_time();
+    pinMode(2, OUTPUT);
 }
 
 void send_payload()
@@ -125,23 +126,28 @@ void recive_payload(byte* payload, int length)
 
 void apply_rule(byte* payload)
 {
-//    DynamicJsonDocument doc(1024);
-//    JsonObject obj = doc.to<JsonObject>();
     
     StaticJsonDocument <2048> doc;
     deserializeJson(doc,payload);
-    String action = doc["event_type"];
-    Serial.println(action);
 
     if (doc["event_type"] == "action-device" & doc["device_target"] == DEVICE_ID)
     { 
       String action = doc["action"];
       Serial.println(action);
-      String pim_10 = doc["action"]["false"];
-      Serial.println(pim_10);
+//      String pim_10 = doc["action"]["false"];
+      if(doc["action"]["true"] == "1"){
+        estado = 1;
+      }else if(doc["action"]["false"] == "0"){
+        estado = 0;
+      }
+      Serial.println(estado);
+    }
+    if(estado == 1){
+      digitalWrite(2, HIGH);
+    }else if(estado == 0){
+      digitalWrite(2, LOW);
     }
     
- 
 }
   
 /* Função: inicializa comunicação serial com baudrate 115200 (para fins de monitorar no terminal serial 

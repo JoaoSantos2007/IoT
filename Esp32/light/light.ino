@@ -6,10 +6,13 @@ int estado = 0;
 
 #include <NTPClient.h>
 #include <WiFiUdp.h>
- 
+
+
+String DEVICE_ID = "1";
+
 /* Defines do MQTT */
 /* Tópico MQTT para recepção de informações do broker MQTT para ESP32 */
-#define TOPICO_SUBSCRIBE "test"   
+#define TOPICO_SUBSCRIBE "topico-"+DEVICE_ID   
 /* Tópico MQTT para envio de informações do ESP32 para broker MQTT */
 #define TOPICO_PUBLISH   "test"  
 /* id mqtt (para identificação de sessão) */
@@ -29,8 +32,6 @@ const char* PASSWORD = "JP010203";
 const char* BROKER_MQTT = "192.168.31.45"; 
 /* Porta do Broker MQTT */
 int BROKER_PORT = 1883;
-
-int DEVICE_ID = 1;
 
  
  

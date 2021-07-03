@@ -1,0 +1,10 @@
+{
+    "id":"dkshfhru-387658764387-bdhsfvu446-ef453werfwe",
+    "esp_id":1,
+    "id_device":5,
+    "currentValueHumidity":"55%",
+    "currentValueTemperature":"37°C",
+    "type": "sensor-humidity/temperature",
+    "name": "Sensor de Umidade e Temperatura",
+    "location": "garagem"
+}

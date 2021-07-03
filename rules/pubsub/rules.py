@@ -82,18 +82,6 @@ def document_update(deviceId, type, value):
         document = firestore_db.collection(u'devices').document(document_id)
         document.update({u'currentValue': value})
 
-# add data
-def document_add(data):
-    firestore_db.collection(u'devices').add(data)
-
-# read data
-
-
-def document_read():
-    snapshots = list(firestore_db.collection(u'devices').get())
-    for snapshot in snapshots:
-        print(snapshot.to_dict())
-
 
 def publish(client, topic, data):
 
@@ -106,8 +94,20 @@ def publish(client, topic, data):
         print(f"Failed to send message to topic {topic}")
 
 
-def run():
+# # add data
+# def document_add(data):
+#     firestore_db.collection(u'devices').add(data)
 
+# # read data
+
+
+# def document_read():
+#     snapshots = list(firestore_db.collection(u'devices').get())
+#     for snapshot in snapshots:
+#         print(snapshot.to_dict())
+
+
+def run():
     client = connect_mqtt()  # ok
     subscribe(client)
     client.loop_forever()
@@ -115,3 +115,6 @@ def run():
 
 if __name__ == '__main__':
     run()
+
+
+

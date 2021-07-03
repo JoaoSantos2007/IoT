@@ -8,7 +8,8 @@ int estado = 0;
 #include <WiFiUdp.h>
 
 
-String DEVICE_ID = "1";
+String DEVICE_ID = "1";//ESP_ID
+
 
 /* Defines do MQTT */
 /* Tópico MQTT para recepção de informações do broker MQTT para ESP32 */

@@ -1,6 +1,8 @@
-/* body{
-} */
-/* 
+body{
+    background:lightblue;
+    font: normal 20pt Arial;
+}
+
 header{
     color: white;
     text-align:center;
@@ -21,13 +23,6 @@ footer{
     font-style: italic;
 }
 
-h1#titulo{
-    color:rgb(34, 182, 71);
-    font: normal 30pt Arial;
+div#Status{
+    color:chartreuse;
 }
-
-div#appbar{
-    width: max-content;
-    color: black;
-    background-color: black;
-} */

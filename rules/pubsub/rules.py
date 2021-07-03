@@ -61,6 +61,7 @@ def apply_rules(client, data):
     #Executar se o tipo de evento for de leitura de sensor
     if data.get("event_type") == "read-sensor":
         sensores = data.get("sensor")
+        print(sensores)
         #Atualizar Firebase
         for type, value in sensores.items():
             document_update(deviceId, type, value)
@@ -75,11 +76,12 @@ def apply_rules(client, data):
 #DEF atualiza Database
 def document_update(deviceId, type, value):
     
-    snapshots = list(firestore_db.collection(u'devices').where(u'deviceId', u'==', deviceId).where(u'type', u'==', type).get())
+    snapshots = list(firestore_db.collection(u'devices').where(u'deviceId', u'==', 1).where(u'type', u'==', type).get())
 
     for snapshot in snapshots:
         document_id = snapshot.id
         document = firestore_db.collection(u'devices').document(document_id)
+        print(type,value)
         document.update({u'currentValue': value})
 
 
@@ -94,17 +96,17 @@ def publish(client, topic, data):
         print(f"Failed to send message to topic {topic}")
 
 
-# # add data
-# def document_add(data):
-#     firestore_db.collection(u'devices').add(data)
+# add data
+def document_add(data):
+    firestore_db.collection(u'devices').add(data)
 
-# # read data
+# read data
 
 
-# def document_read():
-#     snapshots = list(firestore_db.collection(u'devices').get())
-#     for snapshot in snapshots:
-#         print(snapshot.to_dict())
+def document_read():
+    snapshots = list(firestore_db.collection(u'devices').get())
+    for snapshot in snapshots:
+        print(snapshot.to_dict())
 
 
 def run():

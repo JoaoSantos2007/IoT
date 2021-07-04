@@ -1,5 +1,5 @@
-import 'package:firestore_crud/models/device.dart';
-import 'package:firestore_crud/providers/device_provider.dart';
+import 'package:app_iot/models/device.dart';
+import 'package:app_iot/providers/device_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -110,66 +110,62 @@ class _EditDeviceState extends State<DeviceForm> {
           color: Colors.red,
         ),
         Text('Settings:'),
-        Row(
-          children: [
-            Flexible(
-              child: TextField(
-                decoration: InputDecoration(labelText: 'tagId:'),
-                controller: tagIdController,
-                onSubmitted: (text) {
-                  addItemToList();
-                },
-              ),
-            ),
-            Text('    '),
-            Flexible(
-              child: TextField(
-                decoration: InputDecoration(labelText: 'tagValue'),
-                controller: tagValueController,
-                onSubmitted: (text) {
-                  addItemToList();
-                },
-              ),
-            ),
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () => setState(() {
+        Row(children: [
+          Flexible(
+            child: TextField(
+              decoration: InputDecoration(labelText: 'tagId:'),
+              controller: tagIdController,
+              onSubmitted: (text) {
                 addItemToList();
-              }),
+              },
             ),
-          ],
-        ),
+          ),
+          Text('    '),
+          Flexible(
+            child: TextField(
+              decoration: InputDecoration(labelText: 'tagValue'),
+              controller: tagValueController,
+              onSubmitted: (text) {
+                addItemToList();
+              },
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => setState(() {
+              addItemToList();
+            }),
+          ),
+        ]),
       ],
     );
 
     final listSettings = Expanded(
       child: ListView.builder(
-        itemCount: settings == null ? 0 : settings.length,
-        itemBuilder: (context, index) {
-          final item = settings[index];
-          return Dismissible(
-            key: Key(item),
-            direction: DismissDirection.startToEnd,
-            child: ListTile(
-              title: Text(settings.keys.elementAt(index)),
-              subtitle: Text(settings.values.elementAt(index)),
-              trailing: IconButton(
-                icon: Icon(Icons.delete_forever),
-                onPressed: () {
+          itemCount: settings == null ? 0 : settings.length,
+          itemBuilder: (context, index) {
+            final item = settings[index];
+            return Dismissible(
+                key: Key(item),
+                direction: DismissDirection.startToEnd,
+                child: ListTile(
+                  title: Text(settings.keys.elementAt(index)),
+                  subtitle: Text(settings.values.elementAt(index)),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete_forever),
+                    onPressed: () {
+                      setState(() {
+                        settings.remove(settings.keys.elementAt(index));
+                      });
+                    },
+                  ),
+                ),
+                onDismissed: (direction) {
                   setState(() {
-                    settings.remove(settings.keys.elementAt(index));
+                    settings.keys.elementAt(index);
                   });
-                },
-              ),
-            ),
-            onDismissed: (direction) {
-              setState(() {
-                settings.keys.elementAt(index);
-              });
-            },
-          );
-        },
-      ),
+                });
+          }),
     );
 
     return Scaffold(
@@ -177,12 +173,41 @@ class _EditDeviceState extends State<DeviceForm> {
       appBar: AppBar(
         title: Text('Edit Device'),
         actions: <Widget>[
+          // IconButton(
+          //   icon: Icon(Icons.highlight_remove),
+          //   onPressed: () {
+          //     print(widget.device.toMap().toString());
+          //     deviceProvider.removeDevice(widget.device.id);
+          //     Navigator.of(context).pop();
+          //   },
+          // ),
+
           IconButton(
-            icon: Icon(Icons.highlight_remove),
+            icon: Icon(Icons.delete),
+            color: Colors.red,
             onPressed: () {
-              print(widget.device.toMap().toString());
-              deviceProvider.removeDevice(widget.device.id);
-              Navigator.of(context).pop();
+              showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: Text('Device'),
+                  content: Text('Deseja realmente excluir esse dispositivo?'),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Não'),
+                      onPressed: () => Navigator.of(context).pop(false),
+                    ),
+                    FlatButton(
+                      child: Text('Sim'),
+                      onPressed: () => Navigator.of(context).pop(true),
+                    ),
+                  ],
+                ),
+              ).then((confimed) {
+                if (confimed) {
+                  deviceProvider.removeDevice(widget.device.id);
+                  Navigator.of(context).pop();
+                }
+              });
             },
           ),
           IconButton(

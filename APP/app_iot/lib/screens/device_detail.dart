@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:firestore_crud/models/device.dart';
-import 'package:firestore_crud/mqtt/mqtt.dart';
-import 'package:firestore_crud/providers/device_provider.dart';
-import 'package:firestore_crud/screens/device_list.dart';
+import 'package:app_iot/models/device.dart';
+import 'package:app_iot/mqtt/mqtt.dart';
+import 'package:app_iot/providers/device_provider.dart';
+import 'package:app_iot/screens/device_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ class DeviceDetail extends StatefulWidget {
 
 class _State extends State<DeviceDetail> {
   Mqtt mqtt = Mqtt.getInstance();
-  bool _switch;
+  bool _switch = false;
 
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback(
@@ -33,35 +33,69 @@ class _State extends State<DeviceDetail> {
     });
 
     super.initState();
-
-    _switch = widget.device.action;
   }
 
   bottonAll(String tag) {
-    print(tag);
-
     Map<String, dynamic> event = {};
     event.addAll({
       '"event_type"': '"action-device"',
-      '"device_target"': '${widget.device.deviceId}',
       '"deviceId"': '${widget.device.deviceId}',
       '"deviceType"': '"${widget.device.type}"',
-      '"deviceOrigem"': '"app-mobile"',
+      '"deviceOrigem"': '"jojo-app"',
       '"action"': {'"$tag"': '"${widget.device.settings[tag]}"'},
     });
 
     mqtt.publishMessage(
-      //widget.device.toMap().toString()
       event.toString(),
     );
 
     print(event.toString());
   }
 
-// //---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     final deviceProvider = Provider.of<DeviceProvider>(context);
+    final Map<String, dynamic> settings =
+        widget.device == null ? {} : widget.device.settings;
+
+    final bottonOnOff = Expanded(
+      child: ListView.builder(
+        itemCount: settings == null ? 0 : settings.length,
+        itemBuilder: (context, index) {
+          final item = settings[index];
+
+          _switch = settings.values.elementAt(index) == 'false' ? false : true;
+
+          return Dismissible(
+            key: Key(item),
+            direction: DismissDirection.startToEnd,
+            child: SwitchListTile(
+                title: Text(settings.keys.elementAt(index)),
+                subtitle: Text(settings.values.elementAt(index).toString()),
+                secondary: Icon(Icons.lightbulb),
+                value: _switch,
+                selected: _switch,
+                onChanged: (bool value) {
+                  setState(() {
+                    _switch = value;
+                    print(deviceProvider.toMap());
+                    settings[settings.keys.elementAt(index)] =
+                        _switch.toString();
+                    deviceProvider.changeSettings(settings);
+                    deviceProvider.saveDevice();
+                    bottonAll(settings.keys.elementAt(index));
+                  });
+                }),
+            onDismissed: (direction) {
+              setState(() {
+                settings.keys.elementAt(index);
+              });
+            },
+          );
+        },
+      ),
+    );
 
     final bottomTV = Column(
       children: <Widget>[
@@ -430,21 +464,21 @@ class _State extends State<DeviceDetail> {
       ],
     );
 
-    final bottonOnOff = Container(
-      child: CupertinoSwitch(
-        value: _switch, //widget.device.action,
-        onChanged: (bool newValue) {
-          setState(
-            () {
-              _switch = newValue;
-              deviceProvider.changeAction(_switch);
-              deviceProvider.saveDevice();
-              bottonAll(_switch.toString());
-            },
-          );
-        },
-      ),
-    );
+    // final bottonOnOff = Container(
+    //   child: CupertinoSwitch(
+    //     value: _switch, //widget.device.action,
+    //     onChanged: (bool newValue) {
+    //       setState(
+    //         () {
+    //           _switch = newValue;
+    //           deviceProvider.changeAction(_switch);
+    //           deviceProvider.saveDevice();
+    //           bottonAll(_switch.toString());
+    //         },
+    //       );
+    //     },
+    //   ),
+    // );
 
     final bottomDefault = Row(
       children: [
@@ -472,7 +506,7 @@ class _State extends State<DeviceDetail> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(height: 120.0),
-        getValidityIcon(
+        getIcon(
           widget.device.action,
           widget.device.type,
           50.0,
@@ -563,6 +597,7 @@ class _State extends State<DeviceDetail> {
     getBottom(String type) {
       switch (type) {
         case 'light':
+          //return bottonOnOff;
           return bottonOnOff;
           break;
         case 'tv':
@@ -585,7 +620,6 @@ class _State extends State<DeviceDetail> {
           topContent,
           bottomContent,
           getBottom(widget.device.type),
-          //_buildColumn(),
         ],
       ),
     );

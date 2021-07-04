@@ -1,5 +1,5 @@
-import 'package:firestore_crud/models/device.dart';
-import 'package:firestore_crud/services/firestore_service_device.dart';
+import 'package:app_iot/models/device.dart';
+import 'package:app_iot/services/firestore_service_device.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -11,7 +11,7 @@ class DeviceProvider with ChangeNotifier {
   String _type;
   String _location;
   bool _action;
-  String _currentValue;
+  String _currentValue = "";
   Map<String, dynamic> _settings;
   var uuid = Uuid();
 
@@ -21,7 +21,7 @@ class DeviceProvider with ChangeNotifier {
   String get name => _name;
   String get type => _type;
   String get location => _location;
-  String get currentValue => _currentValue;
+  String get currentValue => _currentValue = "";
   bool get action => _action = false;
   Map<String, dynamic> get settings => _settings;
 

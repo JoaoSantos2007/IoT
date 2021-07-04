@@ -1,5 +1,5 @@
+import 'package:app_iot/models/device.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firestore_crud/models/device.dart';
 
 class FirestoreService {
   FirebaseFirestore _db = FirebaseFirestore.instance;

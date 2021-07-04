@@ -1,6 +1,6 @@
-import 'package:firestore_crud/models/device.dart';
-import 'package:firestore_crud/screens/device_detail.dart';
-import 'package:firestore_crud/screens/device_form.dart';
+import 'package:app_iot/models/device.dart';
+import 'package:app_iot/screens/device_detail.dart';
+import 'package:app_iot/screens/device_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -53,7 +53,7 @@ class _ListPageState extends State<DeviceList> {
                 ),
               ),
             ),
-            child: getValidityIcon(device.action, device.type, 30.0),
+            child: getIcon(device.action, device.type, 30.0),
           ),
           title: Text(
             device.name,
@@ -71,6 +71,20 @@ class _ListPageState extends State<DeviceList> {
                   child: Text(
                     device.location,
                     style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 4,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: Text(
+                    device.currentValue,
+                    style: TextStyle(
+                      color: Colors.yellow[50],
+                      //fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -195,7 +209,7 @@ class _ListPageState extends State<DeviceList> {
   }
 }
 
-Icon getValidityIcon(bool value, String age, _size) {
+Icon getIcon(bool value, String age, _size) {
   var _color;
   if (value) {
     _color = Colors.blue;

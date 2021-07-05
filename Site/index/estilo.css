@@ -5,23 +5,23 @@ body{
     padding: 0px;
 }
 
-/*#menu{
-    
-}
-*/
-
 #menu ul{
     margin: 0;
     background-color: darkred;
     list-style: none;
 }
 
-#menu ul li{
+#menu ul li#menu{
     margin: auto;
     display: inline;
 }
 
-#menu ul li#oloco a{
+#menu ul li#imagem{
+    margin: auto;
+    display: inline;
+}
+
+#menu ul li#menu a{
 
     padding: 0px 40px;
     display: inline-block;
@@ -29,21 +29,22 @@ body{
     text-decoration: none;
 }
 
-#menu ul li#imagem a img{
+#menu ul li#imagem{
     margin-left: 1060px;
 }
 
-#menu ul li#oloco a:hover{
+#menu ul li#menu a:hover{
     color: darkblue;
 }
 
 header{
+    padding: 10px;
     color: rgb(255, 0, 0);
     text-align:center;
 }
 
 section{
-    background: rgb(255, 255, 255);
+    background: rgb(100, 100, 100);
     border-radius:10px;
     padding: 15px;
     width: 500px;

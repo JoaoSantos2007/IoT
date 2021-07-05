@@ -1,45 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/Site/images/favicon-site.ico" type="image/x-icon">
-    <title>Creditos</title>
-    <link rel="stylesheet" href="/Site/estilo.css">
+    <title>Sandrão</title>
+    <link rel="stylesheet" href="estilo.css">
 </head>
-
 <body>
     <div id = "menu">
         <ul>
-            <li id="menu"><a href="/Site/index.html">Home</a></li>
+            <li id="menu"><a href="">Home</a></li>
             <li id="menu"><a href="">Contato</a></li>
             <li id="menu"><a href="">Reviews</a></li>
-            <li id="menu"><a href="">Créditos</a></li>
+            <li id="menu"><a href="/Site/creditos/creditos.html">Créditos</a></li>
             <li id="add"><a href="/Site/createregisto/create.html"><img src="/Site/images/add.png" alt="add"></a></li>
             <li id="imagem"><a href=""><img src="/Site/images/user.png" alt="user"></a></li>
         </ul>
     </div>
-
-    <div id="creditos">
-        <div id = "color1">Made By:</div> 
-        <div id = "name">João Pedro Tomaz dos Santos </div>
-        <div id = "color2">and</div>
-        <div id = "name">Aleksandro Pereira da Silva Santos</div>
-    </div>
-
-
-    <div id = "Icons">
-        Icons made by
-        <a href="https://www.freepik.com" title="Freepik">Freepik</a>
-        from
-        <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
-    </div>
-
+    <header>
+        <h1>Criar Cadrasto de Dispositivo</h1>
+    </header>
+    <section>
+        <div>
+            <input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga" onclick="reproduzir_audio()">
+            <label for="liga-desliga" class="liga-desliga__botao"></label>
+        </div>
+        <div id="Status">
+            Status:
+        </div>
+    </section>
     <footer>
         <p>&copy; IOT Project</p>
     </footer>
+    <script src="script.js"></script>
 </body>
-
 </html>

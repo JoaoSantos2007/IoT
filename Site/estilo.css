@@ -21,6 +21,11 @@ body{
     display: inline;
 }
 
+#menu ul li#add{
+    margin: auto;
+    display: inline;
+}
+
 #menu ul li#menu a{
 
     padding: 0px 40px;
@@ -29,12 +34,40 @@ body{
     text-decoration: none;
 }
 
+#menu ul li#add{
+    margin-left: 920px;
+}
+
 #menu ul li#imagem{
-    margin-left: 1060px;
+    margin-left: 100px;
 }
 
 #menu ul li#menu a:hover{
     color: darkblue;
+}
+
+div#creditos{
+    text-align: center;
+    padding: 5%;
+    font: normal 70pt Arial;
+}
+
+div#color1{
+    color: rgb(0, 255, 0);
+}
+
+div#color2{
+    color:slateblue;
+}
+
+div#name{
+    color: rgb(255, 0, 0);
+}
+
+div#Icons{
+    text-align: center;
+    font: normal 60pt Arial;
+    color: royalblue;
 }
 
 header{
@@ -62,6 +95,9 @@ div#Status{
     color:chartreuse;
 }
 
+
+
+/* Botão Liga/Desliga */
 .liga-desliga__checkbox{
    position: absolute;
    left: -9999px; 
@@ -105,4 +141,8 @@ div#Status{
 
 .liga-desliga__checkbox:checked + .liga-desliga__botao::after{
     left: 1.025em;
+}
+
+.liga-desliga__checkbox:focus + .liga-desliga__botao::before{
+    outline: 3px dotted #ccc;
 }

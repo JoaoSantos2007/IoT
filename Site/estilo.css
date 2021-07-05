@@ -12,17 +12,28 @@ body{
 
 #menu ul{
     margin: 0;
-    background-color: rgb(200,200,200);
+    background-color: darkred;
     list-style: none;
 }
 
 #menu ul li{
+    margin: auto;
     display: inline;
 }
 
-#menu ul li a{
-    padding: 7px 40px;
+#menu ul li#oloco a{
+
+    padding: 0px 40px;
     display: inline-block;
+    color: white;
+    text-decoration: none;
+}
+
+#menu ul li#imagem a img{
+    margin-left: 1060px;
+}
+
+#menu ul li#oloco a:hover{
     color: darkblue;
 }
 

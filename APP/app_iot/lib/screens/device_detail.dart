@@ -483,14 +483,14 @@ class _State extends State<DeviceDetail> {
     final bottomDefault = Row(
       children: [
         Container(
-          width: 90.0,
-          child: new Divider(color: Colors.green),
+          width: 20.0,
+          //child: new Divider(color: Colors.green),
         ),
         SizedBox(height: 10.0),
         Text(
           widget.device.currentValue,
           style: TextStyle(
-            color: Colors.green,
+            color: Colors.black45,
             fontSize: 45.0,
           ),
         ),

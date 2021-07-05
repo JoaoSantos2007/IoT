@@ -81,8 +81,8 @@ class _ListPageState extends State<DeviceList> {
                   child: Text(
                     device.currentValue,
                     style: TextStyle(
-                      color: Colors.yellow[50],
-                      //fontSize: 16,
+                      color: Colors.blue[100],
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -145,14 +145,14 @@ class _ListPageState extends State<DeviceList> {
           children: <Widget>[
             IconButton(
               icon: Icon(
-                Icons.home,
+                Icons.home_outlined,
                 color: Colors.white,
               ),
               onPressed: () {},
             ),
             IconButton(
               icon: Icon(
-                Icons.light,
+                Icons.lightbulb_outline,
                 color: Colors.white,
               ),
               onPressed: () {},

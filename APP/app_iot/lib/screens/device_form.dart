@@ -68,7 +68,7 @@ class _EditDeviceState extends State<DeviceForm> {
       typeController.text = widget.device.type;
       locationController.text = widget.device.location;
       isChecked = widget.device.action;
-      _isOpen = widget.device.type;
+      //_isOpen = widget.device.type;
 
       //State Update
       new Future.delayed(Duration.zero, () {
@@ -107,7 +107,7 @@ class _EditDeviceState extends State<DeviceForm> {
       children: <Widget>[
         Divider(
           height: 20.0,
-          color: Colors.red,
+          color: Colors.white,
         ),
         Text('Settings:'),
         Row(children: [

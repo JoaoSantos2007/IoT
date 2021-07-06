@@ -1,4 +1,4 @@
-package com.example.firestore_crud
+package com.example.jojo_app
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

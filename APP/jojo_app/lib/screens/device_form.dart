@@ -86,7 +86,9 @@ class _EditDeviceState extends State<DeviceForm> {
   Widget build(BuildContext context) {
     final deviceProvider = Provider.of<DeviceProvider>(context);
     final Map<String, dynamic> settings =
-        widget.device == null ? {} : widget.device.settings;
+        widget.device == null || widget.device.settings == null
+            ? {}
+            : widget.device.settings;
 
     addItemToList() {
       setState(() {
@@ -143,7 +145,7 @@ class _EditDeviceState extends State<DeviceForm> {
 
     final listSettings = Expanded(
       child: ListView.builder(
-          itemCount: settings == null ? 0 : settings.length,
+          itemCount: settings.length, //settings == null ? 0 : settings.length,
           itemBuilder: (context, index) {
             final item = settings[index];
             return Dismissible(

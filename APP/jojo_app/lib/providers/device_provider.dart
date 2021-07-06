@@ -1,5 +1,5 @@
-import 'package:app_iot/models/device.dart';
-import 'package:app_iot/services/firestore_service_device.dart';
+import 'package:jojo_app/models/device.dart';
+import 'package:jojo_app/services/firestore_service_device.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 

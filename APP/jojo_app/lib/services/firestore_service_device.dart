@@ -1,4 +1,4 @@
-import 'package:app_iot/models/device.dart';
+import 'package:jojo_app/models/device.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {

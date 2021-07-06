@@ -1,6 +1,6 @@
-import 'package:app_iot/providers/device_provider.dart';
-import 'package:app_iot/screens/device_list.dart';
-import 'package:app_iot/services/firestore_service_device.dart';
+import 'package:jojo_app/providers/device_provider.dart';
+import 'package:jojo_app/screens/device_list.dart';
+import 'package:jojo_app/services/firestore_service_device.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

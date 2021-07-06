@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:app_iot/models/device.dart';
-import 'package:app_iot/mqtt/mqtt.dart';
-import 'package:app_iot/providers/device_provider.dart';
-import 'package:app_iot/screens/device_list.dart';
+import 'package:jojo_app/models/device.dart';
+import 'package:jojo_app/mqtt/mqtt.dart';
+import 'package:jojo_app/providers/device_provider.dart';
+import 'package:jojo_app/screens/device_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -512,7 +512,7 @@ class _State extends State<DeviceDetail> {
           50.0,
         ),
         Container(
-          width: 90.0,
+          width: 55.0,
           child: new Divider(color: Colors.green),
         ),
         SizedBox(height: 10.0),

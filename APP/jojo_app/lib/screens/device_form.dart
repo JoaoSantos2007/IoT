@@ -1,5 +1,5 @@
-import 'package:app_iot/models/device.dart';
-import 'package:app_iot/providers/device_provider.dart';
+import 'package:jojo_app/models/device.dart';
+import 'package:jojo_app/providers/device_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -56,6 +56,7 @@ class _EditDeviceState extends State<DeviceForm> {
       tagIdController.text = "";
       tagValueController.text = "";
       isChecked = false;
+      _isOpen = "";
       new Future.delayed(Duration.zero, () {
         final deviceProvider =
             Provider.of<DeviceProvider>(context, listen: false);
@@ -68,7 +69,7 @@ class _EditDeviceState extends State<DeviceForm> {
       typeController.text = widget.device.type;
       locationController.text = widget.device.location;
       isChecked = widget.device.action;
-      //_isOpen = widget.device.type;
+      _isOpen = widget.device.type;
 
       //State Update
       new Future.delayed(Duration.zero, () {

@@ -1,6 +1,6 @@
-import 'package:app_iot/models/device.dart';
-import 'package:app_iot/screens/device_detail.dart';
-import 'package:app_iot/screens/device_form.dart';
+import 'package:jojo_app/models/device.dart';
+import 'package:jojo_app/screens/device_detail.dart';
+import 'package:jojo_app/screens/device_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

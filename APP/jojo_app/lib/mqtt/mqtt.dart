@@ -74,22 +74,22 @@ class Mqtt {
   //   });
   // }
 
-  void _onData(List<MqttReceivedMessage> event) {
-    print(event.length);
-    final MqttPublishMessage recMess = event[0].payload as MqttPublishMessage;
-    final String message =
-        MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-    print('[MQTT client] MQTT message: topic is <${event[0].topic}>, '
-        'payload is <-- ${message} -->');
-    print(mqttClient.connectionState);
-    print("[MQTT client] message with topic: ${event[0].topic}");
-    print("[MQTT client] message with message: ${message}");
-    // setState(
-    //   () {
-    //     //_temp = double.parse(message);
-    //   },
-    // );
-  }
+  // void _onData(List<MqttReceivedMessage> event) {
+  //   print(event.length);
+  //   final MqttPublishMessage recMess = event[0].payload as MqttPublishMessage;
+  //   final String message =
+  //       MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+  //   print('[MQTT client] MQTT message: topic is <${event[0].topic}>, '
+  //       'payload is <-- ${message} -->');
+  //   print(mqttClient.connectionState);
+  //   print("[MQTT client] message with topic: ${event[0].topic}");
+  //   print("[MQTT client] message with message: ${message}");
+  //   // setState(
+  //   //   () {
+  //   //     //_temp = double.parse(message);
+  //   //   },
+  //   // );
+  // }
 
   _onConnected() {
     _log("_onConnected");

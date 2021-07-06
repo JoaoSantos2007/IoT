@@ -169,7 +169,7 @@ class _EditDeviceState extends State<DeviceForm> {
     );
 
     return Scaffold(
-      //backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+      //backgroundColor: Color.fromRGBO(64, 75, 96, .9),
       appBar: AppBar(
         title: Text('Edit Device'),
         actions: <Widget>[

@@ -38,7 +38,7 @@ class _State extends State<DeviceDetail> {
   bottonAll(String tag) {
     Map<String, dynamic> event = {};
     event.addAll({
-      '"event_type"': '"action-device"',
+      '"eventType"': '"action-device"',
       '"deviceId"': '${widget.device.deviceId}',
       '"deviceType"': '"${widget.device.type}"',
       '"deviceOrigem"': '"jojo-app"',

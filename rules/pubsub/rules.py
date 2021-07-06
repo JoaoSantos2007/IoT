@@ -67,7 +67,7 @@ def apply_rules(client, data):
             document_update(deviceId, type, value)
 
     #Executar se o tipo de evento for uma ação
-    if data.get("event_type") == "action-device":
+    if data.get("eventType") == "action-device":
         topic_envio = "topico-" + str(deviceId)
         print(topic_envio)
         publish(client, topic_envio, data)

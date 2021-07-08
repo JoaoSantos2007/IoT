@@ -59,55 +59,46 @@ function criarItens(dados, key) {
 
 
 function tipo_light(dados, key) {
-  // var div_lista = window.document.querySelector('div#lista')
+  var div_lista = window.document.querySelector('div#lista')
 
-  // // Criar section
-  // var section = window.document.createElement("section")
-  // section.setAttribute("id", "itens")
+  // Criar section
+  var section = window.document.createElement("section")
+  section.setAttribute("id", "itens")
 
-  // // lugar.innerHTML += `<div id="teste>`
-  // // lugar.innerHTML += `<img src="images/ideia.png" alt="image"></img>`
-  // // lugar.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga" onclick="acionar_botao(${key})">`
-  // // lugar.innerHTML += `<label for="liga-desliga" class="liga-desliga__botao"></label> `
-  // // lugar.innerHTML += `</div>`
+  //Criar div
+  var div = window.document.createElement('div')
+  // divisão.setAttribute("id", key)
 
 
-  // //Criar div
-  // var div = window.document.createElement('div')
-  // // divisão.setAttribute("id", key)
+  //Criar imagem
+  var img = window.document.createElement('img')
+  img.setAttribute('src', 'images/ideia.png')
+
+  //Criar Botão
+  var botao = `<input type="checkbox" class="liga-desliga__checkbox" id="botao_${key}" onclick="acionar_botao('${key}')">`
+  var label = `<label for="liga-desliga" class="liga-desliga__botao"></label>`
 
 
-  // //Criar imagem
-  // var img = window.document.createElement('img')
-  // img.setAttribute('src', 'images/light.png')
-
-
-  // var botao = `<input type="checkbox" class="liga-desliga__checkbox" id="botao_${key}" onclick="acionar_botao">`
-  // botao += `<label for="liga-desliga" class="liga-desliga__botao"></label>`
-
-
-  // div.appendChild(img)
-  // div.innerHTML += botao
-  // section.appendChild(div)
-  // div_lista.appendChild(section)
+  div.appendChild(img)
+  div.innerHTML += botao
+  div.innerHTML += label
+  section.appendChild(div)
+  div_lista.appendChild(section)
 
 }
-
 
 
 function acionar_botao(chave){
-  console.log(chave)
+  window.alert(chave)
+  db.collection("Categorias").onSnapshot(function (documentos, item) {
+    const documento = changes.doc
+    const dados = documento.data()
+    let key = documento.id
+    if(key == chave){
+      dados.currentValue = (!dados.value)
+    }
+  })
+
 }
-
-
-
-
-// botao = window.document.getElementById("liga-desliga")
-// label = window.document.getElementById("hello")
-// if (botao.checked) {
-
-// } else {
-//   botao.checked = true
-// }
 
 var teste = window.document.getElementById("teste")

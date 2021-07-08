@@ -124,7 +124,7 @@ void send_payload(String Umidade,String Temperatura)
   StaticJsonDocument<256> doc;
 
   doc["deviceId"] = DEVICE_ID;
-  doc["event_type"] = "read-sensor";
+  doc["eventType"] = "read-sensor";
   doc["timestamp"] = timestamp;
 
   //Add an object

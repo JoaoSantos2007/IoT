@@ -20,8 +20,39 @@
         </ul>
     </div>
     <header>
-        <h1>Internet Of Things</h1>
+        <h1>Criar Cadastro de Dispositivo</h1>
     </header>
+    <section>
+        <div>
+            id: 
+            <input type="number" name="txtid" id="txtid">
+        </div>
+
+        <div>
+            name:
+            <input type="text" name="txtname" id="txtname">
+        </div>
+
+        <div>
+            location:
+            <input type="text" name="txtlocation" id="txtlocation">
+        </div>
+
+        <div>
+            type:
+            <select id="txttype">
+                <option value="light">light</option>
+                <option value="umidade-temperatura">umidade/temperatura</option>
+                <option value="proximidade">proximidade</option>
+                <option value="luminosidade">luminosidade</option>
+                <option value="tv">TV</option>
+                <option value="air">Ar-Condicionado</option>
+                <option value="fan">Ventilador</option>
+            </select>
+        </div>
+
+        <input type="button" value="Submit" onclick="">
+    </section>
     <footer>
         <p>&copy; IOT Project</p>
     </footer>

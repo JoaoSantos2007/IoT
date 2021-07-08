@@ -76,12 +76,12 @@ header{
     text-align:center;
 }
 
-section{
+section#itens{
     background: rgb(100, 100, 100);
     border-radius:10px;
-    padding: 15px;
-    width: 500px;
-    margin: auto;
+    padding: 100px;
+    width: 70%;
+    margin: 20px auto;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.418);
 }
 
@@ -95,7 +95,9 @@ div#Status{
     color:chartreuse;
 }
 
-
+div#botao{
+    margin-left: 100px;
+}
 
 /* Botão Liga/Desliga */
 .liga-desliga__checkbox{
@@ -141,8 +143,4 @@ div#Status{
 
 .liga-desliga__checkbox:checked + .liga-desliga__botao::after{
     left: 1.025em;
-}
-
-.liga-desliga__checkbox:focus + .liga-desliga__botao::before{
-    outline: 3px dotted #ccc;
 }

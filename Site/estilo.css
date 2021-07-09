@@ -5,6 +5,9 @@ body{
     padding: 0px;
 }
 
+
+
+/* Menu */
 #menu ul{
     margin: 0;
     background-color: darkred;
@@ -46,6 +49,13 @@ body{
     color: darkblue;
 }
 
+img#edit{
+    margin-left: 85%;
+    margin-right: 5%;
+}
+
+
+
 div#creditos{
     text-align: center;
     padding: 5%;
@@ -79,8 +89,8 @@ header{
 section#itens{
     background: rgb(100, 100, 100);
     border-radius:10px;
-    padding: 100px;
-    width: 70%;
+    /* padding: 100px; */
+    /* width: 70%; */
     margin: 20px auto;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.418);
 }
@@ -98,6 +108,12 @@ div#Status{
 div#botao{
     margin-left: 100px;
 }
+
+
+
+
+
+
 
 /* Botão Liga/Desliga */
 

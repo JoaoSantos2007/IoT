@@ -253,7 +253,7 @@ Icon getIcon(bool value, String age, _size) {
         size: _size,
       );
       break;
-    case 'proximidade':
+    case 'presenca':
       return Icon(
         Icons.directions_run_outlined,
         color: _color,
@@ -263,6 +263,13 @@ Icon getIcon(bool value, String age, _size) {
     case 'umidade':
       return Icon(
         Icons.bathroom_outlined,
+        color: _color,
+        size: _size,
+      );
+      break;
+    case 'luminosidade':
+      return Icon(
+        Icons.brightness_low_outlined,
         color: _color,
         size: _size,
       );

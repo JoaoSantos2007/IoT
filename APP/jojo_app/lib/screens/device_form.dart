@@ -22,7 +22,9 @@ List<String> _deviceType = <String>[
   'tv',
   'umidade',
   'temperatura',
-  'proximidade'
+  'proximidade',
+  'presenca',
+  'luminosidade'
 ];
 bool isChecked = false;
 

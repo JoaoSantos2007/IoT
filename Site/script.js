@@ -44,7 +44,7 @@ db.collection("Categorias").onSnapshot(function (documentos) {
       criarItens(dados, key)
 
     } else if (changes.type === "modified") {
-
+      modificarItens(dados, key)
 
     } else if (changes.type === "removed") {
       const documento_apagar = changes.doc
@@ -72,6 +72,19 @@ function criarItens(dados, key) {
   }
 }
 
+function modificarItens(dados, key){
+  if (dados.type == "light") {
+    tipo_light(dados, key)
+  } else if (dados.type == "umidade") {
+    tipo_umidade(dados, key)
+  }else if(dados.type == "temperatura"){
+    tipo_temperatura(dados, key)
+  }else if(dados.type == "proximidade"){
+    tipo_proximidade(dados, key)
+  }else if(dados.type == "luminosidade"){
+    tipo_luminosidade(dados, key)
+  }
+}
 
 function tipo_light(dados, key) {
   var key = "" + key

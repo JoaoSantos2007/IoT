@@ -59,7 +59,7 @@ def apply_rules(client, data):
     deviceId = data.get("deviceId")
 
     #Executar se o tipo de evento for de leitura de sensor
-    if data.get("event_type") == "read-sensor":
+    if data.get("eventType") == "read-sensor":
         sensores = data.get("sensor")
         print(sensores)
         #Atualizar Firebase

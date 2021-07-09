@@ -38,7 +38,7 @@ body{
 }
 
 #menu ul li#add{
-    margin-left: 920px;
+    margin-left: 900px;
 }
 
 #menu ul li#imagem{
@@ -95,6 +95,15 @@ section#itens{
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.418);
 }
 
+section#criar{
+    background: white;
+    border-radius:10px;
+    padding: 15px;
+    width: 500px;
+    margin: auto;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.418);
+}
+
 footer{
     color:white;
     text-align:center;
@@ -109,8 +118,17 @@ div#botao{
     margin-left: 100px;
 }
 
+span#div_valor{
+    color: red;
+}
 
+span#valor{
+    color: rgb(170, 255, 0);
+}
 
+/* div#teste{
+    display: inline-block;
+} */
 
 
 

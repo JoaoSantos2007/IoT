@@ -1,4 +1,6 @@
 int estado = 0; 
+int PIN_LUMINOSIDADE = 35;
+int PIN_PRESENCA = 26;
 /* Headers */ 
 #include <WiFi.h> /* Header para uso das funcionalidades de wi-fi do ESP32 */
 #include <PubSubClient.h>  /*  Header para uso da biblioteca PubSubClient */
@@ -80,6 +82,29 @@ String readDHTHumidity() {
     return String(h);
   }
 }
+
+String readLDRLuminosidade(){
+  float v = analogRead(PIN_LUMINOSIDADE);
+  if (isnan(v)) {
+    return "--";
+  } 
+  else {
+    return String(v);
+  }
+  
+}
+
+String readPIRPresenca(){
+  float p = digitalRead(PIN_PRESENCA);
+  if (isnan(p)) {
+    return "--";
+  } 
+  else {
+    return String(p);
+  }
+}
+
+
 //Fim sensor de umidade
   
 //Prototypes
@@ -109,11 +134,12 @@ void setup()
     init_time();
     dht.begin();
     pinMode(2, OUTPUT);//Pino
+    pinMode(PIN_LUMINOSIDADE,INPUT);
 }
 
 
 //Mandar mensagem
-void send_payload(String Umidade,String Temperatura)
+void send_payload(String Umidade,String Temperatura, String Luminosidade, String Presenca)
 {
 
   while(!timeClient.update()) {
@@ -131,7 +157,8 @@ void send_payload(String Umidade,String Temperatura)
   JsonObject sensor = doc.createNestedObject("sensor") ;
   sensor["temperatura"] = Temperatura+"°C";
   sensor["umidade"]= Umidade+"%";
-    
+  sensor["proximidade"] = Luminosidade;
+  sensor["presenca"] = Presenca;
     
 //  //Add an array.
 //  JsonArray values = doc.createNestedArray("data");
@@ -261,14 +288,17 @@ void loop()
 {   
     String Umidade = readDHTHumidity();
     String Temperatura = readDHTTemperature();
+    String Luminosidade = readLDRLuminosidade();
+    String Presenca = readPIRPresenca();
     /* garante funcionamento das conexões WiFi e ao broker MQTT */
     verifica_conexoes_wifi_mqtt();
     
-    send_payload(Umidade,Temperatura);
+    send_payload(Umidade,Temperatura,Luminosidade,Presenca);
  
     /* keep-alive da comunicação com broker MQTT */    
     MQTT.loop();
     
     /* Agurda 1 segundo para próximo envio */
-    delay(60000);   
+//    delay(60000);   
+      delay(15000);
 }

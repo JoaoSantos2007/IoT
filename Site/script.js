@@ -32,11 +32,8 @@ firebase.initializeApp(firebaseConfig)
 //Armazena as informações do database do firebase em uma variável
 let db = firebase.firestore();
 
-
-var item = window.document.querySelector('div#itens')
-
-db.collection("Categorias").onSnapshot(function (documentos, item) {
-  documentos.docChanges().forEach(function (changes, item) {
+db.collection("Categorias").onSnapshot(function (documentos) {
+  documentos.docChanges().forEach(function (changes) {
     if (changes.type === "added") {
 
       const documento = changes.doc
@@ -48,8 +45,14 @@ db.collection("Categorias").onSnapshot(function (documentos, item) {
 
     } else if (changes.type === "modified") {
 
+
     } else if (changes.type === "removed") {
-      // location.reload()
+      const documento_apagar = changes.doc
+      let key_apagar = documento_apagar.id
+      var name = "section." + key_apagar
+      var apagar = window.document.querySelector(name)
+      apagar.innerHTML = ""
+
     }
   })
 })
@@ -57,10 +60,15 @@ db.collection("Categorias").onSnapshot(function (documentos, item) {
 
 function criarItens(dados, key) {
   if (dados.type == "light") {
-    console.log(key)
     tipo_light(dados, key)
-  } else if (dados.type == "umidade_temperatura") {
-    tipo_umidade_temperatura(dados, documento);
+  } else if (dados.type == "umidade") {
+    tipo_umidade(dados, key)
+  }else if(dados.type == "temperatura"){
+    tipo_temperatura(dados, key)
+  }else if(dados.type == "proximidade"){
+    tipo_proximidade(dados, key)
+  }else if(dados.type == "luminosidade"){
+    tipo_luminosidade(dados, key)
   }
 }
 
@@ -72,72 +80,165 @@ function tipo_light(dados, key) {
   var nome = dados.name
   var lugar = dados.local
   section.setAttribute('id', 'itens')
-  section.innerHTML += `<section id="itens">`
+  section.setAttribute('class', key)
   section.innerHTML += `<div>`
   section.innerHTML += `<img src="/Site/images/light.png" alt="image"> `
-  section.innerHTML += `<img id = "edit" src="/Site/images/edit.png" alt="edit" onclick="">`
+  section.innerHTML += `<img id = "edit" src="/Site/images/edit.png" alt="edit" onclick="testar()">`
   section.innerHTML += `<img id = "delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('` + key + `')">`
   section.innerHTML += `</div>`
   section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: ${nome}</strong> `
+  section.innerHTML += `<strong>Nome: </strong>${nome} `
   section.innerHTML += `</p>`
   section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: ${lugar}</strong> `
+  section.innerHTML += `<strong>Local: </strong> ${lugar}`
   section.innerHTML += `</p>`
   section.innerHTML += `<div>`
-  section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga" onclick="acionar_botao('${key}')">`
+  if (dados.currentValue == "true") {
+    section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga" onclick="acionar_botao('${key}')" checked>`
+  } else {
+    section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga" onclick="acionar_botao('${key}')">`
+  }
   section.innerHTML += `<label for="liga-desliga" class="liga-desliga__botao"></label>`
   section.innerHTML += `</div>`
-  section.innerHTML += `</section>`
   div_lista.appendChild(section)
-
 }
 
+function tipo_umidade(dados, key) {
+  var key = "" + key
+  var div_lista = window.document.querySelector('div#lista')
+  var section = window.document.createElement('section')
+  var nome = dados.name
+  var lugar = dados.local
+  var valor = dados.currentValue
+  section.setAttribute('id', 'itens')
+  section.setAttribute('class', key)
+  section.innerHTML += `<div>`
+  section.innerHTML += `<img src="/Site/images/umidade.png" alt="image">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="">`
+  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Nome: </strong>${nome}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Local: </strong>${lugar}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<strong>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<span id="div_valor">Valor:</span>`
+  section.innerHTML += `<span id="valor">${valor}</span>`
+  section.innerHTML += `</p>`
+  section.innerHTML += `</strong>`
+  div_lista.appendChild(section)
+}
+
+function tipo_temperatura(dados, key) {
+  var key = "" + key
+  var div_lista = window.document.querySelector('div#lista')
+  var section = window.document.createElement('section')
+  var nome = dados.name
+  var lugar = dados.local
+  var valor = dados.currentValue
+  section.setAttribute('id', 'itens')
+  section.setAttribute('class', key)
+  section.innerHTML += `<div>`
+  section.innerHTML += `<img src="/Site/images/temperatura.png" alt="image">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="">`
+  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Nome: </strong>${nome}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Local: </strong>${lugar}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<strong>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<span id="div_valor">Valor:</span>`
+  section.innerHTML += `<span id="valor">${valor}</span>`
+  section.innerHTML += `</p>`
+  section.innerHTML += `</strong>`
+  div_lista.appendChild(section)
+}
+
+function tipo_proximidade(dados, key) {
+  var key = "" + key
+  var div_lista = window.document.querySelector('div#lista')
+  var section = window.document.createElement('section')
+  var nome = dados.name
+  var lugar = dados.local
+  var valor = dados.currentValue
+  section.setAttribute('id', 'itens')
+  section.setAttribute('class', key)
+  section.innerHTML += `<div>`
+  section.innerHTML += `<img src="/Site/images/proximidade.png" alt="image">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="">`
+  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Nome: </strong>${nome}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Local: </strong>${lugar}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<strong>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<span id="div_valor">Valor:</span>`
+  section.innerHTML += `<span id="valor">${valor}</span>`
+  section.innerHTML += `</p>`
+  section.innerHTML += `</strong>`
+  div_lista.appendChild(section)
+}
+
+function tipo_luminosidade(dados, key) {
+  var key = "" + key
+  var div_lista = window.document.querySelector('div#lista')
+  var section = window.document.createElement('section')
+  var nome = dados.name
+  var lugar = dados.local
+  var valor = dados.currentValue
+  section.setAttribute('id', 'itens')
+  section.setAttribute('class', key)
+  section.innerHTML += `<div>`
+  section.innerHTML += `<img src="/Site/images/luminosidade.png" alt="image">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="">`
+  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Nome: </strong>${nome}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Local: </strong>${lugar}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<strong>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<span id="div_valor">Valor:</span>`
+  section.innerHTML += `<span id="valor">${valor}</span>`
+  section.innerHTML += `</p>`
+  section.innerHTML += `</strong>`
+  div_lista.appendChild(section)
+}
 
 function acionar_botao(chave) {
   window.alert(chave)
-  db.collection("Categorias").doc(chave).get().then(function (doc){
+  db.collection("Categorias").doc(chave).get().then(function (doc) {
     dados = doc.data()
     valor_atual = dados.currentValue
-    if(valor_atual == "false"){
+    if (valor_atual == "false") {
       db.collection("Categorias").doc(chave).update({
         'currentValue': 'true'
       })
-    }else{
+    } else {
       db.collection("Categorias").doc(chave).update({
         'currentValue': 'false'
       })
     }
   })
-
-
-  //   const dados = doc.data()
-  //   let key = doc.id
-  //   const nome = dados.name
-  //   if (key == chave) {
-  //     if (dados.currentValue == "false") {
-  //       db.collection("Categorias").doc(chave).update({
-  //         'currentValue': 'true'
-  //       })
-  //     } else{
-  //       db.collection("Categorias").doc(chave).update({
-  //         'currentValue': 'false'
-  //       })
-  //     }
-  //   }
-  // })
-
-  // db.collection("Categorias").doc(chave).update({
-  //   'currentValue': ''
-  // })
-
 }
 
 function deletar(chave) {
   if (window.confirm("Você realmente quer apagar esse registro?")) {
     db.collection("Categorias").doc(chave).delete()
   }
-  // db.collection("Categorias").doc(chave).update({
-  //   name: "luz"
-  // })
 }
+

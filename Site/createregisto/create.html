@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/Site/images/favicon-site.ico" type="image/x-icon">
     <title>Criar Registro</title>
+    <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-firestore.js"></script>
     <link rel="stylesheet" href="/Site/estilo.css">
 </head>
 <body>
@@ -22,7 +26,7 @@
     <header>
         <h1>Criar Cadastro de Dispositivo</h1>
     </header>
-    <section>
+    <section id="criar">
         <div>
             id: 
             <input type="number" name="txtid" id="txtid">
@@ -41,21 +45,21 @@
         <div>
             type:
             <select id="txttype">
-                <option value="light">light</option>
-                <option value="umidade-temperatura">umidade/temperatura</option>
-                <option value="proximidade">proximidade</option>
-                <option value="luminosidade">luminosidade</option>
+                <option value="light">Luz</option>
+                <option value="temperatura">Temperatura</option>
+                <option value="proximidade">Proximidade</option>
+                <option value="luminosidade">Luminosidade</option>
                 <option value="tv">TV</option>
                 <option value="air">Ar-Condicionado</option>
                 <option value="fan">Ventilador</option>
+                <option value="umidade">Umidade</option>
             </select>
         </div>
-
-        <input type="button" value="Submit" onclick="">
+        <input type="button" value="Submit" onclick="criar_registro()">
     </section>
     <footer>
         <p>&copy; IOT Project</p>
     </footer>
-    <script src="/Site/script.js"></script>
+    <script src="create.js"></script>
 </body>
 </html>

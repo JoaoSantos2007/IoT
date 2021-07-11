@@ -1,27 +1,14 @@
-var audio = new Audio()
-
-function reproduzir_audio() {
-  audio.src = "audios/audio.mp3"
-  audio.play()
-  window.alert("ok")
-}
+const Categoria = "devices"
 
 //Armazena as credenciais do Firebase em uma constante
 const firebaseConfig = {
-  // apiKey: "AIzaSyDu-JTPXU0xU0xhAj8fACBbWfXcxuPOrmw",
-  // authDomain: "teste-345e7.firebaseapp.com",
-  // projectId: "teste-345e7",
-  // storageBucket: "teste-345e7.appspot.com",
-  // messagingSenderId: "939130156420",
-  // appId: "1:939130156420:web:2b7f5f78068e19aac259d1",
-  // measurementId: "G-WLED1GNYY6"
-  apiKey: "AIzaSyCoZBonmOjR0JdmJlnGx338KujPBk61wuI",
-  authDomain: "teste2-4ac49.firebaseapp.com",
-  projectId: "teste2-4ac49",
-  storageBucket: "teste2-4ac49.appspot.com",
-  messagingSenderId: "571684171981",
-  appId: "1:571684171981:web:7623e6fb860175fc023984",
-  measurementId: "G-BR5S3M0QT7"
+  apiKey: "AIzaSyDOCg6kqirThQKx3R6zd5VNphTqbbuA1Rc",
+  authDomain: "fir-crud-e99a4.firebaseapp.com",
+  projectId: "fir-crud-e99a4",
+  storageBucket: "fir-crud-e99a4.appspot.com",
+  messagingSenderId: "319998441027",
+  appId: "1:319998441027:web:01e4f3fe3d2a57dd3c46f6",
+  measurementId: "G-7437FP6V3J"
 };
 
 
@@ -33,19 +20,15 @@ firebase.initializeApp(firebaseConfig)
 let db = firebase.firestore();
 
 function iniciar() {
-  db.collection("Categorias").onSnapshot(function (documentos) {
+  db.collection(Categoria).onSnapshot(function (documentos) {
     documentos.docChanges().forEach(function (changes) {
       if (changes.type === "added") {
-
         const documento = changes.doc
         const dados = documento.data()
         let key = documento.id
-        console.log(key)
-
         criarItens(dados, key)
 
       } else if (changes.type === "modified") {
-        // window.alert("hello")
         const documento_modificar = changes.doc
         const dados_modificar = documento_modificar.data()
         let key_modificar = documento_modificar.id
@@ -93,7 +76,7 @@ function tipo_light(dados, key) {
   var div_lista = window.document.querySelector('div#lista')
   var section = window.document.createElement('section')
   var nome = dados.name
-  var lugar = dados.local
+  var lugar = dados.location
   section.setAttribute('id', key)
   section.innerHTML += `<div>`
   section.innerHTML += `<img src="/Site/images/light.png" alt="image"> `
@@ -108,11 +91,11 @@ function tipo_light(dados, key) {
   section.innerHTML += `</p>`
   section.innerHTML += `<div>`
   if (dados.currentValue == "true") {
-    section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga" onclick="acionar_botao('${key}')" checked>`
+    section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_${key}" onclick="acionar_botao('${key}')" checked>`
   } else {
-    section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga" onclick="acionar_botao('${key}')">`
+    section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_${key}" onclick="acionar_botao('${key}')">`
   }
-  section.innerHTML += `<label for="liga-desliga" class="liga-desliga__botao"></label>`
+  section.innerHTML += `<label for="liga-desliga_${key}" class="liga-desliga__botao"></label>`
   section.innerHTML += `</div>`
   div_lista.appendChild(section)
 }
@@ -120,7 +103,7 @@ function tipo_light(dados, key) {
 function modificar_tipo_light(dados, key) {
   var section = window.document.getElementById(key)
   var nome = dados.name
-  var lugar = dados.local
+  var lugar = dados.location
   section.innerHTML = ""
   section.innerHTML += `<div>`
   section.innerHTML += `<img src="/Site/images/light.png" alt="image"> `
@@ -147,7 +130,7 @@ function tipo_umidade(dados, key) {
   var div_lista = window.document.querySelector('div#lista')
   var section = window.document.createElement('section')
   var nome = dados.name
-  var lugar = dados.local
+  var lugar = dados.location
   var valor = dados.currentValue
   section.setAttribute('id', key)
   section.innerHTML += `<div>`
@@ -173,7 +156,7 @@ function tipo_umidade(dados, key) {
 function modificar_tipo_umidade(dados, key) {
   var section = window.document.getElementById(key)
   var nome = dados.name
-  var lugar = dados.local
+  var lugar = dados.location
   var valor = dados.currentValue
   section.innerHTML = ""
   section.innerHTML += `<div>`
@@ -199,7 +182,7 @@ function tipo_temperatura(dados, key) {
   var div_lista = window.document.querySelector('div#lista')
   var section = window.document.createElement('section')
   var nome = dados.name
-  var lugar = dados.local
+  var lugar = dados.location
   var valor = dados.currentValue
   section.setAttribute('id', key)
   section.innerHTML += `<div>`
@@ -225,7 +208,7 @@ function tipo_temperatura(dados, key) {
 function modificar_tipo_temperatura(dados, key) {
   var section = window.document.getElementById(key)
   var nome = dados.name
-  var lugar = dados.local
+  var lugar = dados.location
   var valor = dados.currentValue
   section.innerHTML = ""
   section.innerHTML += `<div>`
@@ -251,7 +234,7 @@ function tipo_proximidade(dados, key) {
   var div_lista = window.document.querySelector('div#lista')
   var section = window.document.createElement('section')
   var nome = dados.name
-  var lugar = dados.local
+  var lugar = dados.location
   var valor = dados.currentValue
   section.setAttribute('id', key)
   section.innerHTML += `<div>`
@@ -277,7 +260,7 @@ function tipo_proximidade(dados, key) {
 function modificar_tipo_proximidade(dados, key) {
   var section = window.document.getElementById(key)
   var nome = dados.name
-  var lugar = dados.local
+  var lugar = dados.location
   var valor = dados.currentValue
   section.innerHTML = ""
   section.innerHTML += `<div>`
@@ -303,7 +286,7 @@ function tipo_luminosidade(dados, key) {
   var div_lista = window.document.querySelector('div#lista')
   var section = window.document.createElement('section')
   var nome = dados.name
-  var lugar = dados.local
+  var lugar = dados.location
   var valor = dados.currentValue
   section.setAttribute('id', key)
   section.innerHTML += `<div>`
@@ -329,7 +312,7 @@ function tipo_luminosidade(dados, key) {
 function modificar_tipo_luminosidade(dados, key) {
   var section = window.document.getElementById(key)
   var nome = dados.name
-  var lugar = dados.local
+  var lugar = dados.location
   var valor = dados.currentValue
   section.innerHTML = ""
   section.innerHTML += `<div>`
@@ -352,15 +335,15 @@ function modificar_tipo_luminosidade(dados, key) {
 }
 
 function acionar_botao(chave) {
-  db.collection("Categorias").doc(chave).get().then(function (doc) {
+  db.collection(Categoria).doc(chave).get().then(function (doc) {
     dados = doc.data()
     valor_atual = dados.currentValue
     if (valor_atual == "false") {
-      db.collection("Categorias").doc(chave).update({
+      db.collection(Categoria).doc(chave).update({
         'currentValue': 'true'
       })
     } else {
-      db.collection("Categorias").doc(chave).update({
+      db.collection(Categoria).doc(chave).update({
         'currentValue': 'false'
       })
     }
@@ -369,7 +352,7 @@ function acionar_botao(chave) {
 
 function deletar(chave) {
   if (window.confirm("Você realmente quer apagar esse registro?")) {
-    db.collection("Categorias").doc(chave).delete()
+    db.collection(Categoria).doc(chave).delete()
   }
 }
 
@@ -378,20 +361,20 @@ function criar_registro() {
   var name = String((window.document.getElementById("txtname").value))
   var local = String((window.document.getElementById("txtlocation").value))
   var id = String((window.document.getElementById("txtid").value))
-  db.collection("Categorias").doc().set({
-    'id': id,
+  db.collection(Categoria).doc().set({
+    'deviceId': id,
     'type': type,
     'name': name,
-    'local': local,
+    'location': local,
     'currentValue': ' - - '
   })
   // window.location.href = ("/Site/index.html")
 }
 
 function editar_registro(key) {
-  db.collection("Categorias").doc(key).get().then(function (doc) {
+  db.collection(Categoria).doc(key).get().then(function (doc) {
     var dados = doc.data()
-    var id = dados.id
+    var id = dados.deviceId
     var nome = dados.name
     var lugar = dados.local
     var tipo = dados.type
@@ -472,10 +455,17 @@ function enviar(key){
   var name_enviar = String((window.document.getElementById("txtname_"+key).value))
   var local_enviar = String((window.document.getElementById("txtlocation_"+key).value))
   var id_enviar = String((window.document.getElementById("txtid_"+key).value))
-  db.collection("Categorias").doc(key).update({
+  db.collection(Categoria).doc(key).update({
     'name': name_enviar,
     'type': type_enviar,
     'local': local_enviar,
-    'id': id_enviar,
+    'deviceId': id_enviar,
   })
+}
+
+var audio = new Audio()
+function reproduzir_audio() {
+  audio.src = "audios/audio.mp3"
+  audio.play()
+  window.alert("ok")
 }

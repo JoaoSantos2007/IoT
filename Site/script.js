@@ -55,6 +55,8 @@ function criarItens(dados, key) {
     tipo_proximidade(dados, key)
   } else if (dados.type == "luminosidade") {
     tipo_luminosidade(dados, key)
+  } else if (dados.type == "tv") {
+    tipo_tv(dados, key)
   }
 }
 
@@ -69,6 +71,8 @@ function modificarItens(dados, key) {
     modificar_tipo_proximidade(dados, key)
   } else if (dados.type == "luminosidade") {
     modificar_tipo_luminosidade(dados, key)
+  } else if (dados.type == "tv") {
+    modificar_tipo_tv(dados, key)
   }
 }
 
@@ -334,7 +338,86 @@ function modificar_tipo_luminosidade(dados, key) {
   section.innerHTML += `</strong>`
 }
 
+function tipo_tv(dados, key) {
+  var div_lista = window.document.querySelector('div#lista')
+  var section = window.document.createElement('section')
+  var nome = dados.name
+  var lugar = dados.location
+  section.setAttribute('id', key)
+  section.innerHTML += `<div>`
+  section.innerHTML += `<img src="/Site/images/tv.png" alt="image">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
+  section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Nome: </strong>${lugar}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Local: </strong>${nome}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<div>`
+  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="power_tv('${key}')">`
+  section.innerHTML += `<img id="source_button" src="/Site/images/source.png" alt="source" onclick="source_tv('${key}')">`
+  section.innerHTML += `<img id="menu_button" src="/Site/images/menu.png" alt="menu" onclick="menu_tv('${key}')">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<div>`
+  section.innerHTML += `<label for="power_button" id="power_button">power</label>`
+  section.innerHTML += `<label for="source_button" id="source_button">source</label>`
+  section.innerHTML += `<label for="menu_button" id="menu_button">menu</label>`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<div id="canal">`
+  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="up_channel('${key}')">`
+  section.innerHTML += `<label for="channel" id="channel">canal</label>`
+  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down" onclick="down_channel('${key}')">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<div id="volume">`
+  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="up_volume('${key}')">`
+  section.innerHTML += `<label for="volume" id="volume">volume</label>`
+  section.innerHTML += `<img id="down_button_volume" src="/Site/images/down.png" alt="down" onclick="down_volume('${key}')">`
+  section.innerHTML += `</div>`
+  div_lista.appendChild(section)
+}
+
+function modificar_tipo_tv(dados, key) {
+  var section = window.document.getElementById(key)
+  var nome = dados.name
+  var lugar = dados.location
+  section.innerHTML = ""
+  section.innerHTML += `<div>`
+  section.innerHTML += `<img src="/Site/images/tv.png" alt="image">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
+  section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Nome: </strong>${lugar}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Local: </strong>${nome}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<div>`
+  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="power_tv('${key}')">`
+  section.innerHTML += `<img id="source_button" src="/Site/images/source.png" alt="source" onclick="source_tv('${key}')">`
+  section.innerHTML += `<img id="menu_button" src="/Site/images/menu.png" alt="menu" onclick="menu_tv('${key}')">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<div>`
+  section.innerHTML += `<label for="power_button" id="power_button">power</label>`
+  section.innerHTML += `<label for="source_button" id="source_button">source</label>`
+  section.innerHTML += `<label for="menu_button" id="menu_button">menu</label>`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<div id="canal">`
+  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="up_channel('${key}')">`
+  section.innerHTML += `<label for="channel" id="channel">canal</label>`
+  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down" onclick="down_channel('${key}')">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<div id="volume">`
+  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="up_volume('${key}')">`
+  section.innerHTML += `<label for="volume" id="volume">volume</label>`
+  section.innerHTML += `<img id="down_button_volume" src="/Site/images/down.png" alt="down" onclick="down_volume('${key}')">`
+  section.innerHTML += `</div>`
+}
+
 function acionar_botao(chave) {
+  reproduzir_audio()
   db.collection(Categoria).doc(chave).get().then(function (doc) {
     dados = doc.data()
     valor_atual = dados.currentValue
@@ -350,13 +433,65 @@ function acionar_botao(chave) {
   })
 }
 
+function power_tv(key) {
+  reproduzir_audio()
+  db.collection(Categoria).doc(key).update({
+    'currentValue': 'tag#power_tv'
+  })
+}
+
+function source_tv(key) {
+  reproduzir_audio()
+  db.collection(Categoria).doc(key).update({
+    'currentValue': 'tag#source_tv'
+  })
+}
+
+function menu_tv(key) {
+  reproduzir_audio()
+  db.collection(Categoria).doc(key).update({
+    'currentValue': 'tag#menu_tv'
+  })
+}
+
+
+function up_channel(key) {
+  reproduzir_audio()
+  db.collection(Categoria).doc(key).update({
+    'currentValue': 'tag#up_channel'
+  })
+}
+
+function down_channel(key) {
+  reproduzir_audio()
+  db.collection(Categoria).doc(key).update({
+    'currentValue': 'tag#down_channel'
+  })
+}
+
 function deletar(chave) {
+  reproduzir_audio()
   if (window.confirm("Você realmente quer apagar esse registro?")) {
     db.collection(Categoria).doc(chave).delete()
   }
 }
 
+function up_volume(key) {
+  reproduzir_audio()
+  db.collection(Categoria).doc(key).update({
+    'currentValue': 'tag#up_volume'
+  })
+}
+
+function down_volume(key){
+  reproduzir_audio()
+  db.collection(Categoria).doc(key).update({
+    'currentValue': 'tag#down_volume'
+  })
+}
+
 function criar_registro() {
+  reproduzir_audio()
   var type = String((window.document.getElementById("txttype").value))
   var name = String((window.document.getElementById("txtname").value))
   var local = String((window.document.getElementById("txtlocation").value))
@@ -368,17 +503,18 @@ function criar_registro() {
     'location': local,
     'currentValue': ' - - '
   })
+  window.alert("Registro criado")
   // window.location.href = ("/Site/index.html")
 }
 
 function editar_registro(key) {
+  reproduzir_audio()
   db.collection(Categoria).doc(key).get().then(function (doc) {
     var dados = doc.data()
     var id = dados.deviceId
     var nome = dados.name
-    var lugar = dados.local
+    var lugar = dados.location
     var tipo = dados.type
-    window.alert(nome)
     section = document.getElementById(key)
     section.innerHTML = ""
     section.innerHTML += "<div>"
@@ -396,7 +532,7 @@ function editar_registro(key) {
     section.innerHTML += `<div>`
     section.innerHTML += `type:`
     select = document.createElement('select')
-    select.setAttribute('id', 'txttype_'+key)
+    select.setAttribute('id', 'txttype_' + key)
     if (tipo == "light") {
       select.innerHTML += `<option value="light" selected>Luz</option>`
     } else {
@@ -427,14 +563,14 @@ function editar_registro(key) {
     } else {
       select.innerHTML += `<option value="air">Ar-Condicionado</option>`
     }
-    if(tipo == "fan"){
+    if (tipo == "fan") {
       select.innerHTML += `<option value="fan" selected>Ventilador</option>`
-    }else{
+    } else {
       select.innerHTML += `<option value="fan">Ventilador</option>`
     }
-    if(tipo == "umidade"){
+    if (tipo == "umidade") {
       select.innerHTML += `<option value="umidade" selected>Umidade</option>`
-    }else{
+    } else {
       select.innerHTML += `<option value="umidade">Umidade</option>`
     }
     section.appendChild(select)
@@ -446,15 +582,17 @@ function editar_registro(key) {
   })
 }
 
-function recarregar(){
+function recarregar() {
+  reproduzir_audio()
   location.reload()
 }
 
-function enviar(key){
-  var type_enviar = String((window.document.getElementById("txttype_"+key).value))
-  var name_enviar = String((window.document.getElementById("txtname_"+key).value))
-  var local_enviar = String((window.document.getElementById("txtlocation_"+key).value))
-  var id_enviar = String((window.document.getElementById("txtid_"+key).value))
+function enviar(key) {
+  reproduzir_audio()
+  var type_enviar = String((window.document.getElementById("txttype_" + key).value))
+  var name_enviar = String((window.document.getElementById("txtname_" + key).value))
+  var local_enviar = String((window.document.getElementById("txtlocation_" + key).value))
+  var id_enviar = String((window.document.getElementById("txtid_" + key).value))
   db.collection(Categoria).doc(key).update({
     'name': name_enviar,
     'type': type_enviar,
@@ -467,5 +605,4 @@ var audio = new Audio()
 function reproduzir_audio() {
   audio.src = "audios/audio.mp3"
   audio.play()
-  window.alert("ok")
 }

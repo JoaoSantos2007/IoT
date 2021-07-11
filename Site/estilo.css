@@ -52,7 +52,120 @@ body{
 img#edit{
     margin-left: 85%;
     margin-right: 5%;
+    cursor: pointer;
 }
+
+img#delete{
+    cursor: pointer;
+}
+
+
+/* TV */
+img#power_button{
+    margin-right: 4%;
+    margin-left: 1%;
+    cursor: pointer;
+}
+
+img#source_button{
+    margin-right: 4%;
+    cursor: pointer;
+}
+
+img#menu_button{
+    cursor: pointer;
+}
+
+label#source_button{
+    margin-left: 1.5%;
+}
+
+label#menu_button{
+    margin-left: 1.5%;
+}
+
+div#canal{
+    margin-top: 1%;
+}
+
+img#up_button{
+    margin-left: 1%;
+    margin-right: 2.5%;
+    cursor: pointer;
+}
+
+label#channel{
+    font-size: 40px;
+    color: rgb(9, 255, 0);
+}
+
+img#down_button{
+    margin-left: 2.5%;
+    cursor: pointer;
+}
+
+div#volume{
+    margin-top: 1%;
+}
+
+img#down_button_volume{
+    margin-left: 2.5%;
+    cursor: pointer;
+}
+
+label#volume{
+    font-size: 40px;
+    color: rgb(9, 255, 0);
+}
+
+img#down_button_volume{
+    margin-left: 0.8%;
+}
+
+
+/* Ventilador */
+img#power_button{
+    margin-right: 4%;
+    margin-left: 1%;
+    cursor: pointer;
+}
+
+img#invert_button{
+    margin-right: 4%;
+    cursor: pointer;
+}
+
+img#time_button{
+    cursor: pointer;
+}
+
+label#invert_button{
+    margin-left: 1.6%;
+}
+
+label#time_button{
+    margin-left: 2.9%;
+}
+
+div#button_fan{
+    margin-top: 1%;
+}
+
+
+img#up_button{
+    margin-left: 1%;
+    margin-right: 2.5%;
+    cursor: pointer;
+}
+
+
+img#down_button{
+    margin-left: 2.5%;
+    cursor: pointer;
+}
+
+
+
 
 
 
@@ -125,13 +238,6 @@ span#div_valor{
 span#valor{
     color: rgb(170, 255, 0);
 }
-
-/* div#teste{
-    display: inline-block;
-} */
-
-
-
 
 /* Botão Liga/Desliga */
 

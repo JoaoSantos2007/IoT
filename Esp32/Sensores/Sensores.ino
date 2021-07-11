@@ -10,32 +10,29 @@
 //Bibliotecas do sensor de Umidade/Temperatura
 #include <DHT.h>
 
-String DEVICE_ID = "1";
-int PIN_LUMINOSIDADE = 35;
-int PIN_PRESENCA = 26;
-
-unsigned long previousMillis = 0;   
-const long interval = 60000;
-bool wasPresence = false;
-
 //Definições do MQTT
-
 //Tópico MQTT para recepção de informações do broker MQTT para ESP32
 #define TOPICO_SUBSCRIBE "topico-1"
 
 //Tópico MQTT para envio de informações do ESP32 para broker MQTT
 #define TOPICO_PUBLISH "test"
 
-/* id mqtt (para identificação de sessão)
-   IMPORTANTE: este deve ser único no broker (ou seja, 
-               se um client MQTT tentar entrar com o mesmo 
-               id de outro já conectado ao broker, o broker 
-               irá fechar a conexão de um deles).
-*/
-
+//id mqtt (para identificação de sessão)
 #define ID_MQTT "Cliente_MQTT"
 
+//Sensor de Umidade e de Temperatura
+#define DHTPIN 27 // Pino digital conectado ao sensor DHT
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
+
 //Variáveis e constantes globais
+const String DEVICE_ID = "1";
+const int PIN_LUMINOSIDADE = 35;
+const int PIN_PRESENCA = 26;
+
+unsigned long previousMillis = 0;   
+const long interval = 900000;
+bool wasPresence = false;
 
 // SSID / nome da rede WI-FI que deseja se conectar
 const char *SSID = "xiaomi_2G";
@@ -52,12 +49,6 @@ WiFiClient espClient;
 PubSubClient MQTT(espClient);
 
 WiFiUDP ntpUDP;               // UDP client
-NTPClient timeClient(ntpUDP); // NTP client
-
-//Sensor de Umidade e de Temperatura
-#define DHTPIN 27 // Pino digital conectado ao sensor DHT
-#define DHTTYPE DHT11
-DHT dht(DHTPIN, DHTTYPE);
 
 String readDHTTemperature()
 {
@@ -112,22 +103,14 @@ bool readPIRPresenca()
   }
 }
 
-//Fim sensor de umidade
-
 //Prototypes
 void init_serial(void);
 void init_wifi(void);
 void init_mqtt(void);
+void init_sensores(void);
 void reconnect_wifi(void);
 void verifica_conexoes_wifi_mqtt(void);
 void send_payload(void);
-void init_time(void);
-
-void init_time()
-{
-  timeClient.begin();          // init NTP
-  timeClient.setTimeOffset(0); // 0= GMT, 3600 = GMT+1
-}
 
 /* 
  *  Implementações das funções
@@ -137,33 +120,29 @@ void setup()
   init_serial();
   init_wifi();
   init_mqtt();
-  init_time();
+  init_sensores();
+}
+
+void init_sensores()
+{
   dht.begin();
-  pinMode(2, OUTPUT); //Pino
-  pinMode(PIN_LUMINOSIDADE, INPUT);
+  pinMode(PIN_LUMINOSIDADE, INPUT); 
+  pinMode(PIN_PRESENCA, INPUT);
 }
 
 //Mandar mensagem
 void send_payload(String Umidade, String Temperatura, String Luminosidade, bool Presenca)
 {
-
-  while (!timeClient.update())
-  {
-    timeClient.forceUpdate();
-  }
-
-  long unsigned int timestamp = timeClient.getEpochTime();
   StaticJsonDocument<256> doc;
 
   doc["deviceId"] = DEVICE_ID;
   doc["eventType"] = "read-sensor";
-  doc["timestamp"] = timestamp;
 
   //Add an object
   JsonObject sensor = doc.createNestedObject("sensor");
   sensor["temperatura"] = Temperatura + "°C";
   sensor["umidade"] = Umidade + "%";
-  sensor["proximidade"] = Luminosidade;
+  sensor["luminosidade"] = Luminosidade;
   sensor["presenca"] = String(Presenca);
 
   //  //Add an array.
@@ -292,14 +271,14 @@ void loop()
   /* keep-alive da comunicação com broker MQTT */
   MQTT.loop();
 
-  String Umidade = readDHTHumidity();
-  String Temperatura = readDHTTemperature();
-  String Luminosidade = readLDRLuminosidade();
   bool Presenca = readPIRPresenca();
   unsigned long currentMillis = millis();
-  if ((Presenca && !wasPresence) || (currentMillis - previousMillis >= interval))
+  
+  if ((Presenca==1 && wasPresence==false) || (currentMillis - previousMillis >= interval))
   {
-    Serial.println("Send payload");
+    String Umidade = readDHTHumidity();
+    String Temperatura = readDHTTemperature();
+    String Luminosidade = readLDRLuminosidade();
     send_payload(Umidade, Temperatura, Luminosidade, Presenca);
     previousMillis = currentMillis;
     if (Presenca)

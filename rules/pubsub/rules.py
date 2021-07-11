@@ -1,16 +1,17 @@
-#Libs
+# Libs
 import json
-import string #.json
-import firebase_admin #Firebase
-import time #tempo
+import string  # .json
+import firebase_admin  # Firebase
+from datetime import datetime  # tempo
+from pytz import timezone
 
 from firebase_admin import credentials, firestore
 from paho.mqtt import client as mqtt_client
 
-#Credencias do Firebase
-cred = credentials.Certificate("/home/joao/Arquivos/IOT/rules/pubsub/serviceAccountKey.json")
+# Credencias do Firebase
+cred = credentials.Certificate("serviceAccountKey.json")
 
-#Inicia Firebase instância
+# Inicia Firebase instância
 firebase_admin.initialize_app(cred)
 firestore_db = firestore.client()
 
@@ -41,48 +42,52 @@ def connect_mqtt() -> mqtt_client:
     return client
 
 
-#Escutar mensagens em um tópico(canal)[x8]
+# Escutar mensagens em um tópico(canal)[x8]
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
 
-        #carregar mensagem .json
+        # carregar mensagem .json
         data = json.loads(msg.payload)
         apply_rules(client, data)
 
     client.subscribe(topic)
     client.on_message = on_message
 
-#Aplicar Regras
+# Aplicar Regras
 def apply_rules(client, data):
 
+    data['timestamp'] = datetime.now().astimezone(timezone('America/Sao_Paulo'))
     deviceId = data.get("deviceId")
 
-    #Executar se o tipo de evento for de leitura de sensor
+    # Executar se o tipo de evento for de leitura de sensor
     if data.get("eventType") == "read-sensor":
+        document_add('events', data)
         sensores = data.get("sensor")
-        print(sensores)
-        #Atualizar Firebase
+        # Atualizar Firebase
         for type, value in sensores.items():
             document_update(deviceId, type, value)
 
-    #Executar se o tipo de evento for uma ação
+    # Executar se o tipo de evento for uma ação
     if data.get("eventType") == "action-device":
         topic_envio = "topico-" + str(deviceId)
         print(topic_envio)
         publish(client, topic_envio, data)
 
 
-#DEF atualiza Database
+# DEF atualiza Database
 def document_update(deviceId, type, value):
-    
-    snapshots = list(firestore_db.collection(u'devices').where(u'deviceId', u'==', 1).where(u'type', u'==', type).get())
+
+    lastUpdateDate = datetime.now().astimezone(timezone('America/Sao_Paulo'))
+
+    snapshots = list(firestore_db.collection(u'devices').where(
+        u'deviceId', u'==', int(deviceId)).where(u'type', u'==', type).get())
 
     for snapshot in snapshots:
         document_id = snapshot.id
         document = firestore_db.collection(u'devices').document(document_id)
-        print(type,value)
-        document.update({u'currentValue': value})
+        document.update({u'currentValue': value,
+                         u'lastUpdateDate': lastUpdateDate})
 
 
 def publish(client, topic, data):
@@ -97,8 +102,12 @@ def publish(client, topic, data):
 
 
 # add data
-def document_add(data):
-    firestore_db.collection(u'devices').add(data)
+# def document_add(data):
+#     firestore_db.collection(u'devices').add(data)
+
+# add data
+def document_add(collection, data):
+    firestore_db.collection(f'{collection}').add(data)
 
 # read data
 
@@ -117,6 +126,3 @@ def run():
 
 if __name__ == '__main__':
     run()
-
-
-

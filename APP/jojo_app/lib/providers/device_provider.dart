@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:jojo_app/models/device.dart';
 import 'package:jojo_app/services/firestore_service_device.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class DeviceProvider with ChangeNotifier {
   String _location;
   bool _action;
   String _currentValue = "";
+  Timestamp _lastUpdateDate = Timestamp.now();
   Map<String, dynamic> _settings;
   var uuid = Uuid();
 
@@ -23,6 +25,7 @@ class DeviceProvider with ChangeNotifier {
   String get location => _location;
   String get currentValue => _currentValue = "";
   bool get action => _action = false;
+  Timestamp get lastUpdateDate => _lastUpdateDate = Timestamp.now();
   Map<String, dynamic> get settings => _settings;
 
   //Setters
@@ -62,6 +65,8 @@ class DeviceProvider with ChangeNotifier {
   }
 
   loadValues(Device device) {
+    Timestamp stamp = Timestamp.now();
+    DateTime date = stamp.toDate();
     _id = device.id;
     _deviceId = device.deviceId;
     _name = device.name;
@@ -69,6 +74,7 @@ class DeviceProvider with ChangeNotifier {
     _location = device.location;
     _action = device.action;
     _currentValue = device.currentValue;
+    _lastUpdateDate = device.lastUpdateDate;
     _settings = device.settings;
   }
 
@@ -83,6 +89,7 @@ class DeviceProvider with ChangeNotifier {
         location: location,
         action: action,
         currentValue: currentValue,
+        lastUpdateDate: lastUpdateDate,
         settings: settings,
       );
       firestoreService.saveDevice(newDevice);
@@ -96,6 +103,7 @@ class DeviceProvider with ChangeNotifier {
         location: _location,
         action: _action,
         currentValue: _currentValue,
+        lastUpdateDate: _lastUpdateDate,
         settings: _settings,
       );
       firestoreService.saveDevice(updatedDevice);
@@ -115,6 +123,7 @@ class DeviceProvider with ChangeNotifier {
       'location': location,
       'action': action,
       'currentValue': currentValue,
+      'lastUpdateDate': lastUpdateDate,
       'settings': settings,
     };
   }

@@ -57,6 +57,8 @@ function criarItens(dados, key) {
     tipo_luminosidade(dados, key)
   } else if (dados.type == "tv") {
     tipo_tv(dados, key)
+  }else if(dados.type == "fan"){
+    tipo_fan(dados, key)
   }
 }
 
@@ -73,6 +75,8 @@ function modificarItens(dados, key) {
     modificar_tipo_luminosidade(dados, key)
   } else if (dados.type == "tv") {
     modificar_tipo_tv(dados, key)
+  } else if(dados.type == "fan"){
+    modificar_tipo_fan(dados, key)
   }
 }
 
@@ -416,6 +420,72 @@ function modificar_tipo_tv(dados, key) {
   section.innerHTML += `</div>`
 }
 
+function tipo_fan(dados, key) {
+  var div_lista = window.document.querySelector('div#lista')
+  var section = window.document.createElement('section')
+  var nome = dados.name
+  var lugar = dados.location
+  section.setAttribute('id', key)
+  section.innerHTML += `<div>`
+  section.innerHTML += `<img src="/Site/images/fan.png" alt="image">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
+  section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Nome: </strong>${nome}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Local: </strong>${lugar}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<div>`
+  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="power_fan('${key}')">`
+  section.innerHTML += `<img id="invert_button" src="/Site/images/source.png" alt="invert" onclick="invert_fan('${key}')">`
+  section.innerHTML += `<img id="time_button" src="/Site/images/chronometer.png" alt="time" onclick="time_fan('${key}')">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<div>`
+  section.innerHTML += `<label for="power_button" id="power_button">power</label>`
+  section.innerHTML += `<label for="invert_button" id="invert_button">invert</label>`
+  section.innerHTML += `<label for="menu_button" id="time_button">time</label>`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<div id="button_fan">`
+  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="up_fan('${key}')">`
+  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down" onclick="down_fan('${key}')">`
+  section.innerHTML += `</div>`
+  div_lista.appendChild(section)
+}
+
+function modificar_tipo_fan(dados, key) {
+  var section = window.document.getElementById(key)
+  var nome = dados.name
+  var lugar = dados.location
+  section.innerHTML = ""
+  section.innerHTML += `<div>`
+  section.innerHTML += `<img src="/Site/images/fan.png" alt="image">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
+  section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Nome: </strong>${nome}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<p>`
+  section.innerHTML += `<strong>Local: </strong>${lugar}`
+  section.innerHTML += `</p>`
+  section.innerHTML += `<div>`
+  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="power_fan('${key}')">`
+  section.innerHTML += `<img id="invert_button" src="/Site/images/source.png" alt="invert" onclick="invert_fan('${key}')">`
+  section.innerHTML += `<img id="time_button" src="/Site/images/chronometer.png" alt="time" onclick="time_fan('${key}')">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<div>`
+  section.innerHTML += `<label for="power_button" id="power_button">power</label>`
+  section.innerHTML += `<label for="invert_button" id="invert_button">invert</label>`
+  section.innerHTML += `<label for="menu_button" id="time_button">time</label>`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<div id="button_fan">`
+  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="up_fan('${key}')">`
+  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down" onclick="down_fan('${key}')">`
+  section.innerHTML += `</div>`
+}
+
 function acionar_botao(chave) {
   reproduzir_audio()
   db.collection(Categoria).doc(chave).get().then(function (doc) {
@@ -469,13 +539,6 @@ function down_channel(key) {
   })
 }
 
-function deletar(chave) {
-  reproduzir_audio()
-  if (window.confirm("Você realmente quer apagar esse registro?")) {
-    db.collection(Categoria).doc(chave).delete()
-  }
-}
-
 function up_volume(key) {
   reproduzir_audio()
   db.collection(Categoria).doc(key).update({
@@ -488,6 +551,48 @@ function down_volume(key){
   db.collection(Categoria).doc(key).update({
     'currentValue': 'tag#down_volume'
   })
+}
+
+function power_fan(key){
+  reproduzir_audio()
+  db.collection(Categoria).doc(key).update({
+    'currentValue': 'tag#power_fan'
+  })
+}
+
+function invert_fan(key){
+  reproduzir_audio()
+  db.collection(Categoria).doc(key).update({
+    'currentValue': 'tag#invert_fan'
+  })
+}
+
+function time_fan(key){
+  reproduzir_audio()
+  db.collection(Categoria).doc(key).update({
+    'currentValue': 'tag#time_fan'
+  })
+}
+
+function up_fan(key){
+  reproduzir_audio()
+  db.collection(Categoria).doc(key).update({
+    'currentValue': 'tag#up_fan'
+  })
+}
+
+function down_fan(key){
+  reproduzir_audio()
+  db.collection(Categoria).doc(key).update({
+    'currentValue': 'tag#down_fan'
+  })
+}
+
+function deletar(chave) {
+  reproduzir_audio()
+  if (window.confirm("Você realmente quer apagar esse registro?")) {
+    db.collection(Categoria).doc(chave).delete()
+  }
 }
 
 function criar_registro() {
@@ -596,7 +701,7 @@ function enviar(key) {
   db.collection(Categoria).doc(key).update({
     'name': name_enviar,
     'type': type_enviar,
-    'local': local_enviar,
+    'location': local_enviar,
     'deviceId': id_enviar,
   })
 }
@@ -606,3 +711,4 @@ function reproduzir_audio() {
   audio.src = "audios/audio.mp3"
   audio.play()
 }
+

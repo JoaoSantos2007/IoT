@@ -26,13 +26,13 @@ function iniciar() {
         const documento = changes.doc
         const dados = documento.data()
         let key = documento.id
-        criarItens(dados, key)
+        criarItens(dados, key, false)
 
       } else if (changes.type === "modified") {
         const documento_modificar = changes.doc
         const dados_modificar = documento_modificar.data()
         let key_modificar = documento_modificar.id
-        modificarItens(dados_modificar, key_modificar)
+        criarItens(dados_modificar, key_modificar, true)
 
       } else if (changes.type === "removed") {
         const documento_apagar = changes.doc
@@ -44,48 +44,37 @@ function iniciar() {
   })
 }
 
-function criarItens(dados, key) {
+function criarItens(dados, key, modificar) {
   if (dados.type == "light") {
-    tipo_light(dados, key)
+    tipo_light(dados, key, modificar)
   } else if (dados.type == "umidade") {
-    tipo_umidade(dados, key)
+    tipo_umidade(dados, key, modificar)
   } else if (dados.type == "temperatura") {
-    tipo_temperatura(dados, key)
+    tipo_temperatura(dados, key, modificar)
   } else if (dados.type == "proximidade") {
-    tipo_proximidade(dados, key)
+    tipo_proximidade(dados, key, modificar)
   } else if (dados.type == "luminosidade") {
-    tipo_luminosidade(dados, key)
+    tipo_luminosidade(dados, key, modificar)
   } else if (dados.type == "tv") {
-    tipo_tv(dados, key)
-  }else if(dados.type == "fan"){
-    tipo_fan(dados, key)
+    tipo_tv(dados, key, modificar)
+  } else if (dados.type == "fan") {
+    tipo_fan(dados, key, modificar)
+  } else if (dados.type == "air") {
+    tipo_air(dados, key, modificar)
   }
 }
 
-function modificarItens(dados, key) {
-  if (dados.type == "light") {
-    modificar_tipo_light(dados, key)
-  } else if (dados.type == "umidade") {
-    modificar_tipo_umidade(dados, key)
-  } else if (dados.type == "temperatura") {
-    modificar_tipo_temperatura(dados, key)
-  } else if (dados.type == "proximidade") {
-    modificar_tipo_proximidade(dados, key)
-  } else if (dados.type == "luminosidade") {
-    modificar_tipo_luminosidade(dados, key)
-  } else if (dados.type == "tv") {
-    modificar_tipo_tv(dados, key)
-  } else if(dados.type == "fan"){
-    modificar_tipo_fan(dados, key)
-  }
-}
-
-function tipo_light(dados, key) {
+function tipo_light(dados, key, modificar) {
   var div_lista = window.document.querySelector('div#lista')
-  var section = window.document.createElement('section')
+  if (modificar == false) {
+    var section = window.document.createElement('section')
+    section.setAttribute('id', key)
+  } else {
+    var section = window.document.getElementById(key)
+    section.innerHTML = ""
+  }
   var nome = dados.name
   var lugar = dados.location
-  section.setAttribute('id', key)
   section.innerHTML += `<div>`
   section.innerHTML += `<img src="/Site/images/light.png" alt="image"> `
   section.innerHTML += `<img id = "edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
@@ -105,42 +94,23 @@ function tipo_light(dados, key) {
   }
   section.innerHTML += `<label for="liga-desliga_${key}" class="liga-desliga__botao"></label>`
   section.innerHTML += `</div>`
-  div_lista.appendChild(section)
-}
-
-function modificar_tipo_light(dados, key) {
-  var section = window.document.getElementById(key)
-  var nome = dados.name
-  var lugar = dados.location
-  section.innerHTML = ""
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/light.png" alt="image"> `
-  section.innerHTML += `<img id = "edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
-  section.innerHTML += `<img id = "delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('` + key + `')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome} `
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong> ${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<div>`
-  if (dados.currentValue == "true") {
-    section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga" onclick="acionar_botao('${key}')" checked>`
-  } else {
-    section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga" onclick="acionar_botao('${key}')">`
+  if (modificar == false) {
+    div_lista.appendChild(section)
   }
-  section.innerHTML += `<label for="liga-desliga" class="liga-desliga__botao"></label>`
-  section.innerHTML += `</div>`
 }
 
-function tipo_umidade(dados, key) {
+function tipo_umidade(dados, key, modificar) {
   var div_lista = window.document.querySelector('div#lista')
-  var section = window.document.createElement('section')
+  if (modificar == false) {
+    var section = window.document.createElement('section')
+    section.setAttribute('id', key)
+  } else {
+    var section = window.document.getElementById(key)
+    section.innerHTML = ""
+  }
   var nome = dados.name
   var lugar = dados.location
   var valor = dados.currentValue
-  section.setAttribute('id', key)
   section.innerHTML += `<div>`
   section.innerHTML += `<img src="/Site/images/umidade.png" alt="image">`
   section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
@@ -158,41 +128,23 @@ function tipo_umidade(dados, key) {
   section.innerHTML += `<span id="valor">${valor}</span>`
   section.innerHTML += `</p>`
   section.innerHTML += `</strong>`
-  div_lista.appendChild(section)
+  if (modificar == false) {
+    div_lista.appendChild(section)
+  }
 }
 
-function modificar_tipo_umidade(dados, key) {
-  var section = window.document.getElementById(key)
-  var nome = dados.name
-  var lugar = dados.location
-  var valor = dados.currentValue
-  section.innerHTML = ""
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/umidade.png" alt="image">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
-  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<strong>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<span id="div_valor">Valor:</span>`
-  section.innerHTML += `<span id="valor">${valor}</span>`
-  section.innerHTML += `</p>`
-  section.innerHTML += `</strong>`
-}
-
-function tipo_temperatura(dados, key) {
+function tipo_temperatura(dados, key, modificar) {
   var div_lista = window.document.querySelector('div#lista')
-  var section = window.document.createElement('section')
+  if (modificar == false) {
+    var section = window.document.createElement('section')
+    section.setAttribute('id', key)
+  } else {
+    var section = window.document.getElementById(key)
+    section.innerHTML = ""
+  }
   var nome = dados.name
   var lugar = dados.location
   var valor = dados.currentValue
-  section.setAttribute('id', key)
   section.innerHTML += `<div>`
   section.innerHTML += `<img src="/Site/images/temperatura.png" alt="image">`
   section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
@@ -210,41 +162,23 @@ function tipo_temperatura(dados, key) {
   section.innerHTML += `<span id="valor">${valor}</span>`
   section.innerHTML += `</p>`
   section.innerHTML += `</strong>`
-  div_lista.appendChild(section)
+  if (modificar == false) {
+    div_lista.appendChild(section)
+  }
 }
 
-function modificar_tipo_temperatura(dados, key) {
-  var section = window.document.getElementById(key)
-  var nome = dados.name
-  var lugar = dados.location
-  var valor = dados.currentValue
-  section.innerHTML = ""
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/temperatura.png" alt="image">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
-  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<strong>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<span id="div_valor">Valor:</span>`
-  section.innerHTML += `<span id="valor">${valor}</span>`
-  section.innerHTML += `</p>`
-  section.innerHTML += `</strong>`
-}
-
-function tipo_proximidade(dados, key) {
+function tipo_proximidade(dados, key, modificar) {
   var div_lista = window.document.querySelector('div#lista')
-  var section = window.document.createElement('section')
+  if (modificar == false) {
+    var section = window.document.createElement('section')
+    section.setAttribute('id', key)
+  } else {
+    var section = window.document.getElementById(key)
+    section.innerHTML = ""
+  }
   var nome = dados.name
   var lugar = dados.location
   var valor = dados.currentValue
-  section.setAttribute('id', key)
   section.innerHTML += `<div>`
   section.innerHTML += `<img src="/Site/images/proximidade.png" alt="image">`
   section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
@@ -262,41 +196,23 @@ function tipo_proximidade(dados, key) {
   section.innerHTML += `<span id="valor">${valor}</span>`
   section.innerHTML += `</p>`
   section.innerHTML += `</strong>`
-  div_lista.appendChild(section)
+  if (modificar == false) {
+    div_lista.appendChild(section)
+  }
 }
 
-function modificar_tipo_proximidade(dados, key) {
-  var section = window.document.getElementById(key)
-  var nome = dados.name
-  var lugar = dados.location
-  var valor = dados.currentValue
-  section.innerHTML = ""
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/proximidade.png" alt="image">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
-  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<strong>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<span id="div_valor">Valor:</span>`
-  section.innerHTML += `<span id="valor">${valor}</span>`
-  section.innerHTML += `</p>`
-  section.innerHTML += `</strong>`
-}
-
-function tipo_luminosidade(dados, key) {
+function tipo_luminosidade(dados, key, modificar) {
   var div_lista = window.document.querySelector('div#lista')
-  var section = window.document.createElement('section')
+  if (modificar == false) {
+    var section = window.document.createElement('section')
+    section.setAttribute('id', key)
+  } else {
+    var section = window.document.getElementById(key)
+    section.innerHTML = ""
+  }
   var nome = dados.name
   var lugar = dados.location
   var valor = dados.currentValue
-  section.setAttribute('id', key)
   section.innerHTML += `<div>`
   section.innerHTML += `<img src="/Site/images/luminosidade.png" alt="image">`
   section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
@@ -314,40 +230,22 @@ function tipo_luminosidade(dados, key) {
   section.innerHTML += `<span id="valor">${valor}</span>`
   section.innerHTML += `</p>`
   section.innerHTML += `</strong>`
-  div_lista.appendChild(section)
+  if (modificar == false) {
+    div_lista.appendChild(section)
+  }
 }
 
-function modificar_tipo_luminosidade(dados, key) {
-  var section = window.document.getElementById(key)
-  var nome = dados.name
-  var lugar = dados.location
-  var valor = dados.currentValue
-  section.innerHTML = ""
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/luminosidade.png" alt="image">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
-  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<strong>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<span id="div_valor">Valor:</span>`
-  section.innerHTML += `<span id="valor">${valor}</span>`
-  section.innerHTML += `</p>`
-  section.innerHTML += `</strong>`
-}
-
-function tipo_tv(dados, key) {
+function tipo_tv(dados, key, modificar) {
   var div_lista = window.document.querySelector('div#lista')
-  var section = window.document.createElement('section')
+  if (modificar == false) {
+    var section = window.document.createElement('section')
+    section.setAttribute('id', key)
+  } else {
+    var section = window.document.getElementById(key)
+    section.innerHTML = ""
+  }
   var nome = dados.name
   var lugar = dados.location
-  section.setAttribute('id', key)
   section.innerHTML += `<div>`
   section.innerHTML += `<img src="/Site/images/tv.png" alt="image">`
   section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
@@ -379,57 +277,62 @@ function tipo_tv(dados, key) {
   section.innerHTML += `<label for="volume" id="volume">volume</label>`
   section.innerHTML += `<img id="down_button_volume" src="/Site/images/down.png" alt="down" onclick="down_volume('${key}')">`
   section.innerHTML += `</div>`
-  div_lista.appendChild(section)
+  if (modificar == false) {
+    div_lista.appendChild(section)
+  }
 }
 
-function modificar_tipo_tv(dados, key) {
-  var section = window.document.getElementById(key)
+function tipo_fan(dados, key, modificar) {
+  var div_lista = window.document.querySelector('div#lista')
+  if (modificar == false) {
+    var section = window.document.createElement('section')
+    section.setAttribute('id', key)
+  } else {
+    var section = window.document.getElementById(key)
+    section.innerHTML = ""
+  }
   var nome = dados.name
   var lugar = dados.location
-  section.innerHTML = ""
   section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/tv.png" alt="image">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
+  section.innerHTML += `<img src="/Site/images/fan.png" alt="image">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
   section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
   section.innerHTML += `</div>`
   section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${lugar}`
+  section.innerHTML += `<strong>Nome: </strong>${nome}`
   section.innerHTML += `</p>`
   section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${nome}`
+  section.innerHTML += `<strong>Local: </strong>${lugar}`
   section.innerHTML += `</p>`
   section.innerHTML += `<div>`
-  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="power_tv('${key}')">`
-  section.innerHTML += `<img id="source_button" src="/Site/images/source.png" alt="source" onclick="source_tv('${key}')">`
-  section.innerHTML += `<img id="menu_button" src="/Site/images/menu.png" alt="menu" onclick="menu_tv('${key}')">`
+  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="power_fan('${key}')">`
+  section.innerHTML += `<img id="invert_button" src="/Site/images/source.png" alt="invert" onclick="invert_fan('${key}')">`
+  section.innerHTML += `<img id="time_button" src="/Site/images/chronometer.png" alt="time" onclick="time_fan('${key}')">`
   section.innerHTML += `</div>`
   section.innerHTML += `<div>`
   section.innerHTML += `<label for="power_button" id="power_button">power</label>`
-  section.innerHTML += `<label for="source_button" id="source_button">source</label>`
-  section.innerHTML += `<label for="menu_button" id="menu_button">menu</label>`
+  section.innerHTML += `<label for="invert_button" id="invert_button">invert</label>`
+  section.innerHTML += `<label for="menu_button" id="time_button">time</label>`
   section.innerHTML += `</div>`
-  section.innerHTML += `<div id="canal">`
-  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="up_channel('${key}')">`
-  section.innerHTML += `<label for="channel" id="channel">canal</label>`
-  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down" onclick="down_channel('${key}')">`
+  section.innerHTML += `<div id="button_fan">`
+  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="up_fan('${key}')">`
+  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down" onclick="down_fan('${key}')">`
   section.innerHTML += `</div>`
-  section.innerHTML += `<div id="volume">`
-  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="up_volume('${key}')">`
-  section.innerHTML += `<label for="volume" id="volume">volume</label>`
-  section.innerHTML += `<img id="down_button_volume" src="/Site/images/down.png" alt="down" onclick="down_volume('${key}')">`
-  section.innerHTML += `</div>`
+  if (modificar == false) {
+    div_lista.appendChild(section)
+  }
 }
 
-function tipo_fan(dados, key) {
+function tipo_air(dados, key) {
   var div_lista = window.document.querySelector('div#lista')
   var section = window.document.createElement('section')
   var nome = dados.name
   var lugar = dados.location
   section.setAttribute('id', key)
   section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/fan.png" alt="image">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
+  section.innerHTML += `<img src="/Site/images/snow.png" alt="image">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="">`
+  section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="">`
   section.innerHTML += `</div>`
   section.innerHTML += `<p>`
   section.innerHTML += `<strong>Nome: </strong>${nome}`
@@ -438,52 +341,29 @@ function tipo_fan(dados, key) {
   section.innerHTML += `<strong>Local: </strong>${lugar}`
   section.innerHTML += `</p>`
   section.innerHTML += `<div>`
-  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="power_fan('${key}')">`
-  section.innerHTML += `<img id="invert_button" src="/Site/images/source.png" alt="invert" onclick="invert_fan('${key}')">`
-  section.innerHTML += `<img id="time_button" src="/Site/images/chronometer.png" alt="time" onclick="time_fan('${key}')">`
+  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power">`
+  section.innerHTML += `<img id="invert_button" src="/Site/images/source.png" alt="invert">`
+  section.innerHTML += `<img id="time_button" src="/Site/images/chronometer.png" alt="time">`
   section.innerHTML += `</div>`
   section.innerHTML += `<div>`
   section.innerHTML += `<label for="power_button" id="power_button">power</label>`
   section.innerHTML += `<label for="invert_button" id="invert_button">invert</label>`
   section.innerHTML += `<label for="menu_button" id="time_button">time</label>`
   section.innerHTML += `</div>`
-  section.innerHTML += `<div id="button_fan">`
-  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="up_fan('${key}')">`
-  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down" onclick="down_fan('${key}')">`
+  section.innerHTML += `<div id="button_air">`
+  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up">`
+  section.innerHTML += `<label for="temp" id="temp">Temp</label>`
+  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<div id="button_air2">`
+  section.innerHTML += `<img id="sleep_button" src="/Site/images/power.png" alt="up">`
+  section.innerHTML += `<img id="swing_button" src="/Site/images/power.png" alt="down">`
+  section.innerHTML += `</div>`
+  section.innerHTML += `<div>`
+  section.innerHTML += `<label for="sleep_button" id="sleep_button">sleep</label>`
+  section.innerHTML += `<label for="swing_button" id="swing_button">swing</label>`
   section.innerHTML += `</div>`
   div_lista.appendChild(section)
-}
-
-function modificar_tipo_fan(dados, key) {
-  var section = window.document.getElementById(key)
-  var nome = dados.name
-  var lugar = dados.location
-  section.innerHTML = ""
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/fan.png" alt="image">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="power_fan('${key}')">`
-  section.innerHTML += `<img id="invert_button" src="/Site/images/source.png" alt="invert" onclick="invert_fan('${key}')">`
-  section.innerHTML += `<img id="time_button" src="/Site/images/chronometer.png" alt="time" onclick="time_fan('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div>`
-  section.innerHTML += `<label for="power_button" id="power_button">power</label>`
-  section.innerHTML += `<label for="invert_button" id="invert_button">invert</label>`
-  section.innerHTML += `<label for="menu_button" id="time_button">time</label>`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div id="button_fan">`
-  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="up_fan('${key}')">`
-  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down" onclick="down_fan('${key}')">`
-  section.innerHTML += `</div>`
 }
 
 function acionar_botao(chave) {
@@ -546,42 +426,42 @@ function up_volume(key) {
   })
 }
 
-function down_volume(key){
+function down_volume(key) {
   reproduzir_audio()
   db.collection(Categoria).doc(key).update({
     'currentValue': 'tag#down_volume'
   })
 }
 
-function power_fan(key){
+function power_fan(key) {
   reproduzir_audio()
   db.collection(Categoria).doc(key).update({
     'currentValue': 'tag#power_fan'
   })
 }
 
-function invert_fan(key){
+function invert_fan(key) {
   reproduzir_audio()
   db.collection(Categoria).doc(key).update({
     'currentValue': 'tag#invert_fan'
   })
 }
 
-function time_fan(key){
+function time_fan(key) {
   reproduzir_audio()
   db.collection(Categoria).doc(key).update({
     'currentValue': 'tag#time_fan'
   })
 }
 
-function up_fan(key){
+function up_fan(key) {
   reproduzir_audio()
   db.collection(Categoria).doc(key).update({
     'currentValue': 'tag#up_fan'
   })
 }
 
-function down_fan(key){
+function down_fan(key) {
   reproduzir_audio()
   db.collection(Categoria).doc(key).update({
     'currentValue': 'tag#down_fan'

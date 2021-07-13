@@ -152,19 +152,47 @@ div#button_fan{
 }
 
 
-img#up_button{
+div#button_up img#up_button{
     margin-left: 1%;
     margin-right: 2.5%;
     cursor: pointer;
 }
 
 
-img#down_button{
+div#button_down img#down_button{
+    margin-left: 2.5%;
+    cursor: pointer;
+}
+
+div#button_air{
+    margin-top: 1%;
+}
+
+label#temp{
+    color: rgb(0, 255, 0);
+    font-size: 40px;
+}
+
+img#sleep_button{
+    margin-left: 4%;
+    margin-right: 2.5%;
+    cursor: pointer;
+}
+
+img#swing_button{
     margin-left: 2.5%;
     cursor: pointer;
 }
 
 
+label#sleep_button{
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+label#swing_button{
+    cursor: pointer;
+}
 
 
 

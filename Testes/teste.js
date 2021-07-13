@@ -61,3 +61,5 @@
 //     }
 //   })
 // })
+
+console.log(String('tv_keyt'.split('tv_')))

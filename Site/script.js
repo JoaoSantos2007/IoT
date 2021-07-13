@@ -18,6 +18,7 @@ firebase.initializeApp(firebaseConfig)
 let db = firebase.firestore();
 
 
+//
 function iniciar() {
   db.collection(Categoria).onSnapshot(function (documentos) {
     documentos.docChanges().forEach(function (changes) {
@@ -39,6 +40,7 @@ function iniciar() {
   })
 }
 
+//Tipos
 function criarItens(dados, key, modificar) {
   if (dados.type == "light") {
     tipo_light(dados, key, modificar)
@@ -368,6 +370,8 @@ function tipo_air(dados, key, modificar) {
   }
 }
 
+
+//Ações
 function acionar_botao(chave) {
   reproduzir_audio()
   db.collection(Categoria).doc(chave).get().then(function (doc) {

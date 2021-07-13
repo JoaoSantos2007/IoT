@@ -11,33 +11,28 @@ const firebaseConfig = {
   measurementId: "G-7437FP6V3J"
 };
 
-
 //Inicializa o Firebase com a constante contendo as credenciais do Firebase
 firebase.initializeApp(firebaseConfig)
-
 
 //Armazena as informações do database do firebase em uma variável
 let db = firebase.firestore();
 
+
 function iniciar() {
   db.collection(Categoria).onSnapshot(function (documentos) {
     documentos.docChanges().forEach(function (changes) {
+      const documento = changes.doc
+      const dados = documento.data()
+      let key = documento.id
+
       if (changes.type === "added") {
-        const documento = changes.doc
-        const dados = documento.data()
-        let key = documento.id
         criarItens(dados, key, false)
 
       } else if (changes.type === "modified") {
-        const documento_modificar = changes.doc
-        const dados_modificar = documento_modificar.data()
-        let key_modificar = documento_modificar.id
-        criarItens(dados_modificar, key_modificar, true)
+        criarItens(dados, key, true)
 
       } else if (changes.type === "removed") {
-        const documento_apagar = changes.doc
-        let key_apagar = documento_apagar.id
-        var apagar = window.document.getElementById(key_apagar)
+        var apagar = window.document.getElementById(key)
         apagar.innerHTML = ""
       }
     })
@@ -323,12 +318,17 @@ function tipo_fan(dados, key, modificar) {
   }
 }
 
-function tipo_air(dados, key) {
+function tipo_air(dados, key, modificar) {
   var div_lista = window.document.querySelector('div#lista')
-  var section = window.document.createElement('section')
+  if (modificar == false) {
+    var section = window.document.createElement('section')
+    section.setAttribute('id', key)
+  } else {
+    var section = window.document.getElementById(key)
+    section.innerHTML = ""
+  }
   var nome = dados.name
   var lugar = dados.location
-  section.setAttribute('id', key)
   section.innerHTML += `<div>`
   section.innerHTML += `<img src="/Site/images/snow.png" alt="image">`
   section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="">`
@@ -363,7 +363,9 @@ function tipo_air(dados, key) {
   section.innerHTML += `<label for="sleep_button" id="sleep_button">sleep</label>`
   section.innerHTML += `<label for="swing_button" id="swing_button">swing</label>`
   section.innerHTML += `</div>`
-  div_lista.appendChild(section)
+  if (modificar == false) {
+    div_lista.appendChild(section)
+  }
 }
 
 function acionar_botao(chave) {

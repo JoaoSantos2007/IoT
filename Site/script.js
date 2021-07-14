@@ -1,3 +1,5 @@
+//Firebase
+
 const Categoria = "devices"
 
 //Armazena as credenciais do Firebase em uma constante
@@ -18,14 +20,14 @@ firebase.initializeApp(firebaseConfig)
 let db = firebase.firestore();
 
 
-//
+
+//Inicio
 function iniciar() {
   db.collection(Categoria).onSnapshot(function (documentos) {
     documentos.docChanges().forEach(function (changes) {
       const documento = changes.doc
       const dados = documento.data()
       let key = documento.id
-
       if (changes.type === "added") {
         criarItens(dados, key, false)
 
@@ -73,9 +75,9 @@ function tipo_light(dados, key, modificar) {
   var nome = dados.name
   var lugar = dados.location
   section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/light.png" alt="image"> `
-  section.innerHTML += `<img id = "edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
-  section.innerHTML += `<img id = "delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('` + key + `')">`
+  section.innerHTML += `<img src="/Site/images/light.png" alt="light"> `
+  section.innerHTML += `<img id = "edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
+  section.innerHTML += `<img id = "delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
   section.innerHTML += `</div>`
   section.innerHTML += `<p>`
   section.innerHTML += `<strong>Nome: </strong>${nome} `
@@ -109,8 +111,8 @@ function tipo_umidade(dados, key, modificar) {
   var lugar = dados.location
   var valor = dados.currentValue
   section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/umidade.png" alt="image">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
+  section.innerHTML += `<img src="/Site/images/umidade.png" alt="umidade">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
   section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
   section.innerHTML += `</div>`
   section.innerHTML += `<p>`
@@ -143,8 +145,8 @@ function tipo_temperatura(dados, key, modificar) {
   var lugar = dados.location
   var valor = dados.currentValue
   section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/temperatura.png" alt="image">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
+  section.innerHTML += `<img src="/Site/images/temperatura.png" alt="temperatura">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro(${key}')">`
   section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
   section.innerHTML += `</div>`
   section.innerHTML += `<p>`
@@ -177,8 +179,8 @@ function tipo_proximidade(dados, key, modificar) {
   var lugar = dados.location
   var valor = dados.currentValue
   section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/proximidade.png" alt="image">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
+  section.innerHTML += `<img src="/Site/images/proximidade.png" alt="proximidade">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
   section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
   section.innerHTML += `</div>`
   section.innerHTML += `<p>`
@@ -211,8 +213,8 @@ function tipo_luminosidade(dados, key, modificar) {
   var lugar = dados.location
   var valor = dados.currentValue
   section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/luminosidade.png" alt="image">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
+  section.innerHTML += `<img src="/Site/images/luminosidade.png" alt="luminosidade">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
   section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
   section.innerHTML += `</div>`
   section.innerHTML += `<p>`
@@ -244,8 +246,8 @@ function tipo_tv(dados, key, modificar) {
   var nome = dados.name
   var lugar = dados.location
   section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/tv.png" alt="image">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('` + key + `')">`
+  section.innerHTML += `<img src="/Site/images/tv.png" alt="tv">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
   section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
   section.innerHTML += `</div>`
   section.innerHTML += `<p>`
@@ -255,9 +257,9 @@ function tipo_tv(dados, key, modificar) {
   section.innerHTML += `<strong>Local: </strong>${nome}`
   section.innerHTML += `</p>`
   section.innerHTML += `<div>`
-  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="power_tv('${key}')">`
-  section.innerHTML += `<img id="source_button" src="/Site/images/source.png" alt="source" onclick="source_tv('${key}')">`
-  section.innerHTML += `<img id="menu_button" src="/Site/images/menu.png" alt="menu" onclick="menu_tv('${key}')">`
+  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="tv_actions('${key}','power')">`
+  section.innerHTML += `<img id="source_button" src="/Site/images/source.png" alt="source" onclick="tv_actions('${key}','source')">`
+  section.innerHTML += `<img id="menu_button" src="/Site/images/menu.png" alt="menu" onclick="tv_actions('${key}','menu')">`
   section.innerHTML += `</div>`
   section.innerHTML += `<div>`
   section.innerHTML += `<label for="power_button" id="power_button">power</label>`
@@ -265,14 +267,14 @@ function tipo_tv(dados, key, modificar) {
   section.innerHTML += `<label for="menu_button" id="menu_button">menu</label>`
   section.innerHTML += `</div>`
   section.innerHTML += `<div id="canal">`
-  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="up_channel('${key}')">`
+  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="tv_actions('${key}','up_channel')">`
   section.innerHTML += `<label for="channel" id="channel">canal</label>`
-  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down" onclick="down_channel('${key}')">`
+  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down" onclick="tv_actions('${key}','down_channel')">`
   section.innerHTML += `</div>`
   section.innerHTML += `<div id="volume">`
-  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="up_volume('${key}')">`
+  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="tv_actions('${key}','up_volume')">`
   section.innerHTML += `<label for="volume" id="volume">volume</label>`
-  section.innerHTML += `<img id="down_button_volume" src="/Site/images/down.png" alt="down" onclick="down_volume('${key}')">`
+  section.innerHTML += `<img id="down_button_volume" src="/Site/images/down.png" alt="down" onclick="tv_actions('${key}','down_volume')">`
   section.innerHTML += `</div>`
   if (modificar == false) {
     div_lista.appendChild(section)
@@ -291,7 +293,7 @@ function tipo_fan(dados, key, modificar) {
   var nome = dados.name
   var lugar = dados.location
   section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/fan.png" alt="image">`
+  section.innerHTML += `<img src="/Site/images/fan.png" alt="ventilador">`
   section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
   section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
   section.innerHTML += `</div>`
@@ -302,9 +304,9 @@ function tipo_fan(dados, key, modificar) {
   section.innerHTML += `<strong>Local: </strong>${lugar}`
   section.innerHTML += `</p>`
   section.innerHTML += `<div>`
-  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="power_fan('${key}')">`
-  section.innerHTML += `<img id="invert_button" src="/Site/images/source.png" alt="invert" onclick="invert_fan('${key}')">`
-  section.innerHTML += `<img id="time_button" src="/Site/images/chronometer.png" alt="time" onclick="time_fan('${key}')">`
+  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="fan_actions('${key}','power')">`
+  section.innerHTML += `<img id="invert_button" src="/Site/images/source.png" alt="invert" onclick="fan_actions('${key}','invert')">`
+  section.innerHTML += `<img id="time_button" src="/Site/images/chronometer.png" alt="time" onclick="fan_actions('${key}','time')">`
   section.innerHTML += `</div>`
   section.innerHTML += `<div>`
   section.innerHTML += `<label for="power_button" id="power_button">power</label>`
@@ -312,8 +314,8 @@ function tipo_fan(dados, key, modificar) {
   section.innerHTML += `<label for="menu_button" id="time_button">time</label>`
   section.innerHTML += `</div>`
   section.innerHTML += `<div id="button_fan">`
-  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="up_fan('${key}')">`
-  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down" onclick="down_fan('${key}')">`
+  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="fan_actions('${key}','up')">`
+  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down" onclick="fan_actions('${key}','down')">`
   section.innerHTML += `</div>`
   if (modificar == false) {
     div_lista.appendChild(section)
@@ -332,7 +334,7 @@ function tipo_air(dados, key, modificar) {
   var nome = dados.name
   var lugar = dados.location
   section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/snow.png" alt="image">`
+  section.innerHTML += `<img src="/Site/images/snow.png" alt="AC">`
   section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="">`
   section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="">`
   section.innerHTML += `</div>`
@@ -389,88 +391,45 @@ function acionar_botao(chave) {
   })
 }
 
-function power_tv(key) {
+function tv_actions(key, action) {
   reproduzir_audio()
+  var atualizar
+  if (action == "power") {
+    atualizar = "tag#power_tv"
+  } else if (action == "source") {
+    atualizar = "tag#source_tv"
+  } else if (action == "menu") {
+    atualizar = "tag#menu_tv"
+  } else if (action == "up_channel") {
+    atualizar = "tag#up_channel"
+  } else if (action == "down_channel") {
+    atualizar = "tag#down_channel"
+  } else if (action == "up_volume") {
+    atualizar = "tag#up_volume"
+  } else if (action == "down_volume") {
+    atualizar = "tag#down_volume"
+  }
   db.collection(Categoria).doc(key).update({
-    'currentValue': 'tag#power_tv'
+    'currentValue': atualizar
   })
 }
 
-function source_tv(key) {
+function fan_actions(key, action) {
   reproduzir_audio()
+  var atualizar
+  if (action == "power") {
+    atualizar = "tag#power_fan"
+  }else if(action == "invert"){
+    atualizar = "tag#invert_fan"
+  }else if(action == "time"){
+    atualizar = "tag#time_fan"
+  }else if(action == "up"){
+    atualizar = "tag#up_fan"
+  }else if(action == "down"){
+    atualizar = "tag#down_fan"
+  }
   db.collection(Categoria).doc(key).update({
-    'currentValue': 'tag#source_tv'
-  })
-}
-
-function menu_tv(key) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).update({
-    'currentValue': 'tag#menu_tv'
-  })
-}
-
-
-function up_channel(key) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).update({
-    'currentValue': 'tag#up_channel'
-  })
-}
-
-function down_channel(key) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).update({
-    'currentValue': 'tag#down_channel'
-  })
-}
-
-function up_volume(key) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).update({
-    'currentValue': 'tag#up_volume'
-  })
-}
-
-function down_volume(key) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).update({
-    'currentValue': 'tag#down_volume'
-  })
-}
-
-function power_fan(key) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).update({
-    'currentValue': 'tag#power_fan'
-  })
-}
-
-function invert_fan(key) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).update({
-    'currentValue': 'tag#invert_fan'
-  })
-}
-
-function time_fan(key) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).update({
-    'currentValue': 'tag#time_fan'
-  })
-}
-
-function up_fan(key) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).update({
-    'currentValue': 'tag#up_fan'
-  })
-}
-
-function down_fan(key) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).update({
-    'currentValue': 'tag#down_fan'
+    'currentValue': atualizar
   })
 }
 

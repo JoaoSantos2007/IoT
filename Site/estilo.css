@@ -6,7 +6,6 @@ body{
 }
 
 
-
 /* Menu */
 #menu ul{
     margin: 0;
@@ -49,6 +48,7 @@ body{
     color: darkblue;
 }
 
+/* IMG Edit and Delete */
 img#edit{
     margin-left: 85%;
     margin-right: 5%;
@@ -164,6 +164,7 @@ div#button_down img#down_button{
     cursor: pointer;
 }
 
+/* AIR */
 div#button_air{
     margin-top: 1%;
 }
@@ -195,47 +196,47 @@ label#swing_button{
 }
 
 
-
+/* Estilo da pág de Créditos */
 
 div#creditos{
     text-align: center;
     padding: 5%;
     font: normal 70pt Arial;
 }
-
 div#color1{
     color: rgb(0, 255, 0);
 }
-
 div#color2{
     color:slateblue;
 }
-
 div#name{
     color: rgb(255, 0, 0);
 }
-
 div#Icons{
     text-align: center;
     font: normal 60pt Arial;
     color: royalblue;
 }
 
+
+/* Cabeçalho */
 header{
     padding: 10px;
     color: rgb(255, 0, 0);
     text-align:center;
 }
 
+
+/* Registros */
 div#lista section{
     background: rgb(100, 100, 100);
     border-radius:10px;
-    /* padding: 100px; */
-    /* width: 70%; */
     margin: 20px auto;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.418);
 }
 
+
+/* Criar Registros */
 section#criar{
     background: white;
     border-radius:10px;
@@ -245,27 +246,25 @@ section#criar{
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.418);
 }
 
+
+/* Cor dos textos de resultados dos registros */
+span#div_valor{
+    color: red;
+}
+span#valor{
+    color: rgb(0, 255, 0);
+}
+
+
+/* Rodapé */
 footer{
     color:white;
     text-align:center;
     font-style: italic;
 }
 
-div#Status{
-    color:chartreuse;
-}
 
-div#botao{
-    margin-left: 100px;
-}
 
-span#div_valor{
-    color: red;
-}
-
-span#valor{
-    color: rgb(0, 255, 0);
-}
 
 /* Botão Liga/Desliga */
 

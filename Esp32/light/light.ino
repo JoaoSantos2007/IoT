@@ -79,42 +79,23 @@ void setup()
 
 void send_payload()
 {
-
-  //  while (!timeClient.update()) {
-  //    timeClient.forceUpdate();
-  //  }
-  Serial.println(alterar);
-  long unsigned int timestamp = timeClient.getEpochTime();
   StaticJsonDocument<256> doc;
-  //
-  //  if (alterar) {
-  //    doc["device_id"] = DEVICE_ID;
-  //    doc["device_name"] = "LED Teste";
-  //    //  doc["event_type"] = "read-sensor";
-  //    doc["location"] = "esp32";
-  //    if (estado == 0) {
-  //      doc["currentValue"] = "true";
-  //    } else if (estado == 1) {
-  //      doc["currentValue"] = "false";
-  //    }
-  //    //    doc["timestamp"] = timestamp;
-  //  }
+
+  doc["deviceId"] = DEVICE_ID;
+  doc["eventType"] = "read-sensor";
+
   //Add an object
   JsonObject sensor = doc.createNestedObject("sensor");
-  if (alterar) {
-    sensor["device_id"] = DEVICE_ID;
-    sensor["device_name"] = "LED Teste";
-    //  doc["event_type"] = "read-sensor";
-    sensor["location"] = "esp32";
+  doc["deviceId"] = DEVICE_ID;
+  doc["eventType"] = "read-sensor";
+  
+  if (alterar == true) {
+    Serial.println("OK3");
     if (estado == 0) {
-      sensor["currentValue"] = "true";
+      sensor["light"] = "true";
     } else if (estado == 1) {
-      sensor["currentValue"] = "false";
+      sensor["light"] = "false";
     }
-    //    doc["timestamp"] = timestamp;
-    //  }
-    //  sensor["temperature"] = "30.1";
-    //  sensor["humidity"] = "70.1";
   }
 
   //Add an array.

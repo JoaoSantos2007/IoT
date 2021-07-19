@@ -1,24 +1,16 @@
 # Libs
-print("OK")
 import json
-import string  # .json
 import firebase_admin  # Firebase
+import threading
+from firebase_admin import credentials, firestore
+from paho.mqtt import client as mqtt_client
 from datetime import datetime  # tempo
 from pytz import timezone
 
-from firebase_admin import credentials, firestore
-from paho.mqtt import client as mqtt_client
-
-# Credencias do Firebase
-<<<<<<< Updated upstream
-cred = credentials.Certificate("serviceAccountKey.json")
-=======
+# Firebase
 cred = credentials.Certificate("rules/serviceAccountKey.json")
->>>>>>> Stashed changes
-
-# Inicia Firebase instância
 firebase_admin.initialize_app(cred)
-firestore_db = firestore.client()
+db = firestore.client()
 
 # Variáveis para conectar com o MQTT(broker)
 broker = '192.168.31.45'
@@ -27,10 +19,8 @@ topic = "test"
 client_id = f'python-rules'
 
 
-
-# Conectar ao MQTT(x1)
+# Conectar ao mqtt
 def connect_mqtt() -> mqtt_client:
-
     # DEF verificar conexão
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
@@ -48,11 +38,11 @@ def connect_mqtt() -> mqtt_client:
     return client
 
 
-<<<<<<< Updated upstream
-#Escutar mensagens em um tópico(canal)[x8]
-=======
-# Escutar mensagens em um tópico(canal)[x8]
->>>>>>> Stashed changes
+client = connect_mqtt()
+# client.loop_forever()
+# print("OK")
+
+
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
@@ -64,8 +54,17 @@ def subscribe(client: mqtt_client):
     client.subscribe(topic)
     client.on_message = on_message
 
-# Aplicar Regras
 
+def publish(deviceId, tipo, currentValue, name, location, topico_envio):
+    mensagem = {"deviceId": deviceId, "name": name, "location": location,
+           "type": tipo, "currentValue": currentValue}
+    mensagem = json.dumps(mensagem)
+    result = client.publish(topico_envio, mensagem)
+    status = result[0]
+    if status == 0:
+        print(f"Send `{mensagem}` to topic `{topico_envio}`")
+    else:
+        print(f"Failed to send message to topic {topico_envio}")
 
 def apply_rules(client, data):
 
@@ -81,57 +80,59 @@ def apply_rules(client, data):
         for type, value in sensores.items():
             document_update(deviceId, type, value)
 
-    # Executar se o tipo de evento for uma ação
-    if data.get("eventType") == "action-device":
-        topic_envio = "topico-" + str(deviceId)
-        print(topic_envio)
-        publish(client, topic_envio, data)
+def document_add(collection, data):
+    db.collection(f'{collection}').add(data)
 
 
-# DEF atualiza Database
 def document_update(deviceId, type, value):
 
     lastUpdateDate = datetime.now().astimezone(timezone('America/Sao_Paulo'))
 
-    snapshots = list(firestore_db.collection(u'devices').where(
+    snapshots = list(db.collection(u'devices').where(
         u'deviceId', u'==', int(deviceId)).where(u'type', u'==', type).get())
 
     for snapshot in snapshots:
         document_id = snapshot.id
-        document = firestore_db.collection(u'devices').document(document_id)
+        document = db.collection(u'devices').document(document_id)
         document.update({u'currentValue': value,u'lastUpdateDate': lastUpdateDate})
 
 
-def publish(client, topic, data):
+# Create an Event for notifying main thread.
+# delete_done = threading.Event()
 
-    msg = json.dumps(data)
-    result = client.publish(topic, msg)
-    status = result[0]
-    if status == 0:
-        print(f"Send `{msg}` to topic `{topic}`")
-    else:
-        print(f"Failed to send message to topic {topic}")
+# Create a callback on_snapshot function to capture changes
+def on_snapshot(col_snapshot, changes, read_time):
+    for change in changes:
+        # if change.type.name == 'ADDED':
+        if change.type.name == 'MODIFIED':
+            key = change.document.id
+            deviceId = change.document.get('deviceId')
+            type = change.document.get('type')
+            name = change.document.get('name')
+            location = change.document.get('location')
+            currentValue = change.document.get('currentValue')
+            topico_envio = "esp-" + str(deviceId)
+            if(type == "light"):
+                publish(deviceId, type, currentValue,name, location, topico_envio)
 
-# add data
-
-
-def document_add(collection, data):
-    firestore_db.collection(f'{collection}').add(data)
-
-# read data
-
-
-def document_read():
-    snapshots = list(firestore_db.collection(u'devices').get())
-    for snapshot in snapshots:
-        print(snapshot.to_dict())
+        # elif change.type.name == 'REMOVED':
+        #     print("removed")
+        #     delete_done.set()
 
 
-def run():
-    client = connect_mqtt()  # ok
-    subscribe(client)
-    client.loop_forever()
+#Collection
+col_query = db.collection(u'devices')
+# Watch the collection query
+query_watch = col_query.on_snapshot(on_snapshot)
 
+#LOOP
 
-if __name__ == '__main__':
-    run()
+# Wait for the callback captures the deletion.
+threading.Event()
+subscribe(client)
+client.loop_forever()
+
+#FIM
+
+# delete_done.wait()
+query_watch.unsubscribe()

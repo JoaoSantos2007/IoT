@@ -1,4 +1,5 @@
 # Libs
+print("OK")
 import json
 import string  # .json
 import firebase_admin  # Firebase
@@ -9,7 +10,11 @@ from firebase_admin import credentials, firestore
 from paho.mqtt import client as mqtt_client
 
 # Credencias do Firebase
+<<<<<<< Updated upstream
 cred = credentials.Certificate("serviceAccountKey.json")
+=======
+cred = credentials.Certificate("rules/serviceAccountKey.json")
+>>>>>>> Stashed changes
 
 # Inicia Firebase instância
 firebase_admin.initialize_app(cred)
@@ -20,6 +25,7 @@ broker = '192.168.31.45'
 port = 1883
 topic = "test"
 client_id = f'python-rules'
+
 
 
 # Conectar ao MQTT(x1)
@@ -42,7 +48,11 @@ def connect_mqtt() -> mqtt_client:
     return client
 
 
+<<<<<<< Updated upstream
 #Escutar mensagens em um tópico(canal)[x8]
+=======
+# Escutar mensagens em um tópico(canal)[x8]
+>>>>>>> Stashed changes
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
@@ -55,9 +65,12 @@ def subscribe(client: mqtt_client):
     client.on_message = on_message
 
 # Aplicar Regras
+
+
 def apply_rules(client, data):
 
-    data['timestamp'] = datetime.now().astimezone(timezone('America/Sao_Paulo'))
+    data['timestamp'] = datetime.now().astimezone(
+        timezone('America/Sao_Paulo'))
     deviceId = data.get("deviceId")
 
     # Executar se o tipo de evento for de leitura de sensor
@@ -86,8 +99,7 @@ def document_update(deviceId, type, value):
     for snapshot in snapshots:
         document_id = snapshot.id
         document = firestore_db.collection(u'devices').document(document_id)
-        document.update({u'currentValue': value,
-                         u'lastUpdateDate': lastUpdateDate})
+        document.update({u'currentValue': value,u'lastUpdateDate': lastUpdateDate})
 
 
 def publish(client, topic, data):
@@ -100,12 +112,9 @@ def publish(client, topic, data):
     else:
         print(f"Failed to send message to topic {topic}")
 
-
 # add data
-# def document_add(data):
-#     firestore_db.collection(u'devices').add(data)
 
-# add data
+
 def document_add(collection, data):
     firestore_db.collection(f'{collection}').add(data)
 

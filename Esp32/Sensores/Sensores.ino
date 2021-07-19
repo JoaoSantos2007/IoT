@@ -21,14 +21,14 @@
 #define ID_MQTT "Cliente_MQTT"
 
 //Sensor de Umidade e de Temperatura
-#define DHTPIN 27 // Pino digital conectado ao sensor DHT
+#define DHTPIN 19 // Pino digital conectado ao sensor DHT
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
 
 //Variáveis e constantes globais
 const String DEVICE_ID = "1";
-const int PIN_LUMINOSIDADE = 35;
-const int PIN_PRESENCA = 26;
+const int PIN_LUMINOSIDADE = 36;
+const int PIN_PRESENCA = 18;
 
 unsigned long previousMillis = 0;   
 const long interval = 900000;
@@ -140,8 +140,8 @@ void send_payload(String Umidade, String Temperatura, String Luminosidade, bool 
 
   //Add an object
   JsonObject sensor = doc.createNestedObject("sensor");
-  sensor["temperatura"] = Temperatura + "°C";
-  sensor["umidade"] = Umidade + "%";
+  sensor["temperatura"] = Temperatura;
+  sensor["umidade"] = Umidade;
   sensor["luminosidade"] = Luminosidade;
   sensor["presenca"] = String(Presenca);
 

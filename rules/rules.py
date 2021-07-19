@@ -9,7 +9,7 @@ from firebase_admin import credentials, firestore
 from paho.mqtt import client as mqtt_client
 
 # Credencias do Firebase
-cred = credentials.Certificate("rules/pubsub/serviceAccountKey.json")
+cred = credentials.Certificate("serviceAccountKey.json")
 
 # Inicia Firebase instância
 firebase_admin.initialize_app(cred)
@@ -42,17 +42,17 @@ def connect_mqtt() -> mqtt_client:
     return client
 
 
-# Escutar mensagens em um tópico(canal)[x8]
-# def subscribe(client: mqtt_client):
-#     def on_message(client, userdata, msg):
-#         print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
+#Escutar mensagens em um tópico(canal)[x8]
+def subscribe(client: mqtt_client):
+    def on_message(client, userdata, msg):
+        print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
 
-#         # carregar mensagem .json
-#         data = json.loads(msg.payload)
-#         apply_rules(client, data)
+        # carregar mensagem .json
+        data = json.loads(msg.payload)
+        apply_rules(client, data)
 
-#     client.subscribe(topic)
-#     client.on_message = on_message
+    client.subscribe(topic)
+    client.on_message = on_message
 
 # Aplicar Regras
 def apply_rules(client, data):

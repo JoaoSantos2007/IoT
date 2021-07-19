@@ -1,10 +1,6 @@
-import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:jojo_app/models/device.dart';
-import 'package:jojo_app/mqtt/mqtt.dart';
 import 'package:jojo_app/providers/device_provider.dart';
 import 'package:jojo_app/screens/device_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,28 +9,21 @@ import 'package:provider/provider.dart';
 
 class DeviceDetail extends StatefulWidget {
   final Device device;
+  final dataEventos;
 
-  DeviceDetail({Key key, this.device}) : super(key: key);
+  DeviceDetail({Key key, this.device, this.dataEventos}) : super(key: key);
 
   @override
   _State createState() => new _State();
 }
 
 class _State extends State<DeviceDetail> {
-  Mqtt mqtt = Mqtt.getInstance();
+  //Mqtt mqtt = Mqtt.getInstance();
   bool _switch = false;
-
+  List<double> data = [];
+  bool isLoading = false;
+  @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => mqtt.connect(),
-    );
-
-    new Future.delayed(Duration.zero, () {
-      final deviceProvider =
-          Provider.of<DeviceProvider>(context, listen: false);
-      deviceProvider.loadValues(widget.device);
-    });
-
     super.initState();
   }
 
@@ -48,22 +37,29 @@ class _State extends State<DeviceDetail> {
       '"action"': {'"$tag"': '"${widget.device.settings[tag]}"'},
     });
 
-    mqtt.publishMessage(
-      event.toString(),
-    );
-
-    print(event.toString());
+    // mqtt.publishMessage(
+    //   event.toString(),
+    // );
   }
 
 //---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    var data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0];
     final deviceProvider = Provider.of<DeviceProvider>(context);
     final Map<String, dynamic> settings =
         widget.device == null ? {} : widget.device.settings;
 
-    final bottonOnOff = Expanded(
+    data = widget.dataEventos;
+
+    // Future<void> createDataChart() async {
+    //   widget.eventos.forEach((element) {
+    //     element.forEach((element) {
+    //       data.add(double.parse(element[widget.device.type]));
+    //     });
+    //   });
+    // }
+
+    final bottonLight = Expanded(
       child: ListView.builder(
         itemCount: settings == null ? 0 : settings.length,
         itemBuilder: (context, index) {
@@ -74,10 +70,6 @@ class _State extends State<DeviceDetail> {
           return Dismissible(
             key: Key(item),
             direction: DismissDirection.startToEnd,
-            //             Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: mychart1Items("Sales by Month","421.3M","+12.9% of target"),
-            // ),
             child: SwitchListTile(
                 title: Text(settings.keys.elementAt(index)),
                 subtitle: Text(settings.values.elementAt(index).toString()),
@@ -103,7 +95,6 @@ class _State extends State<DeviceDetail> {
           );
         },
       ),
-      //mychart1Items('','',''),
     );
 
     final bottomTV = Column(
@@ -394,7 +385,7 @@ class _State extends State<DeviceDetail> {
         ),
         SizedBox(height: 40.0),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly, // spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
               alignment: Alignment.topRight,
@@ -473,22 +464,6 @@ class _State extends State<DeviceDetail> {
       ],
     );
 
-    // final bottonOnOff = Container(
-    //   child: CupertinoSwitch(
-    //     value: _switch, //widget.device.action,
-    //     onChanged: (bool newValue) {
-    //       setState(
-    //         () {
-    //           _switch = newValue;
-    //           deviceProvider.changeAction(_switch);
-    //           deviceProvider.saveDevice();
-    //           bottonAll(_switch.toString());
-    //         },
-    //       );
-    //     },
-    //   ),
-    // );
-
     final courseFaixa = Container(
       padding: const EdgeInsets.all(7.0),
     );
@@ -555,7 +530,7 @@ class _State extends State<DeviceDetail> {
           top: 60.0,
           child: InkWell(
             onTap: () {
-              mqtt.disconnect();
+              //mqtt.disconnect();
               Navigator.pop(context);
             },
             child: Icon(Icons.arrow_back, color: Colors.white),
@@ -564,11 +539,8 @@ class _State extends State<DeviceDetail> {
       ],
     );
 
-    Timestamp now = Timestamp.now();
-    DateTime dateNow = now.toDate();
-
     final bottomContentText = Text(
-      "Ultima atualização: ${widget.device.lastUpdateDate.toDate()}",
+      "atualizado em: ${widget.device.lastUpdateDate.toDate()}",
       style: TextStyle(
         fontSize: 13.0,
         color: Colors.grey[500],
@@ -590,183 +562,58 @@ class _State extends State<DeviceDetail> {
       ),
     );
 
-    Material mychart1Items(String title, String priceVal, String subtitle) {
-      return Material(
-        color: Colors.white,
-        elevation: 14.0,
-        borderRadius: BorderRadius.circular(24.0),
-        shadowColor: Color(0x802196F3),
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: Text(
-                        title,
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.blueAccent,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: Text(
-                        priceVal,
-                        style: TextStyle(
-                          fontSize: 30.0,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: Text(
-                        subtitle,
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.blueGrey,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: new Sparkline(
-                        data: data,
-                        lineColor: Color(0xffff6101),
-                        pointsMode: PointsMode.all,
-                        pointSize: 8.0,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
+    String getPrefix(String type) {
+      switch (type) {
+        case 'umidade':
+          return ' %';
+          break;
+        case 'temperatura':
+          return ' ºC';
+          break;
+        default:
+          return '';
+      }
     }
 
-    final bottomDefault2 = Container(
-      color: Color(0xffE5E5E5),
-      child: StaggeredGridView.count(
-        crossAxisCount: 1,
-        crossAxisSpacing: 12.0,
-        mainAxisSpacing: 12.0,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child:
-                mychart1Items("Sales by Month", "421.3M", "+12.9% of target"),
-          ),
-        ],
-        staggeredTiles: [
-          StaggeredTile.extent(4, 250.0),
-        ],
-      ),
-    );
-
-    final bottomDefault3 = Column(
+    final bottomSensor = Column(
       children: [
         SizedBox(height: 30.0),
-        // Text(
-        //   widget.device.currentValue,
-        //   style: TextStyle(
-        //     color: Colors.black45,
-        //     fontSize: 45.0,
-        //   ),
-        // ),
-        //SizedBox(height: 50.0),
-        // Container(
-        //   width: 300.0,
-        //   height: 100.0,
-        //   child: new Sparkline(
-        //     data: data,
-        //     lineColor: Color.fromRGBO(58, 66, 86, .9),
-        //     fillMode: FillMode.below,
-        //     fillColor: Color.fromRGBO(58, 66, 86, .9),
-        //     // fillGradient: new LinearGradient(
-        //     //   begin: Alignment.topCenter,
-        //     //   end: Alignment.bottomCenter,
-        //     //   colors: [Colors.grey[800], Colors.grey[200]],
-        //     // ),
-        //   ),
-        // ),
-        // Padding(
-        //   padding: EdgeInsets.all(1.0),
-        //   child: Text(
-        //     widget.device.name,
-        //     style: TextStyle(
-        //       fontSize: 20.0,
-        //       color: Colors.blueAccent,
-        //     ),
-        //   ),
-        // ),
         Padding(
           padding: EdgeInsets.all(1.0),
           child: Text(
-            widget.device.currentValue,
-            style: TextStyle(fontSize: 40.0, color: Colors.grey[600]),
+            widget.device.currentValue + getPrefix(widget.device.type),
+            style: TextStyle(
+              fontSize: 40.0,
+              color: Colors.grey[600],
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-        // Padding(
-        //   padding: EdgeInsets.all(1.0),
-        //   child: Text(
-        //     'ultima atualização: 10/07/2021 - 16:20',
-        //     style: TextStyle(
-        //       fontSize: 15.0,
-        //       color: Colors.blueGrey,
-        //     ),
-        //   ),
-        // ),
         SizedBox(height: 40.0),
         Padding(
           padding: EdgeInsets.all(30.0),
           child: new Sparkline(
-            data: data,
-            lineColor: Colors.grey[500],
-            pointsMode: PointsMode.all,
+            //data: data,
+            data: widget.dataEventos.isEmpty ? [0.0] : widget.dataEventos,
+            lineColor: Colors.grey[600],
+            //pointsMode: PointsMode.all,
             pointSize: 8.0,
-            pointColor: Colors.grey[700],
-            // fillMode: FillMode.below,
-            // fillGradient: new LinearGradient(
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter,
-            //   colors: [Colors.grey[800], Colors.grey[200]],
-            // ),
+            pointColor: Colors.grey[600],
+            fillMode: FillMode.below,
+            fillGradient: new LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.grey[600], Colors.grey[500]],
+            ),
           ),
         ),
-      ],
-    );
-
-    final bottomDefault = Row(
-      children: [
-        Container(
-          width: 20.0,
-          //child: new Divider(color: Colors.green),
-        ),
-        SizedBox(height: 10.0),
-        Text(
-          widget.device.currentValue,
-          style: TextStyle(
-            color: Colors.black45,
-            fontSize: 45.0,
-          ),
-        ),
-        SizedBox(height: 30.0),
       ],
     );
 
     getBottom(String type) {
       switch (type) {
         case 'light':
-          //return bottonOnOff;
-          return bottonOnOff;
+          return bottonLight;
           break;
         case 'tv':
           return bottomTV;
@@ -778,7 +625,7 @@ class _State extends State<DeviceDetail> {
           return bottomFan;
           break;
         default:
-          return bottomDefault3;
+          return bottomSensor;
       }
     }
 

@@ -17,4 +17,17 @@ class FirestoreService {
   Future<void> removeDevice(String id) {
     return _db.collection('devices').doc(id).delete();
   }
+
+  // Stream<List<Event>> getEventsOld() {
+  //   return _db.collection('events').snapshots().map((snapshot) => snapshot.docs
+  //       .map((document) => Event.fromFirestore(document.data()))
+  //       .toList());
+  // }
+
+  Stream<List> getEvents() {
+    return _db.collection('events').orderBy('timestamp').snapshots().map(
+        (snapshot) => snapshot.docs
+            .map((document) => document.data()['sensor'])
+            .toList());
+  }
 }

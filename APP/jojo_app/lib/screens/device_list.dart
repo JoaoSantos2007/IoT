@@ -2,6 +2,7 @@ import 'package:jojo_app/models/device.dart';
 import 'package:jojo_app/screens/device_detail.dart';
 import 'package:jojo_app/screens/device_form.dart';
 import 'package:flutter/material.dart';
+import 'package:jojo_app/services/firestore_service_device.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(new MyApp());
@@ -35,9 +36,33 @@ class _ListPageState extends State<DeviceList> {
     super.initState();
   }
 
+  List<double> createDataChart(String type) {
+    List<double> data = [];
+    var events = FirestoreService().getEvents();
+    events.forEach((element) {
+      element.forEach((element) {
+        data.add(double.parse(element[type]));
+      });
+    });
+    return data;
+  }
+
   @override
   Widget build(BuildContext context) {
     final devices = Provider.of<List<Device>>(context);
+
+    String getPrefix(String type) {
+      switch (type) {
+        case 'umidade':
+          return ' %';
+          break;
+        case 'temperatura':
+          return ' ºC';
+          break;
+        default:
+          return '';
+      }
+    }
 
     ListTile makeListTile(Device device) => ListTile(
           contentPadding:
@@ -79,7 +104,11 @@ class _ListPageState extends State<DeviceList> {
                 child: Padding(
                   padding: EdgeInsets.only(left: 10.0),
                   child: Text(
-                    device.currentValue,
+                    device.type == 'luminosidade' ||
+                            device.type == 'umidade' ||
+                            device.type == 'temperatura'
+                        ? device.currentValue + getPrefix(device.type)
+                        : '',
                     style: TextStyle(
                       color: Colors.blue[100],
                       fontSize: 16,
@@ -106,12 +135,20 @@ class _ListPageState extends State<DeviceList> {
             },
           ),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DeviceDetail(device: device),
-              ),
-            );
+            print(device.type);
+            var data = createDataChart(device.type);
+
+            Future.delayed(const Duration(milliseconds: 1000), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DeviceDetail(
+                    device: device,
+                    dataEventos: data,
+                  ),
+                ),
+              );
+            });
           },
         );
 

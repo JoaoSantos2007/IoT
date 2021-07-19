@@ -65,8 +65,6 @@ class DeviceProvider with ChangeNotifier {
   }
 
   loadValues(Device device) {
-    Timestamp stamp = Timestamp.now();
-    DateTime date = stamp.toDate();
     _id = device.id;
     _deviceId = device.deviceId;
     _name = device.name;

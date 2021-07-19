@@ -90,7 +90,6 @@ void send_payload()
   doc["eventType"] = "read-sensor";
   
   if (alterar == true) {
-    Serial.println("OK3");
     if (estado == 0) {
       sensor["light"] = "true";
     } else if (estado == 1) {
@@ -134,30 +133,8 @@ void apply_rule(byte * payload)
 {
   StaticJsonDocument<2048> doc;
   deserializeJson(doc, payload);
-  //      if (doc["event_type"] == "action-device" & doc["device_target"] == DEVICE_ID)
-  //      {
-  //        String action = doc["action"];
-  //        Serial.println(action);
-  //        //      String pim_10 = doc["action"]["false"];
-  //        if (doc["action"]["true"] == "1") {
-  //          estado = 1;
-  //        } else if (doc["action"]["false"] == "0") {
-  //          estado = 0;
-  //        }
-  //        Serial.println(estado);
-  //      }
-  //      if (estado == 1) {
-  //        digitalWrite(2, HIGH);
-  //      } else if (estado == 0) {
-  //        digitalWrite(2, LOW);
-  //      }
-  Serial.println("ok1");
-  String tipo = doc["type"];
-  Serial.println(tipo);
   if (doc["type"] == "light") {
     String valor = doc["currentValue"];
-    Serial.println(valor);
-    Serial.println("ok2");
     if (doc["currentValue"] == "true") {
       estado = 1;
     } else {
@@ -293,15 +270,12 @@ void loop()
   MQTT.loop();
   if (estado == 1) {
     digitalWrite(led, HIGH);
-//    Serial.println(estado);
   } else if (estado == 0) {
     digitalWrite(led, LOW);
-//    Serial.println(estado);
   }
 
   estado_botao = digitalRead(botao);
   if (estado_botao == HIGH) {
-    Serial.println("Ligado");
     alterar = true;
     send_payload();
     delay(2000);

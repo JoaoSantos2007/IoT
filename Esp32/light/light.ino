@@ -3,6 +3,8 @@ int estado_botao = 0;
 int led = 2;
 int botao = 4;
 bool alterar = false;
+unsigned long lastDebounceTime = 0; // última vez que o botão foi pressionado
+unsigned long debounceDelay = 70;   // O intervalo, igual ao delay do código anterior
 String DEVICE_ID = "2";//ESP_ID
 /* Headers */
 #include <WiFi.h> /* Header para uso das funcionalidades de wi-fi do ESP32 */
@@ -88,7 +90,7 @@ void send_payload()
   JsonObject sensor = doc.createNestedObject("sensor");
   doc["deviceId"] = DEVICE_ID;
   doc["eventType"] = "read-sensor";
-  
+
   if (alterar == true) {
     if (estado == 0) {
       sensor["light"] = "true";
@@ -276,9 +278,11 @@ void loop()
 
   estado_botao = digitalRead(botao);
   if (estado_botao == HIGH) {
-    alterar = true;
-    send_payload();
-    delay(2000);
+    if ((millis() - lastDebounceTime) > debounceDelay) {
+      alterar = true;
+      send_payload();
+    }
+    lastDebounceTime = millis();
   } else if (estado_botao == LOW) {
     alterar = false;
   }

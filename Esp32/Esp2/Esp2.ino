@@ -261,6 +261,49 @@ void verifica_conexoes_wifi_mqtt(void)
     reconnect_mqtt();
 }
 
+
+//Funções de leitura de sensores
+String readDHTTemperature()
+{
+  float t = dht.readTemperature();
+  if (isnan(t))
+  {
+    Serial.println("Falha ao ler o sensor DHT!");
+    return "--";
+  }
+  else
+  {
+    return String(t);
+  }
+}
+
+String readDHTHumidity()
+{
+  float h = dht.readHumidity();
+  if (isnan(h))
+  {
+    return "--";
+  }
+  else
+  {
+    return String(h);
+  }
+}
+
+String readLDRLuminosidade()
+{
+  float v = analogRead(PIN_LUMINOSIDADE);
+  if (isnan(v))
+  {
+    return "--";
+  }
+  else
+  {
+    return String(v);
+  }
+}
+
+
 /* programa principal */
 void loop()
 {

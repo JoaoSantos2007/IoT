@@ -1,14 +1,14 @@
 body{
     background:rgb(30, 30, 30);
-    font: normal 20pt Arial;
-    margin: 0;
-    padding: 0px;
+    font: normal 150% Arial;
+    margin: 0%;
+    padding: 0%;
 }
 
 
 /* Menu */
 #menu ul{
-    margin: 0;
+    margin: 0%;
     background-color: darkred;
     list-style: none;
 }
@@ -30,18 +30,18 @@ body{
 
 #menu ul li#menu a{
 
-    padding: 0px 40px;
+    padding: 0% 2%;
     display: inline-block;
     color: white;
     text-decoration: none;
 }
 
 #menu ul li#add{
-    margin-left: 900px;
+    margin-left: 38%;
 }
 
 #menu ul li#imagem{
-    margin-left: 100px;
+    margin-left: 18%;
 }
 
 #menu ul li#menu a:hover{
@@ -95,7 +95,7 @@ img#up_button{
 }
 
 label#channel{
-    font-size: 40px;
+    font-size: 150%;
     color: rgb(9, 255, 0);
 }
 
@@ -114,7 +114,7 @@ img#down_button_volume{
 }
 
 label#volume{
-    font-size: 40px;
+    font-size: 150%;
     color: rgb(9, 255, 0);
 }
 
@@ -171,7 +171,7 @@ div#button_air{
 
 label#temp{
     color: rgb(0, 255, 0);
-    font-size: 40px;
+    font-size: 150%;
 }
 
 img#sleep_button{
@@ -231,7 +231,7 @@ header{
 div#lista section{
     background: rgb(100, 100, 100);
     border-radius:10px;
-    margin: 20px auto;
+    margin: 1.25% auto;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.418);
 }
 

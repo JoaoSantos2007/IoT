@@ -5,14 +5,21 @@ int botao = 4;
 bool alterar = false;
 unsigned long lastDebounceTime = 0; // última vez que o botão foi pressionado
 unsigned long debounceDelay = 70;   // O intervalo, igual ao delay do código anterior
+unsigned long previousMillis = 0;
+const long interval = 15000;//900000;
 String DEVICE_ID = "2";//ESP_ID
+const int PIN_LUMINOSIDADE = 35;
+String Umidade = "";
+String Temperatura = "";
+String Luminosidade = "";
 /* Headers */
 #include <WiFi.h> /* Header para uso das funcionalidades de wi-fi do ESP32 */
 #include <PubSubClient.h>  /*  Header para uso da biblioteca PubSubClient */
 #include <ArduinoJson.h>
-
+//#include <Adafruit_Sensor>
 #include <NTPClient.h>
 #include <WiFiUdp.h>
+#include <DHT.h>
 
 /* Defines do MQTT */
 /* Tópico MQTT para recepção de informações do broker MQTT para ESP32 */
@@ -38,6 +45,10 @@ const char* BROKER_MQTT = "192.168.31.45";
 /* Porta do Broker MQTT */
 int BROKER_PORT = 1883;
 
+//Sensor de Umidade e de Temperatura
+#define DHTPIN 27 // Pino digital conectado ao sensor DHT
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
 
 
 /* Variáveis e objetos globais */
@@ -57,6 +68,7 @@ void verifica_conexoes_wifi_mqtt(void);
 void send_payload(void);
 void recive_payload(byte* payload);
 void init_time(void);
+void init_sensores(void);
 
 
 void init_time()
@@ -74,9 +86,15 @@ void setup()
   init_wifi();
   init_mqtt();
   init_time();
+  init_sensores();
+}
+
+void init_sensores()
+{
+  dht.begin();
+  pinMode(PIN_LUMINOSIDADE, INPUT);
   pinMode(led, OUTPUT);
   pinMode(botao, INPUT);
-  digitalWrite(botao, HIGH);
 }
 
 void send_payload()
@@ -88,9 +106,9 @@ void send_payload()
 
   //Add an object
   JsonObject sensor = doc.createNestedObject("sensor");
-  doc["deviceId"] = DEVICE_ID;
-  doc["eventType"] = "read-sensor";
-
+  sensor["temperatura"] = Temperatura;
+  sensor["umidade"] = Umidade;
+  sensor["luminosidade"] = Luminosidade;
   if (alterar == true) {
     if (estado == 0) {
       sensor["light"] = "true";
@@ -303,6 +321,13 @@ String readLDRLuminosidade()
   }
 }
 
+void Atualizar_LEDs() {
+  if (estado == 1) {
+    digitalWrite(led, HIGH);
+  } else if (estado == 0) {
+    digitalWrite(led, LOW);
+  }
+}
 
 /* programa principal */
 void loop()
@@ -313,20 +338,26 @@ void loop()
   //MQTT.publish(TOPICO_PUBLISH, "ESP32 se comunicando com MQTT");
   /* keep-alive da comunicação com broker MQTT */
   MQTT.loop();
-  if (estado == 1) {
-    digitalWrite(led, HIGH);
-  } else if (estado == 0) {
-    digitalWrite(led, LOW);
+
+  Atualizar_LEDs();
+  estado_botao = digitalRead(botao);
+
+  if ((millis() - previousMillis >= interval) || (estado_botao == HIGH && (millis() - lastDebounceTime) > debounceDelay)) {
+    if ((estado_botao == HIGH && (millis() - lastDebounceTime) > debounceDelay)) {
+      alterar = true;
+    }
+    Temperatura = readDHTTemperature();
+    Umidade = readDHTHumidity();
+    Luminosidade = readLDRLuminosidade();
+    send_payload();
+    previousMillis = millis();
+  }
+  if (estado_botao == HIGH) {
+    lastDebounceTime = millis();
   }
 
-  estado_botao = digitalRead(botao);
-  if (estado_botao == HIGH) {
-    if ((millis() - lastDebounceTime) > debounceDelay) {
-      alterar = true;
-      send_payload();
-    }
-    lastDebounceTime = millis();
-  } else if (estado_botao == LOW) {
+  if (estado_botao == LOW) {
     alterar = false;
   }
+
 }

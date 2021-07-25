@@ -86,6 +86,7 @@ void setup()
   init_wifi();
   init_mqtt();
   init_time();
+  delay(10000);
   init_sensores();
 }
 

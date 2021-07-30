@@ -146,7 +146,7 @@ function tipo_temperatura(dados, key, modificar) {
   var valor = dados.currentValue
   section.innerHTML += `<div>`
   section.innerHTML += `<img src="/Site/images/temperatura.png" alt="temperatura">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro(${key}')">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
   section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
   section.innerHTML += `</div>`
   section.innerHTML += `<p>`
@@ -334,10 +334,9 @@ function tipo_air(dados, key, modificar) {
   var nome = dados.name
   var lugar = dados.location
   section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/snow.png" alt="AC
-  ">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="">`
-  section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="">`
+  section.innerHTML += `<img src="/Site/images/snow.png" alt="AC">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
+  section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
   section.innerHTML += `</div>`
   section.innerHTML += `<p>`
   section.innerHTML += `<strong>Nome: </strong>${nome}`

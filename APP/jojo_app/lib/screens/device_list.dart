@@ -44,6 +44,9 @@ class _ListPageState extends State<DeviceList> {
         data.add(double.parse(element[type]));
       });
     });
+    //data = data.length>0 ? [0]
+    //data = data.length > 0 ? [0.0] : data;
+    //data
     return data;
   }
 
@@ -78,7 +81,7 @@ class _ListPageState extends State<DeviceList> {
                 ),
               ),
             ),
-            child: getIcon(device.action, device.type, 30.0),
+            child: getIcon(device.type, 30.0),
           ),
           title: Text(
             device.name,
@@ -139,12 +142,13 @@ class _ListPageState extends State<DeviceList> {
             var data = createDataChart(device.type);
 
             Future.delayed(const Duration(milliseconds: 1000), () {
+              print(data.toString());
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => DeviceDetail(
                     device: device,
-                    dataEventos: data,
+                    dataEventos: data.isEmpty ? [0.0] : data,
                   ),
                 ),
               );
@@ -246,14 +250,8 @@ class _ListPageState extends State<DeviceList> {
   }
 }
 
-Icon getIcon(bool value, String age, _size) {
-  var _color;
-  if (value) {
-    _color = Colors.blue;
-  } else {
-    _color = Colors.white;
-  }
-
+Icon getIcon(String age, _size) {
+  var _color = Colors.white;
   switch (age) {
     case 'light':
       return Icon(

@@ -11,7 +11,6 @@ class DeviceProvider with ChangeNotifier {
   String _name;
   String _type;
   String _location;
-  bool _action;
   String _currentValue = "";
   Timestamp _lastUpdateDate = Timestamp.now();
   Map<String, dynamic> _settings;
@@ -24,7 +23,6 @@ class DeviceProvider with ChangeNotifier {
   String get type => _type;
   String get location => _location;
   String get currentValue => _currentValue = "";
-  bool get action => _action = false;
   Timestamp get lastUpdateDate => _lastUpdateDate = Timestamp.now();
   Map<String, dynamic> get settings => _settings;
 
@@ -49,11 +47,6 @@ class DeviceProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  changeAction(bool value) {
-    _action = value;
-    notifyListeners();
-  }
-
   changeCurrentValue(String value) {
     _currentValue = value;
     notifyListeners();
@@ -70,7 +63,6 @@ class DeviceProvider with ChangeNotifier {
     _name = device.name;
     _type = device.type;
     _location = device.location;
-    _action = device.action;
     _currentValue = device.currentValue;
     _lastUpdateDate = device.lastUpdateDate;
     _settings = device.settings;
@@ -85,7 +77,6 @@ class DeviceProvider with ChangeNotifier {
         name: name,
         type: type,
         location: location,
-        action: action,
         currentValue: currentValue,
         lastUpdateDate: lastUpdateDate,
         settings: settings,
@@ -99,7 +90,6 @@ class DeviceProvider with ChangeNotifier {
         name: _name,
         type: _type,
         location: _location,
-        action: _action,
         currentValue: _currentValue,
         lastUpdateDate: _lastUpdateDate,
         settings: _settings,
@@ -119,7 +109,6 @@ class DeviceProvider with ChangeNotifier {
       'name': name,
       'type': type,
       'location': location,
-      'action': action,
       'currentValue': currentValue,
       'lastUpdateDate': lastUpdateDate,
       'settings': settings,

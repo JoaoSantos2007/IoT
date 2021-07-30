@@ -49,7 +49,8 @@ class _State extends State<DeviceDetail> {
     final Map<String, dynamic> settings =
         widget.device == null ? {} : widget.device.settings;
 
-    data = widget.dataEventos;
+    //data = widget.dataEventos;
+    data = widget.dataEventos.isEmpty ? [0.0] : widget.dataEventos;
 
     // Future<void> createDataChart() async {
     //   widget.eventos.forEach((element) {
@@ -473,7 +474,6 @@ class _State extends State<DeviceDetail> {
       children: <Widget>[
         SizedBox(height: 120.0),
         getIcon(
-          widget.device.action,
           widget.device.type,
           50.0,
         ),

@@ -56,7 +56,7 @@ String readDHTTemperature()
   if (isnan(t))
   {
     Serial.println("Falha ao ler o sensor DHT!");
-    return "--";
+    return "0";
   }
   else
   {
@@ -69,7 +69,7 @@ String readDHTHumidity()
   float h = dht.readHumidity();
   if (isnan(h))
   {
-    return "--";
+    return "0";
   }
   else
   {
@@ -82,7 +82,7 @@ String readLDRLuminosidade()
   float v = analogRead(PIN_LUMINOSIDADE);
   if (isnan(v))
   {
-    return "--";
+    return "0";
   }
   else
   {
@@ -276,8 +276,8 @@ void loop()
   
   if ((Presenca==1 && wasPresence==false) || (currentMillis - previousMillis >= interval))
   {
-    String Umidade = readDHTHumidity();
     String Temperatura = readDHTTemperature();
+    String Umidade = readDHTHumidity();
     String Luminosidade = readLDRLuminosidade();
     send_payload(Umidade, Temperatura, Luminosidade, Presenca);
     previousMillis = currentMillis;

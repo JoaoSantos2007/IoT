@@ -57,7 +57,6 @@ class _EditDeviceState extends State<DeviceForm> {
       locationController.text = "";
       tagIdController.text = "";
       tagValueController.text = "";
-      isChecked = false;
       _isOpen = "";
       new Future.delayed(Duration.zero, () {
         final deviceProvider =
@@ -70,7 +69,6 @@ class _EditDeviceState extends State<DeviceForm> {
       deviceIdController.text = widget.device.deviceId.toString();
       typeController.text = widget.device.type;
       locationController.text = widget.device.location;
-      isChecked = widget.device.action;
       _isOpen = widget.device.type;
 
       //State Update

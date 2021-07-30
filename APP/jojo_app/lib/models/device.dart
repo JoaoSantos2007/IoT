@@ -6,7 +6,6 @@ class Device {
   final String name;
   final String type;
   final String location;
-  final bool action;
   final String currentValue;
   final Timestamp lastUpdateDate;
   final Map<String, dynamic> settings;
@@ -17,7 +16,6 @@ class Device {
     this.name,
     this.type,
     this.location,
-    this.action,
     this.currentValue,
     this.lastUpdateDate,
     this.settings,
@@ -30,7 +28,6 @@ class Device {
       'name': name,
       'type': type,
       'location': location,
-      'action': action,
       'currentValue': currentValue,
       'lastUpdateDate': lastUpdateDate,
       'settings': settings,
@@ -43,7 +40,6 @@ class Device {
         name = firestore['name'],
         type = firestore['type'],
         location = firestore['location'],
-        action = firestore['action'],
         currentValue = firestore['currentValue'],
         lastUpdateDate = firestore['lastUpdateDate'],
         settings = firestore['settings'];

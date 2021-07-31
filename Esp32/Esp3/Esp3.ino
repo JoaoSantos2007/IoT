@@ -1,29 +1,22 @@
 int estado = 0;
 int estado_botao = 0;
-int led = 2;
-int botao = 4;
-bool alterar = false;
-unsigned long lastDebounceTime = 0; // última vez que o botão foi pressionado
-unsigned long debounceDelay = 70;   // O intervalo, igual ao delay do código anterior
-unsigned long previousMillis = 0;
-const long interval = 300000;
-String DEVICE_ID = "2";//ESP_ID
-const int PIN_LUMINOSIDADE = 35;
-String Umidade = "";
-String Temperatura = "";
-String Luminosidade = "";
+int lamp1 = 5;
+int lamp2 = 16;
+bool estado_lamp1 = false;
+bool estado_lamp2 = false;
+String DEVICE_ID = "3";//ESP_ID
 /* Headers */
-#include <WiFi.h> /* Header para uso das funcionalidades de wi-fi do ESP32 */
+//#include <WiFi.h> /* Header para uso das funcionalidades de wi-fi do ESP32 */
+#include <ESP8266WiFi.h>
 #include <PubSubClient.h>  /*  Header para uso da biblioteca PubSubClient */
 #include <ArduinoJson.h>
-//#include <Adafruit_Sensor>
+
 #include <NTPClient.h>
 #include <WiFiUdp.h>
-#include <DHT.h>
 
 /* Defines do MQTT */
 /* Tópico MQTT para recepção de informações do broker MQTT para ESP32 */
-#define TOPICO_SUBSCRIBE "esp-2"
+#define TOPICO_SUBSCRIBE "esp-3"
 /* Tópico MQTT para envio de informações do ESP32 para broker MQTT */
 //#define TOPICO_PUBLISH   "publish-IOT"
 #define TOPICO_PUBLISH  "test"
@@ -33,7 +26,7 @@ String Luminosidade = "";
                id de outro já conectado ao broker, o broker
                irá fechar a conexão de um deles).
 */
-#define ID_MQTT  "esp32-2"
+#define ID_MQTT  "esp32-3"
 /*  Variáveis e constantes globais */
 /* SSID / nome da rede WI-FI que deseja se conectar */
 const char* SSID = "xiaomi_2G";
@@ -45,10 +38,6 @@ const char* BROKER_MQTT = "192.168.31.45";
 /* Porta do Broker MQTT */
 int BROKER_PORT = 1883;
 
-//Sensor de Umidade e de Temperatura
-#define DHTPIN 27 // Pino digital conectado ao sensor DHT
-#define DHTTYPE DHT11
-DHT dht(DHTPIN, DHTTYPE);
 
 
 /* Variáveis e objetos globais */
@@ -67,15 +56,7 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length);
 void verifica_conexoes_wifi_mqtt(void);
 void send_payload(void);
 void recive_payload(byte* payload);
-void init_time(void);
-void init_sensores(void);
 
-
-void init_time()
-{
-  timeClient.begin(); // init NTP
-  timeClient.setTimeOffset(0); // 0= GMT, 3600 = GMT+1
-}
 
 /*
     Implementações das funções
@@ -85,17 +66,8 @@ void setup()
   init_serial();
   init_wifi();
   init_mqtt();
-  init_time();
-  delay(10000);
-  init_sensores();
-}
-
-void init_sensores()
-{
-  dht.begin();
-  pinMode(PIN_LUMINOSIDADE, INPUT);
-  pinMode(led, OUTPUT);
-  pinMode(botao, INPUT);
+  pinMode(lamp1, OUTPUT);
+  pinMode(lamp2, OUTPUT);
 }
 
 void send_payload()
@@ -107,16 +79,8 @@ void send_payload()
 
   //Add an object
   JsonObject sensor = doc.createNestedObject("sensor");
-  sensor["temperatura"] = Temperatura;
-  sensor["umidade"] = Umidade;
-  sensor["luminosidade"] = Luminosidade;
-  if (alterar == true) {
-    if (estado == 0) {
-      sensor["light"] = "true";
-    } else if (estado == 1) {
-      sensor["light"] = "false";
-    }
-  }
+  doc["deviceId"] = DEVICE_ID;
+  doc["eventType"] = "read-sensor";
 
   //Add an array.
   //  JsonArray values = doc.createNestedArray("data");
@@ -156,12 +120,19 @@ void apply_rule(byte * payload)
   deserializeJson(doc, payload);
   if (doc["type"] == "light") {
     String valor = doc["currentValue"];
-    if (doc["currentValue"] == "true") {
-      estado = 1;
-    } else {
-      estado = 0;
+    if (doc["name"] == "Lampada1") {
+      if (doc["currentValue"] == "true") {
+        estado_lamp1 = true;
+      } else {
+        estado_lamp1 = false;
+      }
+    } else if (doc["name"] == "Lampada2") {
+      if (doc["currentValue"] == "true") {
+        estado_lamp2 = true;
+      } else {
+        estado_lamp2 = false;
+      }
     }
-
   }
 }
 
@@ -172,7 +143,7 @@ void apply_rule(byte * payload)
 */
 void init_serial()
 {
-  Serial.begin(115200);
+  Serial.begin(57600);
 }
 
 /* Função: inicializa e conecta-se na rede WI-FI desejada
@@ -280,56 +251,6 @@ void verifica_conexoes_wifi_mqtt(void)
     reconnect_mqtt();
 }
 
-
-//Funções de leitura de sensores
-String readDHTTemperature()
-{
-  float t = dht.readTemperature();
-  if (isnan(t))
-  {
-    Serial.println("Falha ao ler o sensor DHT!");
-    return "--";
-  }
-  else
-  {
-    return String(t);
-  }
-}
-
-String readDHTHumidity()
-{
-  float h = dht.readHumidity();
-  if (isnan(h))
-  {
-    return "--";
-  }
-  else
-  {
-    return String(h);
-  }
-}
-
-String readLDRLuminosidade()
-{
-  float v = analogRead(PIN_LUMINOSIDADE);
-  if (isnan(v))
-  {
-    return "--";
-  }
-  else
-  {
-    return String(v);
-  }
-}
-
-void Atualizar_LEDs() {
-  if (estado == 1) {
-    digitalWrite(led, HIGH);
-  } else if (estado == 0) {
-    digitalWrite(led, LOW);
-  }
-}
-
 /* programa principal */
 void loop()
 {
@@ -339,26 +260,15 @@ void loop()
   //MQTT.publish(TOPICO_PUBLISH, "ESP32 se comunicando com MQTT");
   /* keep-alive da comunicação com broker MQTT */
   MQTT.loop();
-
-  Atualizar_LEDs();
-  estado_botao = digitalRead(botao);
-
-  if ((millis() - previousMillis >= interval) || (estado_botao == HIGH && (millis() - lastDebounceTime) > debounceDelay)) {
-    if ((estado_botao == HIGH && (millis() - lastDebounceTime) > debounceDelay)) {
-      alterar = true;
-    }
-    Temperatura = readDHTTemperature();
-    Umidade = readDHTHumidity();
-    Luminosidade = readLDRLuminosidade();
-    send_payload();
-    previousMillis = millis();
-  }
-  if (estado_botao == HIGH) {
-    lastDebounceTime = millis();
+  if (estado_lamp1 == true) {
+    digitalWrite(lamp1, HIGH);
+  } else if (estado_lamp1 == false) {
+    digitalWrite(lamp1, LOW);
   }
 
-  if (estado_botao == LOW) {
-    alterar = false;
+  if (estado_lamp2 == true) {
+    digitalWrite(lamp2, HIGH);
+  } else if (estado_lamp2 == false) {
+    digitalWrite(lamp2, LOW);
   }
-
 }

@@ -143,7 +143,7 @@ void apply_rule(byte * payload)
 */
 void init_serial()
 {
-  Serial.begin(57600);
+  Serial.begin(115200);
 }
 
 /* Função: inicializa e conecta-se na rede WI-FI desejada
@@ -220,7 +220,7 @@ void reconnect_wifi()
      Caso contrário, são efetuadas tentativas de conexão */
   if (WiFi.status() == WL_CONNECTED)
     return;
-
+  WiFi.mode(WIFI_STA);
   WiFi.begin(SSID, PASSWORD);
 
   while (WiFi.status() != WL_CONNECTED)

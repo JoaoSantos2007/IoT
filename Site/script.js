@@ -23,12 +23,13 @@ firebase.auth().onAuthStateChanged((user) => {
     // ...
   } else {
     // User is signed out
-    if (location.pathname == "/Site/login/index.html"){
-    }else{
+    if (location.pathname == "/Site/login/index.html") {
+    } else {
       window.location.href = ("/Site/login/index.html")
     }
   }
 });
+
 //Armazena as informações do database do firebase em uma variável
 let db = firebase.firestore();
 
@@ -560,20 +561,32 @@ function reproduzir_audio() {
 }
 
 function login() {
-  var email = String(document.getElementById("email").value)
-  var password = String(document.getElementById("password").value)
+  const email = String(document.getElementById("email").value)
+  const password = String(document.getElementById("password").value)
   firebase.auth().signInWithEmailAndPassword(email, password)
-  .then((userCredential) => {
-    // Signed in
-    var user = userCredential.user;
-    setInterval(function () {
-      window.location.href = ("/Site/index.html")
-    }, 1000)
-  })
-  .catch((error) => {
-    window.alert("Email ou senha errado")
-    var errorCode = error.code;
-    var errorMessage = error.message;
-  });
+    .then((userCredential) => {
+      // Signed in
+      var user = userCredential.user;
+      setInterval(function () {
+        window.location.href = ("/Site/index.html")
+      }, 5000)
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      window.alert("Email ou senha errado!")
+    });
+}
 
+// function pag_usuario(){
+//   var section = window.document.getElementById("section_user")
+//   section += `div`
+// }
+
+function desconectar() {
+  firebase.auth().signOut().then(() => {
+    // Sign-out successful.
+  }).catch((error) => {
+    // An error happened.
+  });
 }

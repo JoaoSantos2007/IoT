@@ -268,10 +268,10 @@ footer{
 
 /* Botão Liga/Desliga */
 
-/* .liga-desliga__checkbox{
+.liga-desliga__checkbox{
    position: absolute;
    left: -9999px; 
-} */
+}
 
 .liga-desliga__botao{
     display: inline-block;

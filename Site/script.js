@@ -15,7 +15,20 @@ const firebaseConfig = {
 
 //Inicializa o Firebase com a constante contendo as credenciais do Firebase
 firebase.initializeApp(firebaseConfig)
-
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/firebase.User
+    var uid = user.uid;
+    // ...
+  } else {
+    // User is signed out
+    if (location.pathname == "/Site/login/index.html"){
+    }else{
+      window.location.href = ("/Site/login/index.html")
+    }
+  }
+});
 //Armazena as informações do database do firebase em uma variável
 let db = firebase.firestore();
 
@@ -513,10 +526,10 @@ function editar_registro(key) {
 
     if (tipo == "umidade") select.innerHTML += `<option value="umidade" selected>Umidade</option>`
     else select.innerHTML += `<option value="umidade">Umidade</option>`
-    
+
     if (tipo == "presenca") select.innerHTML += `<option value="presenca" selected>Presença</option>`
     else select.innerHTML += `<option value="presenca">Presença</option>`
-  
+
     section.appendChild(select)
     section.innerHTML += `</div>`
     section.innerHTML += `<div>`
@@ -546,3 +559,21 @@ function reproduzir_audio() {
   audio.play()
 }
 
+function login() {
+  var email = String(document.getElementById("email").value)
+  var password = String(document.getElementById("password").value)
+  firebase.auth().signInWithEmailAndPassword(email, password)
+  .then((userCredential) => {
+    // Signed in
+    var user = userCredential.user;
+    setInterval(function () {
+      window.location.href = ("/Site/index.html")
+    }, 1000)
+  })
+  .catch((error) => {
+    window.alert("Email ou senha errado")
+    var errorCode = error.code;
+    var errorMessage = error.message;
+  });
+
+}

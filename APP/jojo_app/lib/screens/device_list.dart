@@ -38,15 +38,12 @@ class _ListPageState extends State<DeviceList> {
 
   List<double> createDataChart(String type) {
     List<double> data = [];
-    var events = FirestoreService().getEvents();
+    var events = FirestoreService().getEvents("2");
     events.forEach((element) {
       element.forEach((element) {
         data.add(double.parse(element[type]));
       });
     });
-    //data = data.length>0 ? [0]
-    //data = data.length > 0 ? [0.0] : data;
-    //data
     return data;
   }
 

@@ -24,10 +24,17 @@ class FirestoreService {
   //       .toList());
   // }
 
-  Stream<List> getEvents() {
-    return _db.collection('events').orderBy('timestamp').snapshots().map(
+  Stream<List> getEvents(String id) {
+    return _db.collection('events').where('deviceId'==id).orderBy('timestamp').snapshots().map(
         (snapshot) => snapshot.docs
             .map((document) => document.data()['sensor'])
             .toList());
   }
+
+  // Stream<List> getEvents() {
+  //   return _db.collection('events').orderBy('timestamp').snapshots().map(
+  //       (snapshot) => snapshot.docs
+  //           .map((document) => document.data()['sensor'])
+  //           .toList());
+  // }
 }

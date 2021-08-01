@@ -119,8 +119,11 @@ void setup()
 {
   init_serial();
   init_wifi();
+  delay(1000);
   init_mqtt();
+  delay(1000);
   init_sensores();
+  delay(1000);
 }
 
 void init_sensores()

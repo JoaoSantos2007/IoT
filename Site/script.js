@@ -560,20 +560,17 @@ function reproduzir_audio() {
   audio.play()
 }
 
+
 function login() {
-  const email = String(document.getElementById("email").value)
-  const password = String(document.getElementById("password").value)
+  var email = String(document.getElementById("email-field").value)
+  var password = String(document.getElementById("password-field").value)
   firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      // Signed in
-      var user = userCredential.user;
-      setInterval(function () {
-        window.location.href = ("/Site/index.html")
-      }, 5000)
+    .then(function (firebaseUser) {
+      // Success 
+      window.location.href = ("/Site/index.html")
     })
-    .catch((error) => {
-      var errorCode = error.code;
-      var errorMessage = error.message;
+    .catch(function (error) {
+      // Error Handling
       window.alert("Email ou senha errado!")
     });
 }

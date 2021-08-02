@@ -1,57 +1,52 @@
 
-(function ($) {
-    "use strict";
+	(function ($) {
 
-    
-    /*==================================================================
-    [ Validate ]*/
-    var input = $('.validate-input .input100');
+		"use strict";
 
-    $('.validate-form').on('submit',function(){
-        var check = true;
+		var fullHeight = function () {
 
-        for(var i=0; i<input.length; i++) {
-            if(validate(input[i]) == false){
-                showValidate(input[i]);
-                check=false;
-            }
-        }
+			$('.js-fullheight').css('height', $(window).height());
+			$(window).resize(function () {
+				$('.js-fullheight').css('height', $(window).height());
+			});
 
-        return check;
-    });
+		};
+		fullHeight();
 
+		// const firebaseConfig = {
+		// 	apiKey: "AIzaSyDOCg6kqirThQKx3R6zd5VNphTqbbuA1Rc",
+		// 	authDomain: "fir-crud-e99a4.firebaseapp.com",
+		// 	projectId: "fir-crud-e99a4",
+		// 	storageBucket: "fir-crud-e99a4.appspot.com",
+		// 	messagingSenderId: "319998441027",
+		// 	appId: "1:319998441027:web:01e4f3fe3d2a57dd3c46f6",
+		// 	measurementId: "G-7437FP6V3J"
+		// };
+		
+		// //Inicializa o Firebase com a constante contendo as credenciais do Firebase
+		// firebase.initializeApp(firebaseConfig)
 
-    $('.validate-form .input100').each(function(){
-        $(this).focus(function(){
-           hideValidate(this);
-        });
-    });
+		$(".toggle-password").click(function () {
+			// password = window.document.getElementById("password-field")
+			// email = window.document.getElementById("email-field")
+			// window.alert(password)
+			// window.alert(email)
+			// firebase.auth().signInWithEmailAndPassword(email, password)
+			// 	.then(function (firebaseUser) {
+			// 		// Success 
+			// 		window.location.href = ("/Site/index.html")
+			// 	})
+			// 	.catch(function (error) {
+			// 		// Error Handling
+			// 		window.alert("ERRO")
+			// 	});
+	  $(this).toggleClass("fa-eye fa-eye-slash");
+		var input = $($(this).attr("toggle"));
+		if (input.attr("type") == "password") {
+			input.attr("type", "text");
+		} else {
+			input.attr("type", "password");
+		}
+	});
 
-    function validate (input) {
-        if($(input).attr('type') == 'email' || $(input).attr('name') == 'email') {
-            if($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
-                return false;
-            }
-        }
-        else {
-            if($(input).val().trim() == ''){
-                return false;
-            }
-        }
-    }
-
-    function showValidate(input) {
-        var thisAlert = $(input).parent();
-
-        $(thisAlert).addClass('alert-validate');
-    }
-
-    function hideValidate(input) {
-        var thisAlert = $(input).parent();
-
-        $(thisAlert).removeClass('alert-validate');
-    }
-    
-    
-
-})(jQuery);
+}) (jQuery);

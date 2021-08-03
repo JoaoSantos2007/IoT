@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,8 +16,9 @@
         pag_usuario()
     </script> -->
 </head>
+
 <body>
-    <div id = "menu">
+    <div id="menu">
         <ul>
             <li id="menu"><a href="/Site/index.html">Home</a></li>
             <li id="menu"><a href="">Contato</a></li>
@@ -30,14 +32,17 @@
         <h1>Definições de Usuário</h1>
     </header>
     <section id="section_user">
-        <div>
+        <div id="div-name">
             Display Name:
         </div>
-        <div>
+        <div id="div-email">
             Email:
         </div>
-        <div>
-
+        <div id="div-foto">
+            Foto:
+        </div>
+        <div id="div-email_verif">
+            Email verificado:
         </div>
         <input type="button" value="Update" onclick="criar_registro()">
         <input type="button" value="Log out" onclick="desconectar()">
@@ -46,6 +51,11 @@
     <footer>
         <p>&copy; IOT Project</p>
     </footer>
+
     <script src="/Site/script.js"></script>
+    <script>
+        carregar_dados_usuario()
+    </script>
 </body>
+
 </html>

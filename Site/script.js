@@ -30,6 +30,7 @@ firebase.auth().onAuthStateChanged((user) => {
   }
 });
 
+
 //Armazena as informações do database do firebase em uma variável
 let db = firebase.firestore();
 
@@ -586,4 +587,32 @@ function desconectar() {
   }).catch((error) => {
     // An error happened.
   });
+}
+
+function carregar_dados_usuario() {
+  var div_name = window.document.getElementById("div-name")
+  var div_email = window.document.getElementById("div-email")
+  var div_foto = window.document.getElementById("div-foto")
+  var div_email_verif = window.document.getElementById("div-email_verif")
+
+  const user = firebase.auth().currentUser;
+  if (user != null) {
+    // The user object has basic properties such as display name, email, etc.
+    const displayName = user.displayName;
+    const email = user.email;
+    const photoURL = user.photoURL;
+    const emailVerified = user.emailVerified;
+  
+    // The user's ID, unique to the Firebase project. Do NOT use
+    // this value to authenticate with your backend server, if
+    // you have one. Use User.getToken() instead.
+    const uid = user.uid;
+
+    window.alert("OK")
+    window.alert(email)
+    div_name += `${displayName}`
+    div_email += `${email}`
+    div_foto += `${photoURL}`
+    div_email_verif = `${emailVerified}`
+  }
 }

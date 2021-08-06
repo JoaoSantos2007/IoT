@@ -6,14 +6,17 @@ var jogo = false
 // var comprimento = screenHeight * 0.05
 // window.alert(largura)
 // window.alert(comprimento)
-var tamanho 
+var tamanho
 var ritmo = "parado"
 var horizontal = 50
 var vertical = 50
 // window.alert(screenWidth)
 // window.alert(screenHeight)
+window.ononline = function(){
+    window.alert("HELLO")
+}
 
-function detecta(event){
+function detecta(event) {
     jogo = true
     var tecla = event.key
     console.log(tecla)
@@ -22,13 +25,13 @@ function detecta(event){
 
 function rotacionar(tecla) {
     var snake = window.document.getElementById("snake")
-    if(tecla == "ArrowLeft"){
+    if (tecla == "ArrowLeft") {
         ritmo = "esquerda"
-    }else if(tecla == "ArrowRight"){
+    } else if (tecla == "ArrowRight") {
         ritmo = "direita"
-    }else if(tecla == "ArrowUp"){
+    } else if (tecla == "ArrowUp") {
         ritmo = "subir"
-    }else if(tecla == "ArrowDown"){
+    } else if (tecla == "ArrowDown") {
         ritmo = "descer"
     }
     // posicao++
@@ -39,15 +42,16 @@ function rotacionar(tecla) {
     // }
 }
 
-while (jogo){
+while (jogo) {
+    detecta("")
     var snake = window.document.getElementById("snake")
-    if(ritmo == "esquerda"){
-        horizontal-- 
-    }else if(ritmo == "direita"){
+    if (ritmo == "esquerda") {
+        horizontal--
+    } else if (ritmo == "direita") {
         horizontal++
-    }else if(ritmo == "subir"){
+    } else if (ritmo == "subir") {
         vertical--
-    }else if(ritmo == "descer"){
+    } else if (ritmo == "descer") {
         vertical++
     }
     snake.style.left = horizontal + "%"

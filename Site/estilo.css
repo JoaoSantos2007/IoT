@@ -36,12 +36,29 @@ body{
     text-decoration: none;
 }
 
+#menu ul select{
+
+    /* padding: 0% 2%; */
+    display: inline-block;
+    color: black;
+    text-decoration: none;
+}
+
+#menu ul div#filtro_text{
+
+    padding: 0% 1%;
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+}
+
 #menu ul li#add{
-    margin-left: 38%;
+    margin-left: 30%;
 }
 
 #menu ul li#imagem{
-    margin-left: 18%;
+    margin-left: 10%;
+    padding: 0% 3%;
 }
 
 #menu ul li#menu a:hover{

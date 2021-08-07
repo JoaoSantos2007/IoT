@@ -37,7 +37,10 @@ let db = firebase.firestore();
 
 
 //Inicio
-function iniciar() {
+function iniciar_index() {
+  var div_lista = window.document.getElementById("lista")
+  div_lista.innerHTML = ""
+
   db.collection(Categoria).onSnapshot(function (documentos) {
     documentos.docChanges().forEach(function (changes) {
       const documento = changes.doc
@@ -59,15 +62,18 @@ function iniciar() {
 
 //Tipos
 function criarItens(dados, key, modificar) {
-  if (dados.type == "light") tipo_light(dados, key, modificar)
-  else if (dados.type == "umidade") tipo_umidade(dados, key, modificar)
-  else if (dados.type == "temperatura") tipo_temperatura(dados, key, modificar)
-  else if (dados.type == "proximidade") tipo_proximidade(dados, key, modificar)
-  else if (dados.type == "luminosidade") tipo_luminosidade(dados, key, modificar)
-  else if (dados.type == "tv") tipo_tv(dados, key, modificar)
-  else if (dados.type == "fan") tipo_fan(dados, key, modificar)
-  else if (dados.type == "air") tipo_air(dados, key, modificar)
-  else if (dados.type == "presenca") tipo_presenca(dados, key, modificar)
+  var filtro = String((window.document.getElementById("filtro").value))
+  if (filtro == "all" || filtro == dados.type) {
+    if (dados.type == "light") tipo_light(dados, key, modificar)
+    else if (dados.type == "umidade") tipo_umidade(dados, key, modificar)
+    else if (dados.type == "temperatura") tipo_temperatura(dados, key, modificar)
+    else if (dados.type == "proximidade") tipo_proximidade(dados, key, modificar)
+    else if (dados.type == "luminosidade") tipo_luminosidade(dados, key, modificar)
+    else if (dados.type == "tv") tipo_tv(dados, key, modificar)
+    else if (dados.type == "fan") tipo_fan(dados, key, modificar)
+    else if (dados.type == "air") tipo_air(dados, key, modificar)
+    else if (dados.type == "presenca") tipo_presenca(dados, key, modificar)
+  }
 }
 
 function tipo_light(dados, key, modificar) {
@@ -576,11 +582,6 @@ function login() {
     });
 }
 
-// function pag_usuario(){
-//   var section = window.document.getElementById("section_user")
-//   section += `div`
-// }
-
 function desconectar() {
   firebase.auth().signOut().then(() => {
     // Sign-out successful.
@@ -602,17 +603,15 @@ function carregar_dados_usuario() {
     const email = user.email;
     const photoURL = user.photoURL;
     const emailVerified = user.emailVerified;
-  
+
     // The user's ID, unique to the Firebase project. Do NOT use
     // this value to authenticate with your backend server, if
     // you have one. Use User.getToken() instead.
     const uid = user.uid;
-
-    window.alert("OK")
-    window.alert(email)
-    div_name += `${displayName}`
-    div_email += `${email}`
-    div_foto += `${photoURL}`
-    div_email_verif = `${emailVerified}`
+    
+    div_name.innerHTML += `${displayName}`
+    div_email.innerHTML += `${email}`
+    div_foto.innerHTML += `${photoURL}`
+    div_email_verif.innerHTML = `${emailVerified}`
   }
 }

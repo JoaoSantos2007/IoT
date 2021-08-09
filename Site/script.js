@@ -1,6 +1,9 @@
 //Firebase
 
 const Categoria = "devices"
+let existe = false
+let array_local = []
+let array_ID = []
 
 //Armazena as credenciais do Firebase em uma constante
 const firebaseConfig = {
@@ -37,7 +40,7 @@ let db = firebase.firestore();
 
 
 //Inicio
-function iniciar_index() {
+function iniciar_index(tipo = "normal") {
   var div_lista = window.document.getElementById("lista")
   div_lista.innerHTML = ""
 
@@ -47,7 +50,38 @@ function iniciar_index() {
       const dados = documento.data()
       let key = documento.id
       if (changes.type === "added") {
-        criarItens(dados, key, false)
+        if (tipo == "normal") {
+          criarItens(dados, key, false)
+        } else if (tipo == "local") {
+          for (var i in array_local) {
+            if (array_local[i] == dados.location) {
+              existe = true
+            }
+          }
+          if (existe) {
+            existe = false
+          } else {
+            var filtro_local = window.document.getElementById("filtro")
+            filtro_local.innerHTML += `<option value="${dados.location}">${dados.location}</option>`
+            array_local.push(dados.location)
+          }
+          criarItens(dados, key, false)
+        } else if (tipo == "ID") {
+          for (var i in array_ID) {
+            if (array_ID[i] == dados.deviceId) {
+              existe = true
+            }
+          }
+          if (existe) {
+            existe = false
+          } else {
+            var filtro = window.document.getElementById("filtro")
+            filtro.innerHTML += `<option value="${dados.deviceId}">${dados.deviceId}</option>`
+            array_ID.push(dados.deviceId)
+          }
+          criarItens(dados, key, false)
+        }
+
 
       } else if (changes.type === "modified") {
         criarItens(dados, key, true)
@@ -63,7 +97,7 @@ function iniciar_index() {
 //Tipos
 function criarItens(dados, key, modificar) {
   var filtro = String((window.document.getElementById("filtro").value))
-  if (filtro == "all" || filtro == dados.type) {
+  if (filtro == "all" || filtro == dados.type || filtro == dados.location || filtro == dados.deviceId) {
     if (dados.type == "light") tipo_light(dados, key, modificar)
     else if (dados.type == "umidade") tipo_umidade(dados, key, modificar)
     else if (dados.type == "temperatura") tipo_temperatura(dados, key, modificar)
@@ -608,7 +642,7 @@ function carregar_dados_usuario() {
     // this value to authenticate with your backend server, if
     // you have one. Use User.getToken() instead.
     const uid = user.uid;
-    
+
     div_name.innerHTML += `${displayName}`
     div_email.innerHTML += `${email}`
     div_foto.innerHTML += `${photoURL}`

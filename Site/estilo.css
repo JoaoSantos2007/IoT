@@ -13,7 +13,7 @@ body{
     list-style: none;
 }
 
-#menu ul li#menu{
+#menu ul li{
     margin: auto;
     display: inline;
 }
@@ -53,7 +53,7 @@ body{
 }
 
 #menu ul li#add{
-    margin-left: 30%;
+    margin-left: 20%;
 }
 
 #menu ul li#imagem{

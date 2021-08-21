@@ -11,11 +11,6 @@ var ritmo = "parado"
 var horizontal = 50
 var vertical = 50
 // window.alert(screenWidth)
-// window.alert(screenHeight)
-window.ononline = function(){
-    window.alert("HELLO")
-}
-
 function detecta(event) {
     jogo = true
     var tecla = event.key

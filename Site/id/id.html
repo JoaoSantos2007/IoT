@@ -6,18 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/Site/images/favicon-site.ico" type="image/x-icon">
-    <title>Usuário</title>
+    <title>Alekão</title>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
     <link rel="stylesheet" href="/Site/estilo.css">
-    <!-- <script>
-        pag_usuario()
-    </script> -->
 </head>
 
 <body>
+    <!-- Menu -->
     <div id="menu">
         <ul>
             <li id="menu"><a href="/Site/index.html">Home</a></li>
@@ -27,35 +25,25 @@
             <li id="menu"><a href="/Site/creditos/creditos.html">Créditos</a></li>
             <li id="add"><a href="/Site/createregisto/create.html"><img src="/Site/images/add.png" alt="add"></a></li>
             <li id="imagem"><a href="/Site/user/user.html"><img src="/Site/images/user.png" alt="user"></a></li>
+            <div id = "filtro_text">Filtrar por: </div>
+            <select id="filtro" onchange="iniciar_index('ID')">
+                <option value="all">Todos</option>
+
+            </select>
         </ul>
     </div>
-    <header>
-        <h1>Definições de Usuário</h1>
-    </header>
-    <section id="section_user">
-        <div id="div-name">
-            Display Name:
-        </div>
-        <div id="div-email">
-            Email:
-        </div>
-        <div id="div-foto">
-            Foto:
-        </div>
-        <div id="div-email_verif">
-            Email verificado:
-        </div>
-        <input type="button" value="Update" onclick="criar_registro()">
-        <input type="button" value="Log out" onclick="desconectar()">
-        <input type="button" value="delete user">
-    </section>
+
+    <!-- Registros -->
+    <div id="lista">
+    </div>
+
+    <!-- Rodapé -->
     <footer>
         <p>&copy; IOT Project</p>
     </footer>
-
     <script src="/Site/script.js"></script>
     <script>
-        carregar_dados_usuario()
+        iniciar_index("ID");
     </script>
 </body>
 

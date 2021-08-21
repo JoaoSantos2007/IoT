@@ -39,11 +39,11 @@ bool wasPresence = false;
 //const char* password = "REPLACE_WITH_YOUR_PASSWORD";
 
 // SSID / nome da rede WI-FI que deseja se conectar
-const char* SSID = "xiaomi_2G";
-const char* PASSWORD = "JP010203";
+const char* SSID = "JPGamerPlay_2G";
+const char* PASSWORD = "ALEK010203";
 
 //URL do broker MQTT que deseja utilizar
-const char *BROKER_MQTT = "192.168.31.45";
+const char *BROKER_MQTT = "192.168.15.54";
 //Porta do Broker MQTT
 int BROKER_PORT = 1883;
 

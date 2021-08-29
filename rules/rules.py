@@ -15,7 +15,7 @@ db = firestore.client()
 # Variáveis para conectar com o MQTT(broker)
 broker = '192.168.15.54'
 port = 1883
-topic = "test"
+topic = "global-iot"
 client_id = f'python-rules'
 
 
@@ -74,23 +74,24 @@ def apply_rules(client, data):
 
     # Executar se o tipo de evento for de leitura de sensor
     if data.get("eventType") == "read-sensor":
+        name = data.get("name")
+        print(name)
         document_add('events', data)
         sensores = data.get("sensor")
         # Atualizar Firebase
         for type, value in sensores.items():
-            document_update(deviceId, type, value)
+            document_update(deviceId, type, value, name)
 
 def document_add(collection, data):
     db.collection(f'{collection}').add(data)
 
 
-def document_update(deviceId, type, value):
+def document_update(deviceId, type, value, name):
 
     lastUpdateDate = datetime.now().astimezone(timezone('America/Sao_Paulo'))
-
-    snapshots = list(db.collection(u'devices').where(
-        u'deviceId', u'==', int(deviceId)).where(u'type', u'==', type).get())
-
+    
+    snapshots = list(db.collection(u'devices').where(u'deviceId', u'==', int(deviceId)).where(u'type', u'==', type).where(u'name',u'==',str(name)).get())
+    print(snapshots)
     for snapshot in snapshots:
         document_id = snapshot.id
         document = db.collection(u'devices').document(document_id)

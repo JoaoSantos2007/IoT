@@ -1,13 +1,13 @@
 //Bibliotecas
-#include <WiFi.h>
+#include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 
 
 //MQTT
-#define TOPICO_SUBSCRIBE "esp-5"
+#define TOPICO_SUBSCRIBE "esp-6"
 #define TOPICO_PUBLISH   "global-iot"
-#define ID_MQTT  "esp32-5"
+#define ID_MQTT  "esp32-6"
 const char* BROKER_MQTT = "192.168.15.54";
 int BROKER_PORT = 1883;
 
@@ -22,20 +22,15 @@ WiFiClient espClient;
 PubSubClient MQTT(espClient);
 
 //Variávies Globais
-String DEVICE_ID = "5";//ESP_ID
+String DEVICE_ID = "6";//ESP_ID
 int wifi_time = 300000;
 int last_wifi_time = 0;
 bool exec_once_time = true;
-int interruptor1 = 26;
-int estado_inte_ant1 = 0;
-int estado_inte_at1 = 0;
-int interruptor2 = 25;
-int estado_inte_ant2;
-int estado_inte_at2;
-int estado_lamp1 = 0;
-int estado_lamp2 = 0;
-int lamp1 = 14;
-int lamp2 = 27;
+int interruptor = 5;
+int estado_inte_ant = 0;
+int estado_inte_at = 0;
+int estado_lamp = 0;
+int lamp = 4;
 String enviar = "";
 bool mqtt_desconectado;
 
@@ -44,7 +39,7 @@ void init_mqtt(void);
 void reconnect_wifi(void);
 void mqtt_callback(char* topic, byte* payload, unsigned int length);
 void verif_internet(void);
-void send_payload(String nome, String valor);
+void send_payload(String valor);
 void recive_payload(byte* payload);
 
 
@@ -53,30 +48,20 @@ void setup()
   Serial.begin(115200);
   reconnect_wifi();
   init_mqtt();
-  pinMode(lamp1, OUTPUT);
-  pinMode(lamp2, OUTPUT);
-  pinMode(interruptor1, INPUT);
-  pinMode(interruptor2, INPUT);
-  estado_inte_at1 = digitalRead(interruptor1);
-  estado_inte_at2 = digitalRead(interruptor2);
-  if (estado_inte_at1 == 1) {
-    alterar1();
+  pinMode(lamp, OUTPUT);
+  pinMode(interruptor, INPUT);
+  estado_inte_at = digitalRead(interruptor);
+  if (estado_inte_at == 1) {
+    alterar();
   } else {
-    estado_inte_ant1 = !estado_inte_at1;
-  }
-
-  if (estado_inte_at2 == 1) {
-    alterar2();
-  } else {
-    estado_inte_ant2 = !estado_inte_at2;
+    estado_inte_ant = !estado_inte_at;
   }
 }
 
-void send_payload(String nome, String valor) {
+void send_payload(String valor) {
   StaticJsonDocument<256> doc;
   doc["deviceId"] = DEVICE_ID;
   doc["eventType"] = "read-sensor";
-  doc["name"] = nome;
   //Add an object
   JsonObject sensor = doc.createNestedObject("sensor");
   sensor["light"] = valor;
@@ -112,21 +97,14 @@ void apply_rule(byte * payload)
   deserializeJson(doc, payload);
   if (doc["type"] == "light") {
     String valor = doc["currentValue"];
-    if (doc["name"] == "Lampada1") {
       if (doc["currentValue"] == "true") {
-        estado_lamp1 = 1;
+        estado_lamp = 1;
       } else {
-        estado_lamp1 = 0;
+        estado_lamp = 0;
       }
-    } else if (doc["name"] == "Lampada2") {
-      if (doc["currentValue"] == "true") {
-        estado_lamp2 = 1;
-      } else {
-        estado_lamp2 = 0;
-      }
-    }
   }
 }
+
 
 void init_mqtt(void) {
   //Inicia o Mqtt
@@ -171,59 +149,36 @@ void verif_internet(void) {
       mqtt_desconectado = true;
     } else {
       if (mqtt_desconectado == true) {
-        if (estado_lamp1 == 1) {
+        if (estado_lamp == 1) {
           enviar = "true";
         } else {
           enviar = "false";
         }
-        send_payload("Lampada1", enviar);
-
-        if (estado_lamp2 == 1) {
-          enviar = "true";
-        } else {
-          enviar = "false";
-        }
-        send_payload("Lampada2", enviar);
+        send_payload(enviar);
         mqtt_desconectado = false;
       }
     }
   }
 }
 
-void alterar1() {
-  estado_lamp1 = !estado_lamp1;
-  if (estado_lamp1 == 1) {
+void alterar() {
+  estado_lamp = !estado_lamp;
+  if (estado_lamp == 1) {
     enviar = "true";
   } else {
     enviar = "false";
   }
-  send_payload("Lampada1", enviar);
-}
-
-void alterar2() {
-  estado_lamp2 = !estado_lamp2;
-  if (estado_lamp2 == 1) {
-    enviar = "true";
-  } else {
-    enviar = "false";
-  }
-  send_payload("Lampada2", enviar);
+  send_payload(enviar);
 }
 
 void loop() {
   //Verifica a conexão com a internet e com o mqtt
   verif_internet();
-  estado_inte_at1 = digitalRead(interruptor1);
-  estado_inte_at2 = digitalRead(interruptor2);
-  if (estado_inte_at1 == estado_inte_ant1) {
-    alterar1();
-    estado_inte_ant1 = !estado_inte_ant1;
+  estado_inte_at = digitalRead(interruptor);
+  if (estado_inte_at == estado_inte_ant) {
+    alterar();
+    estado_inte_ant = !estado_inte_ant;
   }
-  if (estado_inte_at2 == estado_inte_ant2) {
-    alterar2();
-    estado_inte_ant2 = !estado_inte_ant2;
-  }
-  digitalWrite(lamp1, estado_lamp1);
-  digitalWrite(lamp2, estado_lamp2);
+  digitalWrite(lamp, estado_lamp);
   MQTT.loop();
 }

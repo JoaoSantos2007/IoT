@@ -25,8 +25,8 @@ String Luminosidade = "";
 /* Tópico MQTT para recepção de informações do broker MQTT para ESP32 */
 #define TOPICO_SUBSCRIBE "esp-2"
 /* Tópico MQTT para envio de informações do ESP32 para broker MQTT */
-//#define TOPICO_PUBLISH   "publish-IOT"
-#define TOPICO_PUBLISH  "test"
+#define TOPICO_PUBLISH   "global-iot"
+
 /* id mqtt (para identificação de sessão) */
 /* IMPORTANTE: este deve ser único no broker (ou seja,
                se um client MQTT tentar entrar com o mesmo

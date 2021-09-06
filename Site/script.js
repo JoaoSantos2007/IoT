@@ -505,7 +505,7 @@ function criar_registro() {
   var type = String((window.document.getElementById("txttype").value))
   var name = String((window.document.getElementById("txtname").value))
   var local = String((window.document.getElementById("txtlocation").value))
-  var id = String((window.document.getElementById("txtid").value))
+  var id = Number((window.document.getElementById("txtid").value))
   db.collection(Categoria).doc().set({
     'deviceId': id,
     'type': type,
@@ -586,7 +586,7 @@ function enviar(key) {
   var type_enviar = String((window.document.getElementById("txttype_" + key).value))
   var name_enviar = String((window.document.getElementById("txtname_" + key).value))
   var local_enviar = String((window.document.getElementById("txtlocation_" + key).value))
-  var id_enviar = String((window.document.getElementById("txtid_" + key).value))
+  var id_enviar = Number((window.document.getElementById("txtid_" + key).value))
   db.collection(Categoria).doc(key).update({
     'name': name_enviar,
     'type': type_enviar,

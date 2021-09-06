@@ -8,7 +8,7 @@
 #define TOPICO_SUBSCRIBE "esp-6"
 #define TOPICO_PUBLISH   "global-iot"
 #define ID_MQTT  "esp32-6"
-const char* BROKER_MQTT = "192.168.15.54";
+const char* BROKER_MQTT = "192.168.15.45";
 int BROKER_PORT = 1883;
 
 
@@ -119,10 +119,8 @@ void mqtt_callback(char* topic, byte * payload, unsigned int length) {
 
 void reconnect_mqtt(void) {
   if (!MQTT.connected()) {
-    Serial.print("-");
   }
-  if (MQTT.connect(ID_MQTT))
-  {
+  if (MQTT.connect(ID_MQTT)){
     Serial.println("Conectado com sucesso ao broker MQTT!");
     MQTT.subscribe(TOPICO_SUBSCRIBE);
   }
@@ -136,7 +134,7 @@ void reconnect_wifi() {
     WiFi.begin(SSID, PASSWORD);
   }
 
-  if (WiFi.status() != WL_CONNECTED) Serial.print(".");
+  if (WiFi.status() != WL_CONNECTED);
   //  Serial.println(WiFi.localIP());
 }
 
@@ -148,7 +146,7 @@ void verif_internet(void) {
       reconnect_mqtt();
       mqtt_desconectado = true;
     } else {
-      if (mqtt_desconectado == true) {
+      if (mqtt_desconectado == false) {
         if (estado_lamp == 1) {
           enviar = "true";
         } else {
@@ -168,7 +166,9 @@ void alterar() {
   } else {
     enviar = "false";
   }
-  send_payload(enviar);
+  if(mqtt_desconectado == true){
+    send_payload(enviar);
+  }
 }
 
 void loop() {

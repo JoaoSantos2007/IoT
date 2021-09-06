@@ -13,7 +13,7 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 # Variáveis para conectar com o MQTT(broker)
-broker = '192.168.15.54'
+broker = '192.168.15.45'
 port = 1883
 topic = "global-iot"
 client_id = f'python-rules'

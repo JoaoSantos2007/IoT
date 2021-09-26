@@ -27,6 +27,11 @@ class DeviceProvider with ChangeNotifier {
   Map<String, dynamic> get settings => _settings;
 
   //Setters
+  changeId(String value) {
+    _id = value;
+    notifyListeners();
+  }
+
   changeDeviceId(int value) {
     _deviceId = value;
     notifyListeners();
@@ -69,7 +74,6 @@ class DeviceProvider with ChangeNotifier {
   }
 
   saveDevice() {
-    print(_id);
     if (_id == null) {
       var newDevice = Device(
         id: uuid.v4(),

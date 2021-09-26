@@ -38,12 +38,13 @@ class _ListPageState extends State<DeviceList> {
 
   List<double> createDataChart(String type) {
     List<double> data = [];
-    var events = FirestoreService().getEvents("2");
-    events.forEach((element) {
-      element.forEach((element) {
-        data.add(double.parse(element[type]));
-      });
-    });
+    var events = FirestoreService().getEvents(1);
+    // events.forEach((element) {
+    //   element.forEach((element) {
+    //     data.add(double.parse(element[type]));
+    //   });
+    // });
+    print(events.toString());
     return data;
   }
 
@@ -135,9 +136,7 @@ class _ListPageState extends State<DeviceList> {
             },
           ),
           onTap: () {
-            print(device.type);
             var data = createDataChart(device.type);
-
             Future.delayed(const Duration(milliseconds: 1000), () {
               print(data.toString());
               Navigator.push(

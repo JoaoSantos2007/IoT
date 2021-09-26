@@ -8,6 +8,10 @@ class FirestoreService {
     return _db.collection('devices').doc(device.id).set(device.toMap());
   }
 
+  Future<void> saveEvent(Map<String, dynamic> event) {
+    return _db.collection('events').add(event);
+  }
+
   Stream<List<Device>> getDevices() {
     return _db.collection('devices').snapshots().map((snapshot) => snapshot.docs
         .map((document) => Device.fromFirestore(document.data()))
@@ -18,23 +22,27 @@ class FirestoreService {
     return _db.collection('devices').doc(id).delete();
   }
 
-  // Stream<List<Event>> getEventsOld() {
-  //   return _db.collection('events').snapshots().map((snapshot) => snapshot.docs
-  //       .map((document) => Event.fromFirestore(document.data()))
-  //       .toList());
-  // }
-
-  Stream<List> getEvents(String id) {
-    return _db.collection('events').where('deviceId'==id).orderBy('timestamp').snapshots().map(
-        (snapshot) => snapshot.docs
+  Stream<List> getEvents(int id) {
+    return _db
+        .collection('events')
+        .where('deviceId', isEqualTo: id)
+        .orderBy('timestamp')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
             .map((document) => document.data()['sensor'])
             .toList());
   }
 
-  // Stream<List> getEvents() {
-  //   return _db.collection('events').orderBy('timestamp').snapshots().map(
-  //       (snapshot) => snapshot.docs
-  //           .map((document) => document.data()['sensor'])
-  //           .toList());
+  // Future<List> getEvents(int id) {
+  //   var result = _db
+  //       .collection("events")
+  //       .where("deviceId", isEqualTo: id.toString())
+  //       .get();
+
+  //   Future.delayed(const Duration(milliseconds: 2000), () {
+  //     print(result.toString());
+  //   });
+
+  //   return null;
   // }
 }

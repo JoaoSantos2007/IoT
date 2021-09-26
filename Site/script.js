@@ -120,6 +120,7 @@ function tipo_light(dados, key, modificar) {
     section.innerHTML = ""
   }
   var nome = dados.name
+  var settings = dados.settings
   var lugar = dados.location
   section.innerHTML += `<div>`
   section.innerHTML += `<img src="/Site/images/light.png" alt="light"> `
@@ -132,6 +133,12 @@ function tipo_light(dados, key, modificar) {
   section.innerHTML += `<p>`
   section.innerHTML += `<strong>Local: </strong> ${lugar}`
   section.innerHTML += `</p>`
+  Object.entries(settings).forEach(
+    ([_key, value]) => {
+    section.innerHTML += `<p>`
+    section.innerHTML += `<strong>${_key}: </strong>${value} `
+    section.innerHTML += `</p>`
+     });
   section.innerHTML += `<div>`
   if (dados.currentValue == "true") {
     section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_${key}" onclick="acionar_botao('${key}')" checked>`

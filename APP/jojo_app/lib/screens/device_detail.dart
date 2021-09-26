@@ -5,6 +5,7 @@ import 'package:jojo_app/providers/device_provider.dart';
 import 'package:jojo_app/screens/device_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jojo_app/services/firestore_service_device.dart';
 import 'package:provider/provider.dart';
 
 class DeviceDetail extends StatefulWidget {
@@ -20,7 +21,6 @@ class DeviceDetail extends StatefulWidget {
 class _State extends State<DeviceDetail> {
   //Mqtt mqtt = Mqtt.getInstance();
   bool _switch = false;
-  List<double> data = [];
   bool isLoading = false;
   @override
   void initState() {
@@ -29,17 +29,17 @@ class _State extends State<DeviceDetail> {
 
   bottonAll(String tag) {
     Map<String, dynamic> event = {};
-    event.addAll({
-      '"eventType"': '"action-device"',
-      '"deviceId"': '${widget.device.deviceId}',
-      '"deviceType"': '"${widget.device.type}"',
-      '"deviceOrigem"': '"jojo-app"',
-      '"action"': {'"$tag"': '"${widget.device.settings[tag]}"'},
-    });
+    DateTime dateTime = DateTime.now();
 
-    // mqtt.publishMessage(
-    //   event.toString(),
-    // );
+    event.addAll({
+      "eventType": "action-device",
+      "deviceId": widget.device.deviceId,
+      "deviceType": "${widget.device.type}",
+      "deviceOrigem": "jojo-app",
+      "action": {"$tag": "${widget.device.settings[tag]}"},
+      "timestamp": dateTime.toUtc(),
+    });
+    FirestoreService().saveEvent(event);
   }
 
 //---------------------------------------------------------------------------
@@ -49,16 +49,22 @@ class _State extends State<DeviceDetail> {
     final Map<String, dynamic> settings =
         widget.device == null ? {} : widget.device.settings;
 
-    //data = widget.dataEventos;
-    data = widget.dataEventos.isEmpty ? [0.0] : widget.dataEventos;
-
-    // Future<void> createDataChart() async {
-    //   widget.eventos.forEach((element) {
+    // List<double> createDataChart(String type) {
+    //   List<double> _f = [];
+    //   var events = FirestoreService().getEvents(1);
+    //   events.forEach((element) {
     //     element.forEach((element) {
-    //       data.add(double.parse(element[widget.device.type]));
+    //       _f.add(double.parse(element[type]));
+    //       print(element[type]);
     //     });
     //   });
+    //   return _f;
     // }
+
+    // data1 = createDataChart('umidade');
+    // Future.delayed(const Duration(milliseconds: 2000), () {
+    //   print(data1);
+    // });
 
     final bottonLight = Expanded(
       child: ListView.builder(
@@ -83,8 +89,16 @@ class _State extends State<DeviceDetail> {
                     print(deviceProvider.toMap());
                     settings[settings.keys.elementAt(index)] =
                         _switch.toString();
+
+                    deviceProvider.changeId(widget.device.id);
+                    deviceProvider.changeDeviceId(widget.device.deviceId);
+                    deviceProvider.changeName(widget.device.name);
+                    deviceProvider.changeType(widget.device.type);
+                    deviceProvider.changeLocation(widget.device.location);
+                    deviceProvider.changeCurrentValue(value.toString());
                     deviceProvider.changeSettings(settings);
                     deviceProvider.saveDevice();
+
                     bottonAll(settings.keys.elementAt(index));
                   });
                 }),
@@ -593,7 +607,6 @@ class _State extends State<DeviceDetail> {
         Padding(
           padding: EdgeInsets.all(30.0),
           child: new Sparkline(
-            //data: data,
             data: widget.dataEventos.isEmpty ? [0.0] : widget.dataEventos,
             lineColor: Colors.grey[600],
             //pointsMode: PointsMode.all,

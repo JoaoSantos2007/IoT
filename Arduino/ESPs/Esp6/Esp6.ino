@@ -118,8 +118,6 @@ void mqtt_callback(char* topic, byte * payload, unsigned int length) {
 
 
 void reconnect_mqtt(void) {
-  if (!MQTT.connected()) {
-  }
   if (MQTT.connect(ID_MQTT)){
     Serial.println("Conectado com sucesso ao broker MQTT!");
     MQTT.subscribe(TOPICO_SUBSCRIBE);

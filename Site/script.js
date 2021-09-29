@@ -18,26 +18,9 @@ const firebaseConfig = {
 
 //Inicializa o Firebase com a constante contendo as credenciais do Firebase
 firebase.initializeApp(firebaseConfig)
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
-    var uid = user.uid;
-    // ...
-  } else {
-    // User is signed out
-    if (location.pathname == "/Site/login/index.html") {
-    } else {
-      window.location.href = ("/Site/login/index.html")
-    }
-  }
-});
-
 
 //Armazena as informações do database do firebase em uma variável
 let db = firebase.firestore();
-
-
 
 //Inicio
 function iniciar_index(tipo = "normal") {
@@ -135,10 +118,10 @@ function tipo_light(dados, key, modificar) {
   section.innerHTML += `</p>`
   Object.entries(settings).forEach(
     ([_key, value]) => {
-    section.innerHTML += `<p>`
-    section.innerHTML += `<strong>${_key}: </strong>${value} `
-    section.innerHTML += `</p>`
-     });
+      section.innerHTML += `<p>`
+      section.innerHTML += `<strong>${_key}: </strong>${value} `
+      section.innerHTML += `</p>`
+    });
   section.innerHTML += `<div>`
   if (dados.currentValue == "true") {
     section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_${key}" onclick="acionar_botao('${key}')" checked>`
@@ -152,7 +135,7 @@ function tipo_light(dados, key, modificar) {
   }
 }
 
-function tipo_umidade(dados, key, modificar) {
+function carregar_layout(dados, key, modificar) {
   var div_lista = window.document.querySelector('div#lista')
   if (modificar == false) {
     var section = window.document.createElement('section')
@@ -163,9 +146,9 @@ function tipo_umidade(dados, key, modificar) {
   }
   var nome = dados.name
   var lugar = dados.location
-  var valor = dados.currentValue
+  var tipo = dados.type
   section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/umidade.png" alt="umidade">`
+  section.innerHTML += `<img src="/Site/images/${tipo}.png" alt="${tipo}">`
   section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
   section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
   section.innerHTML += `</div>`
@@ -176,6 +159,12 @@ function tipo_umidade(dados, key, modificar) {
   section.innerHTML += `<strong>Local: </strong>${lugar}`
   section.innerHTML += `</p>`
   section.innerHTML += `<strong>`
+  return [div_lista, section]
+}
+
+function tipo_umidade(dados, key, modificar) {
+  var [div_lista,section] = carregar_layout(dados,key,modificar)
+  var valor = dados.currentValue
   section.innerHTML += `<p>`
   section.innerHTML += `<span id="div_valor">Valor:</span>`
   section.innerHTML += `<span id="valor">${valor}</span>`
@@ -187,29 +176,8 @@ function tipo_umidade(dados, key, modificar) {
 }
 
 function tipo_presenca(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var lugar = dados.location
+  var [div_lista,section] = carregar_layout(dados,key,modificar)
   var valor = dados.currentValue
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/camera.png" alt="presença">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<strong>`
   section.innerHTML += `<p>`
   section.innerHTML += `<span id="div_valor">Valor:</span>`
   section.innerHTML += `<span id="valor">${valor}</span>`
@@ -221,29 +189,8 @@ function tipo_presenca(dados, key, modificar) {
 }
 
 function tipo_temperatura(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var lugar = dados.location
+  var [div_lista,section] = carregar_layout(dados,key,modificar)
   var valor = dados.currentValue
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/temperatura.png" alt="temperatura">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<strong>`
   section.innerHTML += `<p>`
   section.innerHTML += `<span id="div_valor">Valor:</span>`
   section.innerHTML += `<span id="valor">${valor}</span>`
@@ -255,29 +202,8 @@ function tipo_temperatura(dados, key, modificar) {
 }
 
 function tipo_proximidade(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var lugar = dados.location
+  var [div_lista,section] = carregar_layout(dados,key,modificar)
   var valor = dados.currentValue
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/proximidade.png" alt="proximidade">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<strong>`
   section.innerHTML += `<p>`
   section.innerHTML += `<span id="div_valor">Valor:</span>`
   section.innerHTML += `<span id="valor">${valor}</span>`
@@ -289,29 +215,8 @@ function tipo_proximidade(dados, key, modificar) {
 }
 
 function tipo_luminosidade(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var lugar = dados.location
+  var [div_lista,section] = carregar_layout(dados,key,modificar)
   var valor = dados.currentValue
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/luminosidade.png" alt="luminosidade">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<strong>`
   section.innerHTML += `<p>`
   section.innerHTML += `<span id="div_valor">Valor:</span>`
   section.innerHTML += `<span id="valor">${valor}</span>`
@@ -323,27 +228,7 @@ function tipo_luminosidade(dados, key, modificar) {
 }
 
 function tipo_tv(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var lugar = dados.location
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/tv.png" alt="tv">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${nome}`
-  section.innerHTML += `</p>`
+  var [div_lista,section] = carregar_layout(dados,key,modificar)
   section.innerHTML += `<div>`
   section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="tv_actions('${key}','tag#power_tv')">`
   section.innerHTML += `<img id="source_button" src="/Site/images/source.png" alt="source" onclick="tv_actions('${key}','tag#source_tv')">`
@@ -370,27 +255,8 @@ function tipo_tv(dados, key, modificar) {
 }
 
 function tipo_fan(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var lugar = dados.location
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/fan.png" alt="ventilador">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
+  var [div_lista,section] = carregar_layout(dados,key,modificar)
+  var valor = dados.currentValue
   section.innerHTML += `<div>`
   section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="fan_actions('${key}','tag#power_fan')">`
   section.innerHTML += `<img id="invert_button" src="/Site/images/source.png" alt="invert" onclick="fan_actions('${key}','tag#invert_fan')">`
@@ -411,27 +277,8 @@ function tipo_fan(dados, key, modificar) {
 }
 
 function tipo_air(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var lugar = dados.location
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/snow.png" alt="AC">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
+  var [div_lista,section] = carregar_layout(dados,key,modificar)
+  var valor = dados.currentValue
   section.innerHTML += `<div>`
   section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="air_actions('${key}','tag#power_air')">`
   section.innerHTML += `<img id="invert_button" src="/Site/images/source.png" alt="invert" onclick="air_actions('${key}','tag#invert_air')">`
@@ -606,53 +453,4 @@ var audio = new Audio()
 function reproduzir_audio() {
   audio.src = "audios/audio.mp3"
   audio.play()
-}
-
-
-function login() {
-  var email = String(document.getElementById("email-field").value)
-  var password = String(document.getElementById("password-field").value)
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(function (firebaseUser) {
-      // Success 
-      window.location.href = ("/Site/index.html")
-    })
-    .catch(function (error) {
-      // Error Handling
-      window.alert("Email ou senha errado!")
-    });
-}
-
-function desconectar() {
-  firebase.auth().signOut().then(() => {
-    // Sign-out successful.
-  }).catch((error) => {
-    // An error happened.
-  });
-}
-
-function carregar_dados_usuario() {
-  var div_name = window.document.getElementById("div-name")
-  var div_email = window.document.getElementById("div-email")
-  var div_foto = window.document.getElementById("div-foto")
-  var div_email_verif = window.document.getElementById("div-email_verif")
-
-  const user = firebase.auth().currentUser;
-  if (user != null) {
-    // The user object has basic properties such as display name, email, etc.
-    const displayName = user.displayName;
-    const email = user.email;
-    const photoURL = user.photoURL;
-    const emailVerified = user.emailVerified;
-
-    // The user's ID, unique to the Firebase project. Do NOT use
-    // this value to authenticate with your backend server, if
-    // you have one. Use User.getToken() instead.
-    const uid = user.uid;
-
-    div_name.innerHTML += `${displayName}`
-    div_email.innerHTML += `${email}`
-    div_foto.innerHTML += `${photoURL}`
-    div_email_verif.innerHTML = `${emailVerified}`
-  }
 }

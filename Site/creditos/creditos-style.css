@@ -1,0 +1,27 @@
+body{
+    background:rgb(30, 30, 30);
+    font: normal 150% Arial;
+    margin: 0%;
+    padding: 0%;
+}
+
+/* Estilo da pág de Créditos */
+div#creditos{
+    text-align: center;
+    padding: 5%;
+    font: normal 70pt Arial;
+}
+div#color1{
+    color: rgb(0, 255, 0);
+}
+div#color2{
+    color:slateblue;
+}
+div#name{
+    color: rgb(255, 0, 0);
+}
+div#Icons{
+    text-align: center;
+    font: normal 60pt Arial;
+    color: royalblue;
+}

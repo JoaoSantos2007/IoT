@@ -5,20 +5,6 @@ let existe = false
 let array_local = []
 let array_ID = []
 
-//Armazena as credenciais do Firebase em uma constante
-const firebaseConfig = {
-  apiKey: "AIzaSyDOCg6kqirThQKx3R6zd5VNphTqbbuA1Rc",
-  authDomain: "fir-crud-e99a4.firebaseapp.com",
-  projectId: "fir-crud-e99a4",
-  storageBucket: "fir-crud-e99a4.appspot.com",
-  messagingSenderId: "319998441027",
-  appId: "1:319998441027:web:01e4f3fe3d2a57dd3c46f6",
-  measurementId: "G-7437FP6V3J"
-};
-
-//Inicializa o Firebase com a constante contendo as credenciais do Firebase
-firebase.initializeApp(firebaseConfig)
-
 //Armazena as informações do database do firebase em uma variável
 let db = firebase.firestore();
 
@@ -79,8 +65,8 @@ function iniciar_index(tipo = "normal") {
 
 //Tipos
 function criarItens(dados, key, modificar) {
-  var filtro = String((window.document.getElementById("filtro").value))
-  if (filtro == "all" || filtro == dados.type || filtro == dados.location || filtro == dados.deviceId) {
+  //var filtro = String((window.document.getElementById("filtro").value))
+  //if (filtro == "all" || filtro == dados.type || filtro == dados.location || filtro == dados.deviceId) {
     if (dados.type == "light") tipo_light(dados, key, modificar)
     else if (dados.type == "umidade") tipo_umidade(dados, key, modificar)
     else if (dados.type == "temperatura") tipo_temperatura(dados, key, modificar)
@@ -90,32 +76,13 @@ function criarItens(dados, key, modificar) {
     else if (dados.type == "fan") tipo_fan(dados, key, modificar)
     else if (dados.type == "air") tipo_air(dados, key, modificar)
     else if (dados.type == "presenca") tipo_presenca(dados, key, modificar)
-  }
+  //}
 }
 
 function tipo_light(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
+  var [div_lista,section] = carregar_layout(dados,key,modificar)
+  var valor = dados.currentValue
   var settings = dados.settings
-  var lugar = dados.location
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/light.png" alt="light"> `
-  section.innerHTML += `<img id = "edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += `<img id = "delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome} `
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong> ${lugar}`
-  section.innerHTML += `</p>`
   Object.entries(settings).forEach(
     ([_key, value]) => {
       section.innerHTML += `<p>`
@@ -123,7 +90,7 @@ function tipo_light(dados, key, modificar) {
       section.innerHTML += `</p>`
     });
   section.innerHTML += `<div>`
-  if (dados.currentValue == "true") {
+  if (valor == "true") {
     section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_${key}" onclick="acionar_botao('${key}')" checked>`
   } else {
     section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_${key}" onclick="acionar_botao('${key}')">`
@@ -352,25 +319,6 @@ function deletar(chave) {
   if (window.confirm("Você realmente quer apagar esse registro?")) {
     db.collection(Categoria).doc(chave).delete()
   }
-}
-
-function criar_registro() {
-  reproduzir_audio()
-  var type = String((window.document.getElementById("txttype").value))
-  var name = String((window.document.getElementById("txtname").value))
-  var local = String((window.document.getElementById("txtlocation").value))
-  var id = Number((window.document.getElementById("txtid").value))
-  db.collection(Categoria).doc().set({
-    'deviceId': id,
-    'type': type,
-    'name': name,
-    'location': local,
-    'currentValue': ' - - '
-  })
-  window.alert("Registro criado")
-  setInterval(function () {
-    window.location.href = ("/Site/index.html")
-  }, 1000)
 }
 
 function editar_registro(key) {

@@ -1,6 +1,8 @@
 body{
     background:rgb(30, 30, 30);
-    font: normal 150% Arial;
+    font: normal Arial;
+    font-size: 0.10%;
+    font-size: 155%;
     margin: 0%;
     padding: 0%;
 }

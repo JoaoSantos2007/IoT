@@ -8,6 +8,11 @@ let array_ID = []
 //Armazena as informações do database do firebase em uma variável
 let db = firebase.firestore();
 
+var screenWidth = window.innerWidth;
+var screenHeight = window.innerHeight;
+
+console.log(screenHeight)
+console.log(screenWidth)
 //Inicio
 function iniciar_index(tipo = "normal") {
   var div_lista = window.document.getElementById("lista")
@@ -89,9 +94,9 @@ function carregar_layout(dados, key, modificar) {
   var tipo = dados.type
   section.innerHTML = ""
   section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/${tipo}.png" alt="${tipo}">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
+  section.innerHTML += `<img src="/Site/images/${tipo}.png" alt="${tipo}" height="3.17%" width="2.3%">`
+  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')" height="3.17%" width="2.3%">`
+  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')" height="3.17%" width="2.3%>"`
   section.innerHTML += `</div>`
   section.innerHTML += `<p>`
   section.innerHTML += `<strong>Nome: </strong>${nome}`
@@ -123,7 +128,7 @@ function carregar_layout(dados, key, modificar) {
 }
 
 function tipo_light(dados, key, section) {
-  var valor = dados.currentValue
+  var valor = dados.currentValue == 'true' ? true : false
   var settings = dados.settings
   Object.entries(settings).forEach(
     ([_key, value]) => {
@@ -132,11 +137,7 @@ function tipo_light(dados, key, section) {
       section.innerHTML += `</p>`
     });
   section.innerHTML += `<div>`
-  if (valor == "true") {
-    section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_${key}" onclick="acionar_botao('${key}')" checked>`
-  } else {
-    section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_${key}" onclick="acionar_botao('${key}')">`
-  }
+  section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_${key}" onclick="acionar_botao('${key}')"`
   section.innerHTML += `<label for="liga-desliga_${key}" class="liga-desliga__botao"></label>`
   section.innerHTML += `</div>`
 }
@@ -277,19 +278,21 @@ function editar_registro(key) {
     //Opções
     select = document.createElement('select')
     select.setAttribute('id', 'txttype_' + key)
-    select.innerHTML += `<option value="light">Luz</option>`
-    select.innerHTML += `<option value="temperatura">Temperatura</option>`
-    select.innerHTML += `<option value="proximidade">Proximidade</option>`
-    select.innerHTML += `<option value="luminosidade">Luminosidade</option>`
-    select.innerHTML += `<option value="tv">TV</option>`
-    select.innerHTML += `<option value="air">Ar-Condicionado</option>`
-    select.innerHTML += `<option value="fan">Ventilador</option>`
-    select.innerHTML += `<option value="umidade">Umidade</option>`
-    select.innerHTML += `<option value="presenca">Presença</option>`
+    select.innerHTML += `<option id = 'opt_light_${key}' value="light">Luz</option>`
+    select.innerHTML += `<option id = 'opt_temperatura_${key}' value="temperatura">Temperatura</option>`
+    select.innerHTML += `<option id = 'opt_proximidade_${key}' value="proximidade">Proximidade</option>`
+    select.innerHTML += `<option id = 'opt_luminosidade_${key}' value="luminosidade">Luminosidade</option> `
+    select.innerHTML += `<option id = 'opt_tv_${key}' value="tv">TV</option> `
+    select.innerHTML += `<option id = 'opt_air_${key}' value="air">Ar-Condicionado</option>`
+    select.innerHTML += `<option id = 'opt_fan_${key}' value="fan">Ventilador</option>`
+    select.innerHTML += `<option id = 'opt_umidade_${key}' value="umidade">Umidade</option>`
+    select.innerHTML += `<option id = 'opt_presenca_${key}' value="presenca">Presença</option>`
     section.appendChild(select)
+    section.innerHTML += `</div>`
+    var opcao = window.document.getElementById(`opt_${tipo}_${key}`)
+    opcao.setAttribute('selected','true')
 
     //Botões atualizar e calcelar
-    section.innerHTML += `</div>`
     section.innerHTML += `<div>`
     section.innerHTML += `<input type="button" value="Atualizar" onclick="reproduzir_audio(),enviar('${key}')">`
     section.innerHTML += `<input type="button" value="Cancelar" onclick="criarItens('${key}', true),reproduzir_audio()">`

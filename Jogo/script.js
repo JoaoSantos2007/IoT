@@ -18,6 +18,13 @@ function detecta(event) {
     //rotacionar(tecla)
 }
 
+// while (true) {
+//     setInterval(function () { 
+//         console.log("OK")
+//     }, 5000);
+//     console.log('ola')
+// }
+
 // function rotacionar(tecla) {
 //     var snake = window.document.getElementById("snake")
 //     if (tecla == "ArrowLeft") {

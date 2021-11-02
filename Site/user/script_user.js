@@ -12,12 +12,9 @@ const firebaseConfig = {
 //Inicializa o Firebase com a constante contendo as credenciais do Firebase
 firebase.initializeApp(firebaseConfig)
 
+
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        var uid = user.uid;
-        // ...
     } else {
         // User is signed out
         if (location.pathname == "/Site/user/login/login.html") {
@@ -28,11 +25,14 @@ firebase.auth().onAuthStateChanged((user) => {
 });
 
 
+
 function login() {
     var email = String((document.getElementById("email")).value)
     var password = String((document.getElementById("password")).value)
     firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(function (firebaseUser) {
+        .then((userCredential) => {
+            var user = userCredential.user;
+            console.log(user.email)
             // Success 
             window.location.href = ("/Site/index.html")
         })
@@ -48,24 +48,20 @@ function carregar_dados_usuario() {
     var div_foto = window.document.getElementById("div-foto")
     var div_email_verif = window.document.getElementById("div-email_verif")
 
-    const user = firebase.auth().currentUser;
-    if (user != null) {
-        // The user object has basic properties such as display name, email, etc.
+    firebase.auth().onAuthStateChanged((user) => {
         const displayName = user.displayName;
         const email = user.email;
         const photoURL = user.photoURL;
         const emailVerified = user.emailVerified;
-
-        // The user's ID, unique to the Firebase project. Do NOT use
-        // this value to authenticate with your backend server, if
-        // you have one. Use User.getToken() instead.
+        console.log(email)
+        console.log("OK")
         const uid = user.uid;
 
         div_name.innerHTML += `${displayName}`
         div_email.innerHTML += `${email}`
         div_foto.innerHTML += `${photoURL}`
-        div_email_verif.innerHTML = `${emailVerified}`
-    }
+        div_email_verif.innerHTML += `${emailVerified}`
+    });
 }
 
 function desconectar() {
@@ -76,3 +72,4 @@ function desconectar() {
         // An error happened.
     });
 }
+

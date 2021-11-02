@@ -5,25 +5,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/Site/images/favicon-site.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/Site/images/user.ico" type="image/x-icon">
     <title>Usuário</title>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="/Site/menu/style.css">
     <link rel="stylesheet" href="/Site/estilo.css">
+    <link rel="stylesheet" href="style-user.css">
 </head>
 
 <body>
     <div id="menu">
-        <ul>
-            <li id="menu"><a href="/Site/index.html">Home</a></li>
-            <li id="menu"><a href="/Site/local/local.html">Local</a></li>
-            <li id="menu"><a href="/Site/id/id.html">ID</a></li>
-            <li id="menu"><a href="/Site/cloud/cloud.html">Cloud</a></li>
-            <li id="menu"><a href="/Site/creditos/creditos.html">Créditos</a></li>
-            <li id="add"><a href="/Site/createregisto/create.html"><img src="/Site/images/add.png" alt="add"></a></li>
-            <li id="imagem"><a href="/Site/user/user.html"><img src="/Site/images/user.png" alt="user"></a></li>
+        <ul id='ul-menu'>
+
         </ul>
     </div>
     <header>
@@ -31,26 +27,30 @@
     </header>
     <section id="section_user">
         <div id="div-name">
-            Display Name:
+            <strong>Display Name: </strong>
+            
         </div>
         <div id="div-email">
-            Email:
+            <strong>Email: </strong> 
         </div>
         <div id="div-foto">
-            Foto:
+            <strong>Foto: </strong> 
         </div>
         <div id="div-email_verif">
-            Email verificado:
+            <strong>Email verificado: </strong>
         </div>
         <input type="button" value="Update" onclick="criar_registro()">
-        <input type="button" value="Log out" onclick="desconectar()">
-        <input type="button" value="delete user">
+        <input id="btn-out" type="button" value="Log out" onclick="desconectar()">
+        <input id="btn-delete-user" type="button" value="Delete Account">
     </section>
     <footer>
         <p>&copy; IOT Project</p>
     </footer>
-
+    <script src="/Site/menu/menu.js"></script>
     <script src="/Site/user/script_user.js"></script>
+    <script>
+        carregar_dados_usuario()
+    </script>
 </body>
 
 </html>

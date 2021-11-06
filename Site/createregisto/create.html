@@ -11,19 +11,11 @@
     <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
     <link rel="stylesheet" href="/Site/menu/style.css">
-    <link rel="stylesheet" href="create.css">
+    <link rel="stylesheet" href="/Site/createregisto/create.css">
 </head>
 <body>
     <div id="menu">
-        <ul>
-            <li id="menu"><a href="/Site/index.html">Home</a></li>
-            <li id="menu"><a href="/Site/local/local.html">Local</a></li>
-            <li id="menu"><a href="/Site/id/id.html">ID</a></li>
-            <li id="menu"><a href="/Site/cloud/cloud.html">Cloud</a></li>
-            <li id="menu"><a href="/Site/creditos/creditos.html">Créditos</a></li>
-            <li id="add"><a href="/Site/createregisto/create.html"><img src="/Site/images/add.png" alt="add"></a></li>
-            <li id="imagem"><a href="/Site/user/user.html"><img src="/Site/images/user.png" alt="user"></a></li>
-        </ul>
+        <ul id='ul-menu'></ul>
     </div>
     <header>
         <h1>Criar Cadastro de Dispositivo</h1>
@@ -61,8 +53,10 @@
         <input type="button" value="Submit" onclick="criar_registro()">
     </section>
     <footer>
-        <p>&copy; IOT Project</p>
+        <p>IOT Project &copy;</p>
     </footer>
-    <script src="/Site/script.js"></script>
+    <script src="/Site/menu/menu.js"></script>
+    <script src="/Site/autentication_firebase.js"></script>
+    <script src="/Site/createregisto/create.js"></script>
 </body>
 </html>

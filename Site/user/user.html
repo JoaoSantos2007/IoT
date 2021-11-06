@@ -27,10 +27,10 @@
         <h1>Definições de Usuário</h1>
     </header>
     <section id="section_user">
-        <div>
-            <img id='img-user' src="/Site/images/user.ico" alt="" width="64px" height="64px" onclick="window.location.href = ('/Site/user/update_user_image/updateImage.html')">
+        <div id="div-displayName">
+            <img id='img-user' src="/Site/images/user.png" alt="img-user" width="64px" height="64px" onclick="window.location.href = ('/Site/user/update_user_image/updateImage.html')">
             <div id="div-name"></div>
-            <img id = "edit_displayName" src="/Site/images/edit.png" alt="" onclick="">
+            <img id = "edit_displayName" src="/Site/images/edit.png" alt="" onclick="edit_displayName()">
         </div>
         <div id="div-email">
             <strong>Email: </strong>
@@ -41,6 +41,7 @@
     <footer>
         <p>IOT Project &copy;</p>
     </footer>
+    <script src="/Site/autentication_firebase.js"></script>
     <script src="/Site/menu/menu.js"></script>
     <script src="/Site/user/script_user.js"></script>
     <script>

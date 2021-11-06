@@ -1,31 +1,3 @@
-//Armazena as credenciais do Firebase em uma constante
-const firebaseConfig = {
-    apiKey: "AIzaSyDOCg6kqirThQKx3R6zd5VNphTqbbuA1Rc",
-    authDomain: "fir-crud-e99a4.firebaseapp.com",
-    projectId: "fir-crud-e99a4",
-    storageBucket: "fir-crud-e99a4.appspot.com",
-    messagingSenderId: "319998441027",
-    appId: "1:319998441027:web:01e4f3fe3d2a57dd3c46f6",
-    measurementId: "G-7437FP6V3J"
-};
-
-//Inicializa o Firebase com a constante contendo as credenciais do Firebase
-firebase.initializeApp(firebaseConfig)
-
-
-firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-    } else {
-        // User is signed out
-        if (location.pathname == "/Site/user/login/login.html") {
-        } else {
-            window.location.href = ("/Site/user/login/login.html")
-        }
-    }
-});
-
-
-
 function login() {
     var email = String((document.getElementById("email")).value)
     var password = String((document.getElementById("password")).value)
@@ -101,7 +73,7 @@ function update_user_image(){
         var image = window.document.getElementById("image-user")
         var url = window.document.getElementById("url-image")
         if(photoURL == null){
-            image.setAttribute("src","/Site/images/user.ico")
+            image.setAttribute("src","/Site/images/user.png")
         }else{
             image.setAttribute("src",String(photoURL))
             url.setAttribute("value",String(photoURL))
@@ -138,5 +110,44 @@ function verif_email(){
 }
 
 function edit_displayName(){
-    
+    var displayName_DIV = window.document.getElementById("div-displayName")
+
+    window.document.getElementById("edit_displayName").remove()
+    window.document.getElementById("div-name").remove()
+
+    var TxtDisplayName = window.document.createElement("input")
+    TxtDisplayName.setAttribute("type","text")
+    TxtDisplayName.setAttribute("id","txt_displayName")
+    firebase.auth().onAuthStateChanged((user) => {
+        
+        TxtDisplayName.setAttribute("value",user.displayName)
+    });
+    displayName_DIV.appendChild(TxtDisplayName)
+
+    var img_save_DisplayName = window.document.createElement("img")
+    img_save_DisplayName.setAttribute("src","/Site/images/checked.png")
+    img_save_DisplayName.setAttribute("onclick","save_edit_displayName()")
+    img_save_DisplayName.setAttribute("id","img_save_edit_displayName")
+    displayName_DIV.appendChild(img_save_DisplayName)
+
+    var img_cancel_DisplayName = window.document.createElement("img")
+    img_cancel_DisplayName.setAttribute("src","/Site/images/error.png")
+    img_cancel_DisplayName.setAttribute("onclick","window.location.reload()")
+    img_cancel_DisplayName.setAttribute("id","img_cancel_edit_DisplayName")
+    displayName_DIV.appendChild(img_cancel_DisplayName)
+}
+
+function save_edit_displayName(){
+    var txt_displayName_save = String(window.document.getElementById("txt_displayName").value)
+    firebase.auth().onAuthStateChanged((user) => {
+        user.updateProfile({
+            displayName: txt_displayName_save,
+        }).then(() => {
+            setInterval(function () {
+                window.location.reload()
+            }, 1000)
+        }).catch((error) => {
+            window.alert("Erro ao alterar DisplayName")
+        });  
+    });
 }

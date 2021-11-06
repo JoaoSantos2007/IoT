@@ -22,6 +22,7 @@ function iniciar_index(tipo = "normal") {
     documentos.docChanges().forEach(function (changes) {
       const documento = changes.doc
       let key = documento.id
+      var dados = documento.data()
       if (changes.type === "added") {
         if (tipo == "normal") {
           criarItens(key, false)

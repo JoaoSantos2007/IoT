@@ -31,7 +31,6 @@ div#div-name{
     align-items: center;
     justify-content: center;
     margin-left: 5%;
-    margin-top: px;
     font-size: 32px;
     font: bold;
     color: red;
@@ -87,6 +86,16 @@ img#check{
 }
 
 img#edit_displayName{
+    margin-left: 10%;
+    cursor: pointer;
+}
+
+img#img_save_edit_displayName{
+    margin-left: 10%;
+    cursor: pointer;
+}
+
+img#img_cancel_edit_DisplayName{
     margin-left: 10%;
     cursor: pointer;
 }

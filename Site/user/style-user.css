@@ -1,3 +1,12 @@
+body{
+    background:rgb(30, 30, 30);
+    font: normal Arial;
+    font-size: 0.10%;
+    font-size: 155%;
+    margin: 0%;
+    padding: 0%;
+}
+
 header{
     padding: 10px;
     color: rgb(255, 0, 0);
@@ -11,4 +20,73 @@ section#section_user{
     width: 500px;
     margin: auto;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.418);
+}
+
+img#img-user{
+    border-radius: 360px;
+    cursor: pointer;
+}
+
+div#div-name{
+    align-items: center;
+    justify-content: center;
+    margin-left: 5%;
+    margin-top: px;
+    font-size: 32px;
+    font: bold;
+    color: red;
+    display: inline-block;
+    text-align: center;
+}
+
+input#btn-out{
+    background-color: red;
+    border-radius: 6px;
+    color: white;
+    font: bolder;
+    width: 70px;
+}
+
+input#btn-delete-user{
+    background-color: rgb(235, 153, 2);
+    border-radius: 6px;
+    color: white;
+}
+
+input#btn_verif_email{
+    background-color: blue;
+    color: white;
+    border-radius: 6px;
+}
+
+img#image-user{
+    border-radius: 360px;
+    width: 140px;
+    height: 140px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+div#teste3{
+    width: 100%;
+    margin-top: 8px;
+    border-radius: 10px;
+    background-color: darkred;
+}    
+
+img#cancel{
+    margin-left: 50%;
+    cursor: pointer;
+}
+
+img#check{
+    margin-left: 15%;
+    cursor: pointer;
+}
+
+img#edit_displayName{
+    margin-left: 10%;
+    cursor: pointer;
 }

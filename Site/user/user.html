@@ -12,7 +12,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
     <link rel="stylesheet" href="/Site/menu/style.css">
-    <link rel="stylesheet" href="/Site/estilo.css">
+    <!-- 
+        <link rel="stylesheet" href="/Site/estilo.css"> -->
     <link rel="stylesheet" href="style-user.css">
 </head>
 
@@ -26,25 +27,19 @@
         <h1>Definições de Usuário</h1>
     </header>
     <section id="section_user">
-        <div id="div-name">
-            <strong>Display Name: </strong>
-            
+        <div>
+            <img id='img-user' src="/Site/images/user.ico" alt="" width="64px" height="64px" onclick="window.location.href = ('/Site/user/update_user_image/updateImage.html')">
+            <div id="div-name"></div>
+            <img id = "edit_displayName" src="/Site/images/edit.png" alt="" onclick="">
         </div>
         <div id="div-email">
-            <strong>Email: </strong> 
+            <strong>Email: </strong>
         </div>
-        <div id="div-foto">
-            <strong>Foto: </strong> 
-        </div>
-        <div id="div-email_verif">
-            <strong>Email verificado: </strong>
-        </div>
-        <input type="button" value="Update" onclick="criar_registro()">
         <input id="btn-out" type="button" value="Log out" onclick="desconectar()">
-        <input id="btn-delete-user" type="button" value="Delete Account">
+        <input id="btn-delete-user" type="button" value="Delete Account" onclick="delete_user()">
     </section>
     <footer>
-        <p>&copy; IOT Project</p>
+        <p>IOT Project &copy;</p>
     </footer>
     <script src="/Site/menu/menu.js"></script>
     <script src="/Site/user/script_user.js"></script>

@@ -1,17 +1,4 @@
 //Firebase
-//Firebase
-//Firebase
-//Firebase
-//Firebase
-//Firebase
-//Firebase
-//Firebase
-//Firebase
-//Firebase
-//Firebase
-//Firebase
-//Firebase
-//Firebase
 
 const Categoria = "devices"
 let existe = false

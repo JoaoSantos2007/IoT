@@ -1,52 +1,57 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel="shortcut icon" href="../files/user.ico" type="image/x-icon">
+        <title>Usuário</title>
+        <link rel="stylesheet" href="user.css">
+        <link rel="stylesheet" href="../reset.css">
+        <link rel="stylesheet" href="../style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/Site/images/user.ico" type="image/x-icon">
-    <title>Usuário</title>
-    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
-    <link rel="stylesheet" href="/Site/menu/style.css">
-    <!-- 
-        <link rel="stylesheet" href="/Site/estilo.css"> -->
-    <link rel="stylesheet" href="style-user.css">
-</head>
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li id="menu"><a href="../index.html">Home</a></li>
+                    <li id="menu"><a href="../cloud/cloud.html">Cloud</a></li>
+                    <li id="menu"><a href="../creditos/creditos.html">Créditos</a></li>
+                    <li id="add"><a  href="../createregisto/create.html"><img src="../files/add.png" alt="Imagem ancorada para a tela de criação de registros"></a></li>
+                    <li id="user"><a href="../user/user.html"><img src="../files/conf.png" alt="Imagem ancorada para a tela de configuração do usuário"></a></li>
+                </ul>  
+            </nav>
 
-<body>
-    <div id="menu">
-        <ul id='ul-menu'>
+            <p>Definições de Usuário</h1>
+        </header>
 
-        </ul>
-    </div>
-    <header>
-        <h1>Definições de Usuário</h1>
-    </header>
-    <section id="section_user">
-        <div id="div-displayName">
-            <img id='img-user' src="/Site/images/user.png" alt="img-user" width="64px" height="64px" onclick="window.location.href = ('/Site/user/update_user_image/updateImage.html')">
-            <div id="div-name"></div>
-            <img id = "edit_displayName" src="/Site/images/edit.png" alt="" onclick="edit_displayName()">
-        </div>
-        <div id="div-email">
-            <strong>Email: </strong>
-        </div>
-        <input id="btn-out" type="button" value="Log out" onclick="desconectar()">
-        <input id="btn-delete-user" type="button" value="Delete Account" onclick="delete_user()">
-    </section>
-    <footer>
-        <p>IOT Project &copy;</p>
-    </footer>
-    <script src="/Site/autentication_firebase.js"></script>
-    <script src="/Site/menu/menu.js"></script>
-    <script src="/Site/user/script_user.js"></script>
-    <script>
-        carregar_dados_usuario()
-    </script>
-</body>
+        <main>
+            <section>
+                <div id="div-displayName">
+                    <img id='img-user' src="../files/user.png" alt="Imagem do usuário" width="64px" height="64px" onclick="window.location.href = ('update_user_image/updateImage.html')">
+                    <div id="div-name"></div>
+                    <img id = "edit_displayName" src="../files/edit.png" alt="" onclick="edit_displayName()">
+                </div>
+                <div id="div-email">
+                    <strong>Email: </strong>
+                </div>
+                <input id="btn-out" type="button" value="Log out" onclick="desconectar()">
+                <input id="btn-delete-user" type="button" value="Delete Account" onclick="delete_user()">
+            </section> 
+
+        </main>
+
+        <footer>
+            <p>IOT Project &copy;</p>
+        </footer>
+        
+        <script src="../autentication_firebase.js"></script>
+        <script src="user.js"></script>
+    </body>
 
 </html>

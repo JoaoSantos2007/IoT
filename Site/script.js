@@ -39,7 +39,7 @@ function criarItens(key, modificar) {
 
 
 function carregar_layout(dados, key, modificar) {
-  var div_lista = window.document.querySelector('body')
+  var div_lista = window.document.querySelector('main')
   if (modificar == false) {
     var section = window.document.createElement('section')
     section.setAttribute('id', key)
@@ -52,9 +52,9 @@ function carregar_layout(dados, key, modificar) {
   var tipo = dados.type
   section.innerHTML = ""
   section.innerHTML += `<div>`
-  section.innerHTML += `<img src="${path_images}${tipo}.png" alt="${tipo}" height="3.17%" width="2.3%">`
-  section.innerHTML += `<img id="edit" src="${path_images}edit.png" alt="edit" onclick="editar_registro('${key}')" height="3.17%" width="2.3%">`
-  section.innerHTML += ` <img id="delete" src="${path_images}delete.png" alt="delete" onclick="deletar('${key}')" height="3.17%" width="2.3%">`
+  section.innerHTML += `<img src="${path_images}${tipo}.png" alt="${tipo}" height="64px" width="64px">`
+  section.innerHTML += `<img id="edit" src="${path_images}edit.png" alt="edit" onclick="editar_registro('${key}')" height="32px" width="32px">`
+  section.innerHTML += ` <img id="delete" src="${path_images}delete.png" alt="delete" onclick="deletar('${key}')" height="32px" width="32px">`
   section.innerHTML += `</div>`
   section.innerHTML += `<p>`
   section.innerHTML += `<strong>Nome: </strong>${nome}`

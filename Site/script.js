@@ -1,90 +1,45 @@
-//Firebase
-
 const Categoria = "devices"
-let existe = false
-let array_local = []
-let array_ID = []
 
 //Armazena as informações do database do firebase em uma variável
 let db = firebase.firestore();
 
-var screenWidth = window.innerWidth;
-var screenHeight = window.innerHeight;
-
-var path_images = "/Site/images/"
-
-console.log(screenHeight)
-console.log(screenWidth)
-//Inicio
-function iniciar_index(tipo = "normal") {
-  var div_lista = window.document.getElementById("lista")
-  div_lista.innerHTML = ""
-
-  db.collection(Categoria).onSnapshot(function (documentos) {
-    documentos.docChanges().forEach(function (changes) {
-      const documento = changes.doc
-      let key = documento.id
-      var dados = documento.data()
-      if (changes.type === "added") {
-        if (tipo == "normal") {
-          criarItens(key, false)
-        } else if (tipo == "local") {
-          for (var i in array_local) {
-            if (array_local[i] == dados.location) {
-              existe = true
-            }
-          }
-          if (existe) {
-            existe = false
-          } else {
-            var filtro_local = window.document.getElementById("filtro")
-            filtro_local.innerHTML += `<option value="${dados.location}">${dados.location}</option>`
-            array_local.push(dados.location)
-          }
-          criarItens(key, false)
-        } else if (tipo == "ID") {
-          for (var i in array_ID) {
-            if (array_ID[i] == dados.deviceId) {
-              existe = true
-            }
-          }
-          if (existe) {
-            existe = false
-          } else {
-            var filtro = window.document.getElementById("filtro")
-            filtro.innerHTML += `<option value="${dados.deviceId}">${dados.deviceId}</option>`
-            array_ID.push(dados.deviceId)
-          }
-          criarItens(key, false)
-        }
+var path_images = "files/"
 
 
-      } else if (changes.type === "modified") {
-        criarItens(key, true)
+db.collection(Categoria).onSnapshot(function (documentos) {
+  documentos.docChanges().forEach(function (changes) {
+    const documento = changes.doc
+    let key = documento.id
+    var dados = documento.data()
+    if (changes.type === "added") {
+      criarItens(key, false)
 
-      } else if (changes.type === "removed") {
-        var apagar = window.document.getElementById(key)
-        apagar.innerHTML = ""
-      }
-    })
+    } else if (changes.type === "modified") {
+      criarItens(key, true)
+
+    } else if (changes.type === "removed") {
+      var apagar = window.document.getElementById(key)
+      apagar.innerHTML = ""
+    }
   })
-}
+})
+
 
 //Tipos
 function criarItens(key, modificar) {
   db.collection(Categoria).doc(String(key)).get().then(function (doc) {
     dados = doc.data()
-    var filtro = String((window.document.getElementById("filtro").value))
-    if (filtro == "all" || filtro == dados.type || filtro == dados.location || filtro == dados.deviceId) {
-      carregar_layout(dados, key, modificar)
-    }
+    // var filtro = String((window.document.getElementById("filtro").value))
+    // if (filtro == "all" || filtro == dados.type || filtro == dados.location || filtro == dados.deviceId) {
+    carregar_layout(dados, key, modificar)
+    // }
   })
 }
 
 
 
 function carregar_layout(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
+  var div_lista = window.document.querySelector('body')
   if (modificar == false) {
     var section = window.document.createElement('section')
     section.setAttribute('id', key)
@@ -321,6 +276,6 @@ function enviar(key) {
 
 var audio = new Audio()
 function reproduzir_audio() {
-  audio.src = "audios/audio.mp3"
+  audio.src = "files/audio.mp3"
   audio.play()
 }

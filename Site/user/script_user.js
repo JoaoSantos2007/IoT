@@ -1,18 +1,4 @@
-function login() {
-    var email = String((document.getElementById("email")).value)
-    var password = String((document.getElementById("password")).value)
-    firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            var user = userCredential.user;
-            console.log(user.email)
-            // Success 
-            window.location.href = ("/Site/index.html")
-        })
-        .catch(function (error) {
-            // Error Handling
-            window.alert("Email ou senha errado!")
-        });
-}
+
 
 function carregar_dados_usuario() {
     var div_name = window.document.getElementById("div-name")

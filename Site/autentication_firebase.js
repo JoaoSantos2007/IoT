@@ -17,9 +17,9 @@ firebase.auth().onAuthStateChanged((user) => {
     if (user) {
     } else {
         // User is signed out
-        if (location.pathname == "/Site/user/login/login.html") {
-        } else {
-            window.location.href = ("/Site/user/login/login.html")
-        }
+        // if (location.pathname == "login/login.html") {
+        // } else {
+        //     window.location.href = ("/login/login.html")
+        // }
     }
 });

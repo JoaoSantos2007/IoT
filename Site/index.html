@@ -7,6 +7,7 @@
         <title>Alekão</title>
         <link rel="stylesheet" href="reset.css">
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="style-home.css">
         <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
         <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
@@ -22,14 +23,42 @@
                     <li id="menu"><a href="index.html">Home</a></li>
                     <li id="menu"><a href="cloud/cloud.html">Cloud</a></li>
                     <li id="menu"><a href="creditos/creditos.html">Créditos</a></li>
-                    <li id="add"><a  href="createregisto/create.html"><img src="files/add.png" alt="Imagem ancorada para a tela de criação de registros"></a></li>
-                    <li id="user"><a href="user/user.html"><img src="files/conf.png" alt="Imagem ancorada para a tela de configuração do usuário"></a></li>
+                    <li id="add"><a  href="createregisto/create.html"><img src="assets/add.png" alt="Imagem ancorada para a tela de criação de registros"></a></li>
+                    <li id="user"><a href="user/user.html"><img src="assets/conf.png" alt="Imagem ancorada para a tela de configuração do usuário"></a></li>
+                    <li><select name="" id="">
+                        <option value=""></option>
+                        <option value=""></option>
+                        <option value=""></option>
+                        <option value=""></option>
+                        <option value=""></option>
+                        <option value=""></option>
+                        <option value=""></option>
+                    </select></li>
                 </ul>  
             </nav>
         </header>
 
         <main>
+            <section>
+                <ul>
+                    <li>
+                        <img class="icon" src="assets/light.png" alt="light">
+                        <img class="edit" src="assets/edit.png" alt="edit" onclick="editar_registro('chave')">
+                        <img class="delete" src="assets/delete.png" alt="delete" onclick="deletar('chave')">
+                    </li>
+                    <li>
+                        <p>Nome</p>   
+                    </li>
+                    <li>
+                        <p>Local</p>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_0edf94f7-2c30-43e1-830f-aeb9cff8f0a3" onclick="acionar_botao('0edf94f7-2c30-43e1-830f-aeb9cff8f0a3')">
+                        <label for="liga-desliga_0edf94f7-2c30-43e1-830f-aeb9cff8f0a3" class="liga-desliga__botao"></label>
+                    </li>       
+                </ul>
 
+            </section>
         </main>
 
         <footer>

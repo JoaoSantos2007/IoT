@@ -1,0 +1,25 @@
+{
+	"deviceId":"1",
+	"name":"nome",
+	"location":"local",
+	"id":"432353464575464",
+	"data":{
+		"light":{
+			"lampada1":{
+				"btn":true,
+			},
+			"lampada2":{
+				"btn":false
+			},
+		},
+		"tv":{
+			"tv1":{
+				"settings":{
+					"tag1":"valor",
+					"tag2":"valor2",
+				}
+			}
+		}
+	}
+		
+}

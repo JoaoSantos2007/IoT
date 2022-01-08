@@ -8,12 +8,12 @@ from datetime import datetime  # tempo
 from pytz import timezone
 
 # Firebase
-cred = credentials.Certificate("rules/serviceAccountKey.json")
+cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 # Variáveis para conectar com o MQTT(broker)
-broker = '192.168.15.45'
+broker = 'iotwebserver.hopto.org'
 port = 1883
 topic = "global-iot"
 client_id = f'python-rules'

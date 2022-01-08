@@ -1,11 +1,26 @@
-/* IMG Edit and Delete */
-img#edit{
+/* Registros */
+main > section{
+    background: rgb(100, 100, 100);
+    border-radius:10px;
+    margin: 1.25% auto;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.418);
+}
+
+li{
+    margin: 10px 10px;
+}
+
+.icon{
+    margin: 15px 15px;
+}
+
+.edit{
     margin-left: 85%;
     margin-right: 5%;
     cursor: pointer;
 }
 
-img#delete{
+.delete{
     cursor: pointer;
 }
 
@@ -143,15 +158,6 @@ label#sleep_button{
 label#swing_button{
     cursor: pointer;
 }
-
-
-
-
-
-
-
-
-
 
 /* Cor dos textos de resultados dos registros */
 span#div_valor{

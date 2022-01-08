@@ -3,7 +3,7 @@ const Categoria = "devices"
 //Armazena as informações do database do firebase em uma variável
 let db = firebase.firestore();
 
-var path_images = "files/"
+var path_images = "assets/"
 
 
 db.collection(Categoria).onSnapshot(function (documentos) {
@@ -29,8 +29,6 @@ db.collection(Categoria).onSnapshot(function (documentos) {
 function criarItens(key, modificar) {
   db.collection(Categoria).doc(String(key)).get().then(function (doc) {
     dados = doc.data()
-    // var filtro = String((window.document.getElementById("filtro").value))
-    // if (filtro == "all" || filtro == dados.type || filtro == dados.location || filtro == dados.deviceId) {
     carregar_layout(dados, key, modificar)
     // }
   })
@@ -52,9 +50,9 @@ function carregar_layout(dados, key, modificar) {
   var tipo = dados.type
   section.innerHTML = ""
   section.innerHTML += `<div>`
-  section.innerHTML += `<img src="${path_images}${tipo}.png" alt="${tipo}" height="64px" width="64px">`
-  section.innerHTML += `<img id="edit" src="${path_images}edit.png" alt="edit" onclick="editar_registro('${key}')" height="32px" width="32px">`
-  section.innerHTML += ` <img id="delete" src="${path_images}delete.png" alt="delete" onclick="deletar('${key}')" height="32px" width="32px">`
+  section.innerHTML += `<img class="icon" src="${path_images}${tipo}.png" alt="${tipo}">`
+  section.innerHTML += `<img class="edit" src="${path_images}edit.png" alt="edit" onclick="editar_registro('${key}')">`
+  section.innerHTML += ` <img class="delete" src="${path_images}delete.png" alt="delete" onclick="deletar('${key}')">`
   section.innerHTML += `</div>`
   section.innerHTML += `<p>`
   section.innerHTML += `<strong>Nome: </strong>${nome}`
@@ -211,68 +209,18 @@ function deletar(chave) {
   }
 }
 
-function editar_registro(key) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).get().then(function (doc) {
-    var dados = doc.data()
-    var id = dados.deviceId
-    var nome = dados.name
-    var lugar = dados.location
-    var tipo = dados.type
-    section = document.getElementById(key)
-    section.innerHTML = ""
-    section.innerHTML += "<div>"
-    section.innerHTML += `id: `
-    section.innerHTML += `<input type="number" name="txtid" id="txtid_${key}" value = "${id}">`
-    section.innerHTML += `</div>`
-    section.innerHTML += `<div>`
-    section.innerHTML += `name:`
-    section.innerHTML += `<input type="text" name="txtname" id="txtname_${key}" value = "${nome}">`
-    section.innerHTML += `</div>`
-    section.innerHTML += `<div>`
-    section.innerHTML += `location:`
-    section.innerHTML += `<input type="text" name="txtlocation" id="txtlocation_${key}" value = "${lugar}">`
-    section.innerHTML += `</div>`
-    section.innerHTML += `<div>`
-    section.innerHTML += `type:`
-
-    //Opções
-    select = document.createElement('select')
-    select.setAttribute('id', 'txttype_' + key)
-    select.innerHTML += `<option id = 'opt_light_${key}' value="light">Luz</option>`
-    select.innerHTML += `<option id = 'opt_temperatura_${key}' value="temperatura">Temperatura</option>`
-    select.innerHTML += `<option id = 'opt_proximidade_${key}' value="proximidade">Proximidade</option>`
-    select.innerHTML += `<option id = 'opt_luminosidade_${key}' value="luminosidade">Luminosidade</option> `
-    select.innerHTML += `<option id = 'opt_tv_${key}' value="tv">TV</option> `
-    select.innerHTML += `<option id = 'opt_air_${key}' value="air">Ar-Condicionado</option>`
-    select.innerHTML += `<option id = 'opt_fan_${key}' value="fan">Ventilador</option>`
-    select.innerHTML += `<option id = 'opt_umidade_${key}' value="umidade">Umidade</option>`
-    select.innerHTML += `<option id = 'opt_presenca_${key}' value="presenca">Presença</option>`
-    section.appendChild(select)
-    section.innerHTML += `</div>`
-    var opcao = window.document.getElementById(`opt_${tipo}_${key}`)
-    opcao.setAttribute('selected', 'true')
-
-    //Botões atualizar e calcelar
-    section.innerHTML += `<div>`
-    section.innerHTML += `<input type="button" value="Atualizar" onclick="reproduzir_audio(),enviar('${key}')">`
-    section.innerHTML += `<input type="button" value="Cancelar" onclick="criarItens('${key}', true),reproduzir_audio()">`
-    section.innerHTML += `</div>`
-  })
-}
-
-function enviar(key) {
-  var type_enviar = String((window.document.getElementById("txttype_" + key).value))
-  var name_enviar = String((window.document.getElementById("txtname_" + key).value))
-  var local_enviar = String((window.document.getElementById("txtlocation_" + key).value))
-  var id_enviar = Number((window.document.getElementById("txtid_" + key).value))
-  db.collection(Categoria).doc(key).update({
-    'name': name_enviar,
-    'type': type_enviar,
-    'location': local_enviar,
-    'deviceId': id_enviar,
-  })
-}
+// function enviar(key) {
+//   var type_enviar = String((window.document.getElementById("txttype_" + key).value))
+//   var name_enviar = String((window.document.getElementById("txtname_" + key).value))
+//   var local_enviar = String((window.document.getElementById("txtlocation_" + key).value))
+//   var id_enviar = Number((window.document.getElementById("txtid_" + key).value))
+//   db.collection(Categoria).doc(key).update({
+//     'name': name_enviar,
+//     'type': type_enviar,
+//     'location': local_enviar,
+//     'deviceId': id_enviar,
+//   })
+// }
 
 var audio = new Audio()
 function reproduzir_audio() {

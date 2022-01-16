@@ -6,17 +6,23 @@
 	"data":{
 		"light":{
 			"lampada1":{
-				"btn":true,
+				"settings":{
+					"btn":true
+				}
+				
 			},
 			"lampada2":{
-				"btn":false
+				"settings":{
+					"btn":false
+				}
+				
 			},
 		},
 		"tv":{
 			"tv1":{
 				"settings":{
 					"tag1":"valor",
-					"tag2":"valor2",
+					"tag2":"valor2"
 				}
 			}
 		}

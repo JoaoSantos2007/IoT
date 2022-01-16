@@ -1,5 +1,4 @@
 function criar_registro() {
-    reproduzir_audio()
     var type = String((window.document.getElementById("txttype").value))
     var name = String((window.document.getElementById("txtname").value))
     var local = String((window.document.getElementById("txtlocation").value))
@@ -13,6 +12,6 @@ function criar_registro() {
     })
     window.alert("Registro criado")
     setInterval(function () {
-        window.location.href = ("/Site/index.html")
+        window.location.href = ("../index.html")
     }, 1000)
 }

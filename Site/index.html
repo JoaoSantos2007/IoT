@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
-        <link rel="shortcut icon" href="files/favicon-site.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="assets/favicon-site.ico" type="image/x-icon">
         <title>Alekão</title>
         <link rel="stylesheet" href="reset.css">
         <link rel="stylesheet" href="style.css">
@@ -25,39 +25,122 @@
                     <li id="menu"><a href="creditos/creditos.html">Créditos</a></li>
                     <li id="add"><a  href="createregisto/create.html"><img src="assets/add.png" alt="Imagem ancorada para a tela de criação de registros"></a></li>
                     <li id="user"><a href="user/user.html"><img src="assets/conf.png" alt="Imagem ancorada para a tela de configuração do usuário"></a></li>
-                    <li><select name="" id="">
-                        <option value=""></option>
-                        <option value=""></option>
-                        <option value=""></option>
-                        <option value=""></option>
-                        <option value=""></option>
-                        <option value=""></option>
-                        <option value=""></option>
-                    </select></li>
                 </ul>  
             </nav>
         </header>
 
         <main>
-            <section>
+            <!-- <section>
                 <ul>
-                    <li>
-                        <img class="icon" src="assets/light.png" alt="light">
-                        <img class="edit" src="assets/edit.png" alt="edit" onclick="editar_registro('chave')">
-                        <img class="delete" src="assets/delete.png" alt="delete" onclick="deletar('chave')">
+                    <li class="item_header">
+                        <p class="item_title">Nome</p>   
+                        <div>
+                            <img class="edit" src="assets/edit.png" alt="edit" onclick="editar_registro('chave')">
+                            <img class="delete" src="assets/delete.png" alt="delete" onclick="deletar('chave')">
+                        </div>
+                        <p class="item_location">Local</p>
                     </li>
-                    <li>
-                        <p>Nome</p>   
+                    <li class="items">
+                        <img class="icons" src="assets/light.png" alt="light.png">
+                        <p>Lâmpada</p>
+                        <div class="contents">
+                            <input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_id" onclick="acionar_botao('chave')">
+                            <label for="liga-desliga_id" class="liga-desliga__botao"></label>
+                        </div>
                     </li>
-                    <li>
-                        <p>Local</p>
+                    <li class="items">
+                        <img class="icons" src="assets/light.png" alt="light.png">
+                        <p>Lâmpada</p>
+                        <div class="contents">
+                            <input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_id1" onclick="acionar_botao('chave')">
+                            <label for="liga-desliga_id1" class="liga-desliga__botao"></label>
+                        </div>
                     </li>
-                    <li>
-                        <input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_0edf94f7-2c30-43e1-830f-aeb9cff8f0a3" onclick="acionar_botao('0edf94f7-2c30-43e1-830f-aeb9cff8f0a3')">
-                        <label for="liga-desliga_0edf94f7-2c30-43e1-830f-aeb9cff8f0a3" class="liga-desliga__botao"></label>
-                    </li>       
-                </ul>
+                    <li class="items">
+                        <img class="icons" src="assets/umidade.png">
+                        <p>Umidade</p>
+                        <div class="contents">
+                            <p>45%</p>
+                        </div>
+                    </li> -->
+                    <!-- <li class="items">
+                        <img class="icons" src="assets/tv.png">
+                        <p>TV</p>
+                        <div class="contents">
+                            <section class="tv">
+                                <figure>
+                                    <img src="assets/power.png" alt="">
+                                    <figcaption>Power</figcaption>-
+                                </figure>
 
+                                <figure>
+                                    <img src="assets/source.png" alt=""> 
+                                    <figcaption>Source</figcaption>
+                                </figure>
+
+                                <figure>
+                                    <img src="assets/menu.png" alt="">
+                                    <figcaption>Menu</figcaption>
+                                </figure>
+
+                                <br>
+
+
+                                <img class="tv_channel" src="assets/up.png" alt="">
+                                <p class="tv_channel">Channel</p>
+                                <img class="tv_channel" src="assets/down.png" alt="">
+
+                                <br>
+
+                                <img class="tv_volume" src="assets/up.png" alt="">
+                                <p class="tv_volume">Volume</p>
+                                <img class="tv_volume" src="assets/down.png" alt="">
+                            </section>
+                        </div>
+                    </li> -->
+                    <!-- <li class="items">
+                        <img class="icons" src="assets/air.png">
+                        <p>Ar-Condicionado</p>
+                        <div class="contents">
+                            <section class="air">
+                                <figure>
+                                    <img src="assets/power.png" alt="">
+                                    <figcaption>Power</figcaption>
+                                </figure>
+
+                                <figure>
+                                    <img src="assets/menu.png" alt=""> 
+                                    <figcaption>Invert</figcaption>
+                                </figure>
+
+                                <figure>
+                                    <img src="assets/timer.png" alt="">
+                                    <figcaption>Time</figcaption>
+                                </figure>
+
+                                <br>
+
+
+                                <figure>
+                                    <img class="" src="assets/power.png" alt="">
+                                    <figcaption>sleep</figcaption>
+                                </figure>
+                                <figure>
+                                    <img class="" src="assets/timer.png" alt="">
+                                    <figcaption>Swing</figcaption>
+                                </figure>
+                                
+                                
+
+                                <br>
+
+                                <img class="air_temp" src="assets/add.png" alt="">
+                                <p class="air_temp">Temp</p>
+                                <img class="air_temp" src="assets/remove.png" alt="">
+                            </section>
+                        </div>
+                    </li> -->
+                </ul>
             </section>
         </main>
 

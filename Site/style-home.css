@@ -1,177 +1,85 @@
 /* Registros */
 main > section{
     background: rgb(100, 100, 100);
-    border-radius:10px;
+    border-radius:15px;
     margin: 1.25% auto;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.418);
 }
 
-li{
-    margin: 10px 10px;
+.item_header{
+    padding: 20px 0;
+    border-bottom: 2.5px solid rgb(30,30,30);
 }
 
-.icon{
-    margin: 15px 15px;
+.item_header p{
+    position: relative;
+    display: inline-block;
+    width: 80%;
+    text-align: center;
+    
 }
 
-.edit{
-    margin-left: 85%;
-    margin-right: 5%;
+.item_title{
+    font-size: 55px;
+    font-weight: bold;
+}
+
+.item_header div{
+    position: relative;
+    display: inline-block;
+    width: 19%;
+}
+
+.item_header img{
+    position: relative;
     cursor: pointer;
+    width: 45px;
+    height: 45px;
+    padding: 0px 45px;
 }
 
-.delete{
-    cursor: pointer;
+.item_header .item_location{
+    font-size: 32px;
+    color: white;
 }
 
-/* TV */
-img#power_button{
-    margin-right: 4%;
-    margin-left: 1%;
-    cursor: pointer;
+.items{
+    border-bottom: 2.5px solid rgb(30,30,30);
 }
 
-img#source_button{
-    margin-right: 4%;
-    cursor: pointer;
+.icons{
+    position: relative;
+    width: 64px;
+    height: 64px;
+    margin-top: 30px;
+    margin-left: 30px;
+    display: inline-block;
 }
 
-img#menu_button{
-    cursor: pointer;
+.items > p{
+    position: relative;
+    width: calc(99% - 94px);
+    display: inline-block;
+    text-align: center;
+    font-size: 45px;
+    font-weight: bold;
+    margin-top: 30px;
+    vertical-align: top;
 }
 
-label#source_button{
-    margin-left: 1.5%;
+.contents{
+    margin-left: 94px;
+    position: relative;
+    display: inline-block;
+    width: calc(99% - 94px);
+    text-align: center;
 }
 
-label#menu_button{
-    margin-left: 1.5%;
-}
-
-div#canal{
-    margin-top: 1%;
-}
-
-img#up_button{
-    margin-left: 1%;
-    margin-right: 2.5%;
-    cursor: pointer;
-}
-
-label#channel{
-    font-size: 150%;
-    color: rgb(9, 255, 0);
-}
-
-img#down_button{
-    margin-left: 2.5%;
-    cursor: pointer;
-}
-
-div#volume{
-    margin-top: 1%;
-}
-
-img#down_button_volume{
-    margin-left: 2.5%;
-    cursor: pointer;
-}
-
-label#volume{
-    font-size: 150%;
-    color: rgb(9, 255, 0);
-}
-
-img#down_button_volume{
-    margin-left: 0.8%;
-}
-
-
-/* Ventilador */
-img#power_button{
-    margin-right: 4%;
-    margin-left: 1%;
-    cursor: pointer;
-}
-
-img#invert_button{
-    margin-right: 4%;
-    cursor: pointer;
-}
-
-img#time_button{
-    cursor: pointer;
-}
-
-label#invert_button{
-    margin-left: 1.6%;
-}
-
-label#time_button{
-    margin-left: 2.9%;
-}
-
-div#button_fan{
-    margin-top: 1%;
-}
-
-
-div#button_up img#up_button{
-    margin-left: 1%;
-    margin-right: 2.5%;
-    cursor: pointer;
-}
-
-
-div#button_down img#down_button{
-    margin-left: 2.5%;
-    cursor: pointer;
-}
-
-/* AIR */
-div#button_air{
-    margin-top: 1%;
-}
-
-label#temp{
-    color: rgb(0, 255, 0);
-    font-size: 150%;
-}
-
-img#sleep_button{
-    margin-left: 4%;
-    margin-right: 2.5%;
-    cursor: pointer;
-}
-
-img#swing_button{
-    margin-left: 2.5%;
-    cursor: pointer;
-}
-
-
-label#sleep_button{
-    margin-left: 3%;
-    margin-right: 3%;
-}
-
-label#swing_button{
-    cursor: pointer;
-}
-
-/* Cor dos textos de resultados dos registros */
-span#div_valor{
-    color: red;
-}
-span#valor{
+.contents > p{
+    font-size: 38px;
+    font-weight: bold;
     color: rgb(0, 255, 0);
 }
-
-
-
-
-
-
 
 /* Botão Liga/Desliga */
 
@@ -221,4 +129,31 @@ span#valor{
  
  .liga-desliga__checkbox:checked + .liga-desliga__botao::after{
      left: 1.025em;
- }
+}
+
+.tv,.air{
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    width: 650px;
+    height: 300px;
+    border-radius: 15px;
+    background: rgb(170,170,170);
+    margin: 25px 0px;
+}
+
+.tv img,.air img{
+    cursor: pointer;
+}
+
+figure{
+    text-align: center;
+    display: inline-block;
+    margin: 20px 35px;
+}
+
+.tv_channel, .tv_volume, .air_temp{
+    vertical-align: middle;
+    display: inline-block;
+    margin: 20px 35px;
+}

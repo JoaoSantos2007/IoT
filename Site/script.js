@@ -1,21 +1,16 @@
-const Categoria = "devices"
-
-//Armazena as informações do database do firebase em uma variável
-let db = firebase.firestore();
-
-var path_images = "assets/"
-
+const files = "assets/"
 
 db.collection(Categoria).onSnapshot(function (documentos) {
   documentos.docChanges().forEach(function (changes) {
     const documento = changes.doc
     let key = documento.id
+    console.log(key)
     var dados = documento.data()
     if (changes.type === "added") {
-      criarItens(key, false)
+      carregar_layout(dados,key, false)
 
     } else if (changes.type === "modified") {
-      criarItens(key, true)
+      carregar_layout(dados,key, true)
 
     } else if (changes.type === "removed") {
       var apagar = window.document.getElementById(key)
@@ -25,205 +20,308 @@ db.collection(Categoria).onSnapshot(function (documentos) {
 })
 
 
-//Tipos
-function criarItens(key, modificar) {
-  db.collection(Categoria).doc(String(key)).get().then(function (doc) {
-    dados = doc.data()
-    carregar_layout(dados, key, modificar)
-    // }
-  })
-}
-
-
 
 function carregar_layout(dados, key, modificar) {
-  var div_lista = window.document.querySelector('main')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-  }
+  //Dados do registro
+  const nome = dados.name
+  const lugar = dados.location
 
-  var nome = dados.name
-  var lugar = dados.location
-  var tipo = dados.type
-  section.innerHTML = ""
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img class="icon" src="${path_images}${tipo}.png" alt="${tipo}">`
-  section.innerHTML += `<img class="edit" src="${path_images}edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += ` <img class="delete" src="${path_images}delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<strong>`
+  const main = window.document.querySelector('main')
+  
+  let section = window.document.createElement('section')
+  section.setAttribute('id', key)
 
-  switch (dados.type) {
-    case 'light':
-      tipo_light(dados, key, section)
-      break
-    case 'tv':
-      tipo_tv(dados, key, section)
-      break
-    case 'air':
-      tipo_air(dados, key, section)
-      break
-    case 'fan':
-      tipo_fan(dados, key, section)
-      break
-    default:
-      tipo_unit(dados, key, section)
-  }
-  if (modificar == false) {
-    div_lista.appendChild(section)
-  }
-}
+  let ul = window.document.createElement('ul')
 
-function tipo_light(dados, key, section) {
-  var settings = dados.settings
-  Object.entries(settings).forEach(
-    ([_key, value]) => {
-      section.innerHTML += `<p>`
-      section.innerHTML += `<strong>${_key}: </strong>${value} `
-      section.innerHTML += `</p>`
-    });
-  section.innerHTML += `<div>`
-  if (dados.currentValue == "true") {
-    section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_${key}" onclick="acionar_botao('${key}')" checked>`
-  } else {
-    section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_${key}" onclick="acionar_botao('${key}')">`
-  }
-  section.innerHTML += `<label for="liga-desliga_${key}" class="liga-desliga__botao"></label>`
-  section.innerHTML += `</div>`
-}
-
-function tipo_unit(dados, key, section) {
-  var valor = dados.currentValue
-  section.innerHTML += `<p>`
-  section.innerHTML += `<span id="div_valor">Valor:</span>`
-  section.innerHTML += `<span id="valor">${valor}</span>`
-  section.innerHTML += `</p>`
-  section.innerHTML += `</strong>`
-}
-
-function tipo_tv(dados, key, section) {
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img id="power_button" src="${path_images}power.png" alt="power" onclick="actions('${key}','tag#power_tv')">`
-  section.innerHTML += `<img id="source_button" src="${path_images}source.png" alt="source" onclick="actions('${key}','tag#source_tv')">`
-  section.innerHTML += `<img id="menu_button" src="${path_images}menu.png" alt="menu" onclick="actions('${key}','tag#menu_tv')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div>`
-  section.innerHTML += `<label for="power_button" id="power_button">power</label>`
-  section.innerHTML += `<label for="source_button" id="source_button">source</label>`
-  section.innerHTML += `<label for="menu_button" id="menu_button">menu</label>`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div id="canal">`
-  section.innerHTML += `<img id="up_button" src="${path_images}up.png" alt="up" onclick="actions('${key}','tag#up_channel')">`
-  section.innerHTML += `<label for="channel" id="channel">canal</label>`
-  section.innerHTML += `<img id="down_button" src="${path_images}down.png" alt="down" onclick="actions('${key}','tag#down_channel')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div id="volume">`
-  section.innerHTML += `<img id="up_button" src="${path_images}up.png" alt="up" onclick="actions('${key}','tag#up_volume')">`
-  section.innerHTML += `<label for="volume" id="volume">volume</label>`
-  section.innerHTML += `<img id="down_button_volume" src="${path_images}down.png" alt="down" onclick="actions('${key}','tag#down_volume')">`
-  section.innerHTML += `</div>`
-}
-
-function tipo_fan(dados, key, section) {
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img id="power_button" src="${path_images}power.png" alt="power" onclick="actions('${key}','tag#power_fan')">`
-  section.innerHTML += `<img id="invert_button" src="${path_images}source.png" alt="invert" onclick="actions('${key}','tag#invert_fan')">`
-  section.innerHTML += `<img id="time_button" src="${path_images}chronometer.png" alt="time" onclick="actions('${key}','tag#time_fan')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div>`
-  section.innerHTML += `<label for="power_button" id="power_button">power</label>`
-  section.innerHTML += `<label for="invert_button" id="invert_button">invert</label>`
-  section.innerHTML += `<label for="menu_button" id="time_button">time</label>`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div id="button_fan">`
-  section.innerHTML += `<img id="up_button" src="${path_images}up.png" alt="up" onclick="actions('${key}','tag#up_fan')">`
-  section.innerHTML += `<img id="down_button" src="${path_images}down.png" alt="down" onclick="actions('${key}','tag#down_fan')">`
-  section.innerHTML += `</div>`
-}
-
-function tipo_air(dados, key, section) {
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img id="power_button" src="${path_images}power.png" alt="power" onclick="actions('${key}','tag#power_air')">`
-  section.innerHTML += `<img id="invert_button" src="${path_images}source.png" alt="invert" onclick="actions('${key}','tag#invert_air')">`
-  section.innerHTML += `<img id="time_button" src="${path_images}chronometer.png" alt="time" onclick="actions('${key}','tag#time_air')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div>`
-  section.innerHTML += `<label for="power_button" id="power_button">power</label>`
-  section.innerHTML += `<label for="invert_button" id="invert_button">invert</label>`
-  section.innerHTML += `<label for="menu_button" id="time_button">time</label>`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div id="button_air">`
-  section.innerHTML += `<img id="up_button" src="${path_images}up.png" alt="up" onclick="actions('${key}','tag#up_air')">`
-  section.innerHTML += `<label for="temp" id="temp">Temp</label>`
-  section.innerHTML += `<img id="down_button" src="${path_images}down.png" alt="down" onclick="actions('${key}','tag#down_air')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div id="button_air2">`
-  section.innerHTML += `<img id="sleep_button" src="${path_images}power.png" alt="sleep" onclick="actions('${key}','tag#sleep_air')">`
-  section.innerHTML += `<img id="swing_button" src="${path_images}power.png" alt="swing" onclick="actions('${key}','tag#swing_air')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div>`
-  section.innerHTML += `<label for="sleep_button" id="sleep_button">sleep</label>`
-  section.innerHTML += `<label for="swing_button" id="swing_button">swing</label>`
-  section.innerHTML += `</div>`
-}
+  //Cabeçalho do Registro
+  let item_header = window.document.createElement('li')
+  item_header.setAttribute('class','item_header')
 
 
-//Ações
-function acionar_botao(chave) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(chave).get().then(function (doc) {
-    dados = doc.data()
-    valor_atual = dados.currentValue
-    if (valor_atual == "false") {
-      db.collection(Categoria).doc(chave).update({
-        'currentValue': 'true'
-      })
-    } else {
-      db.collection(Categoria).doc(chave).update({
-        'currentValue': 'false'
-      })
-    }
+  //Nome do  Registro
+  let item_title = window.document.createElement('p')
+  item_title.setAttribute('class','item_title')
+  item_title.innerText = `${nome}`
+  item_header.appendChild(item_title)
+
+
+  //Imagens de editar e apagar registro
+  let div = window.document.createElement('div')
+  //Imagegem de Editar Registro
+  let img_edit = window.document.createElement('img')
+  img_edit.setAttribute('class','edit')
+  img_edit.setAttribute('src',`${files}edit.png`)
+  img_edit.setAttribute('alt','Imagegem de Editar Registro')
+  img_edit.setAttribute('onclick',`editar_registro(${key})`)
+  div.appendChild(img_edit)
+  //Imagem de Apagar Registro
+  let img_delete = window.document.createElement('img')
+  img_delete.setAttribute('class','delete')
+  img_delete.setAttribute('src',`${files}delete.png`)
+  img_delete.setAttribute('alt','Imagem de Apagar Registro')
+  img_delete.setAttribute('onclick',`deletar('${key}')`)
+  div.appendChild(img_delete)
+  item_header.appendChild(div)
+
+
+  //Lugar do Registro
+  item_location = window.document.createElement('p')
+  item_location.setAttribute('class','item_location')
+  item_location.innerText = `${lugar}`
+  item_header.appendChild(item_location)
+
+  ul.appendChild(item_header)
+
+  const obj = dados.data
+  Object.keys(obj).forEach((types) =>{
+    const obj_types = obj[types]
+
+    Object.keys(obj_types).forEach((names) =>{
+      let li_items = window.document.createElement('li')
+      li_items.setAttribute('class','items')
+      
+      //Icons
+      let img_icon = window.document.createElement('img')
+      img_icon.setAttribute('class','icons')
+      img_icon.setAttribute('src',`${files}${types}.png`)
+      img_icon.setAttribute('alt',``)
+      li_items.appendChild(img_icon)
+  
+      //Item Name
+      let item_name = window.document.createElement('p')
+      item_name.innerText = `${names}`
+      li_items.appendChild(item_name)
+
+      ul.appendChild(li_items)
+
+
+      let div_contents = window.document.createElement('div')
+      div_contents.setAttribute('class','contents')
+      const obj_name = obj_types[names]
+      if('settings' in obj_name){
+        switch(types){
+          case 'light':
+            const valor = obj_name.settings.btn
+            type_light(div_contents,key,valor,names)
+            break
+          case 'tv':
+            type_tv(div_contents)
+            break
+          case 'air':
+            type_air(div_contents)
+            break
+        }
+        
+      }else{
+        let p_value = window.document.createElement('p')
+        p_value.innerText=`${obj_name.value}`
+        div_contents.appendChild(p_value)
+      }
+
+      li_items.appendChild(div_contents)
+    })
+    
   })
+
+
+  section.appendChild(ul)
+  main.appendChild(section)
 }
 
-function actions(key, atualizar) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).update({
-    'currentValue': atualizar
-  })
-}
-
-function deletar(chave) {
-  reproduzir_audio()
-  if (window.confirm("Você realmente quer apagar esse registro?")) {
-    db.collection(Categoria).doc(chave).delete()
+function type_light(div,key,valor,name){
+  let btn = window.document.createElement('input')
+  btn.setAttribute('type','checkbox')
+  btn.setAttribute('class','liga-desliga__checkbox')
+  btn.setAttribute('id',`liga-desliga_${name}`)
+  btn.setAttribute('onclick',`acionar_botao(${key})`)
+  if(valor){
+    btn.setAttribute('checked','true')
   }
+  let label = window.document.createElement('label')
+  label.setAttribute('for',`liga-desliga_${name}`)
+  label.setAttribute('class','liga-desliga__botao')
+  div.appendChild(btn)
+  div.appendChild(label)
 }
 
-// function enviar(key) {
-//   var type_enviar = String((window.document.getElementById("txttype_" + key).value))
-//   var name_enviar = String((window.document.getElementById("txtname_" + key).value))
-//   var local_enviar = String((window.document.getElementById("txtlocation_" + key).value))
-//   var id_enviar = Number((window.document.getElementById("txtid_" + key).value))
-//   db.collection(Categoria).doc(key).update({
-//     'name': name_enviar,
-//     'type': type_enviar,
-//     'location': local_enviar,
-//     'deviceId': id_enviar,
-//   })
-// }
+function type_tv(div){
+  let section = window.document.createElement('section')
+  section.setAttribute('class','tv')
+
+  //Parte 1
+
+  //Imagem Power
+  let figure_power = window.document.createElement('figure')
+  let img_power = window.document.createElement('img')
+  img_power.setAttribute('src',`${files}power.png`)
+  img_power.setAttribute('alt','Ligar e Desligar TV')
+  let p_power = window.document.createElement('figcaption')
+  p_power.innerText = 'Power'
+  figure_power.appendChild(img_power)
+  figure_power.appendChild(p_power)
+  section.appendChild(figure_power)
+  //Imagem Source
+  let figure_source = window.document.createElement('figure')
+  let img_source = window.document.createElement('img')
+  img_source.setAttribute('src',`${files}source.png`)
+  img_source.setAttribute('alt','Source TV')
+  let p_source = window.document.createElement('figcaption')
+  p_source.innerText = 'Source'
+  figure_source.appendChild(img_source)
+  figure_source.appendChild(p_source)
+  section.appendChild(figure_source)
+  //Imagem Menu
+  let figure_menu = window.document.createElement('figure')
+  let img_menu = window.document.createElement('img')
+  img_menu.setAttribute('src',`${files}menu.png`)
+  img_menu.setAttribute('alt','Menu TV')
+  let p_menu = window.document.createElement('figcaption')
+  p_menu.innerText = 'Menu'
+  figure_menu.appendChild(img_menu)
+  figure_menu.appendChild(p_menu)
+  section.appendChild(figure_menu)
+  
+  section.appendChild(window.document.createElement('br'))
+  
+  //Parte 2
+
+  //Imagem Aumentar canal 
+  img_up_channel = window.document.createElement('img')
+  img_up_channel.setAttribute('class','tv_channel')
+  img_up_channel.setAttribute('src',`${files}up.png`)
+  img_up_channel.setAttribute('alt','Aumentar Canal')
+  section.appendChild(img_up_channel)
+  //Texto Channel
+  p_channel = window.document.createElement('p')
+  p_channel.setAttribute('class','tv_channel')
+  p_channel.innerText = 'Channel'
+  section.appendChild(p_channel)
+  //Imagem Diminuir canal 
+  img_down_channel = window.document.createElement('img')
+  img_down_channel.setAttribute('class','tv_channel')
+  img_down_channel.setAttribute('src',`${files}down.png`)
+  img_down_channel.setAttribute('alt','Diminuir Canal')
+  section.appendChild(img_down_channel)
+
+  section.appendChild(window.document.createElement('br'))
+
+  //Parte 3
+
+  //Imagem Aumentar volume 
+  img_up_volume = window.document.createElement('img')
+  img_up_volume.setAttribute('class','tv_volume')
+  img_up_volume.setAttribute('src',`${files}up.png`)
+  img_up_volume.setAttribute('alt','Aumentar volume')
+  section.appendChild(img_up_volume)
+  //Texto Channel
+  p_volume = window.document.createElement('p')
+  p_volume.setAttribute('class','tv_volume')
+  p_volume.innerText = 'Volume'
+  section.appendChild(p_volume)
+  //Imagem Diminuir canal 
+  img_down_volume = window.document.createElement('img')
+  img_down_volume.setAttribute('class','tv_volume')
+  img_down_volume.setAttribute('src',`${files}down.png`)
+  img_down_volume.setAttribute('alt','Diminuir Canal')
+  section.appendChild(img_down_volume)
+  
+
+  div.appendChild(section)
+}
+
+function type_air(div){
+  let section = window.document.createElement('section')
+  section.setAttribute('class','air')
+
+  //Parte 1
+
+  //Imagem Power
+  let figure_power = window.document.createElement('figure')
+  let img_power = window.document.createElement('img')
+  img_power.setAttribute('src',`${files}power.png`)
+  img_power.setAttribute('alt','Ligar e Desligar AR')
+  let p_power = window.document.createElement('figcaption')
+  p_power.innerText = 'Power'
+  figure_power.appendChild(img_power)
+  figure_power.appendChild(p_power)
+  section.appendChild(figure_power)
+  //Imagem Invert
+  let figure_invert = window.document.createElement('figure')
+  let img_invert = window.document.createElement('img')
+  img_invert.setAttribute('src',`${files}menu.png`)
+  img_invert.setAttribute('alt','Invert AIR')
+  let p_invert = window.document.createElement('figcaption')
+  p_invert.innerText = 'Invert'
+  figure_invert.appendChild(img_invert)
+  figure_invert.appendChild(p_invert)
+  section.appendChild(figure_invert)
+  //Imagem Time
+  let figure_time = window.document.createElement('figure')
+  let img_time = window.document.createElement('img')
+  img_time.setAttribute('src',`${files}timer.png`)
+  img_time.setAttribute('alt','Time AIR')
+  let p_time = window.document.createElement('figcaption')
+  p_time.innerText = 'Time'
+  figure_time.appendChild(img_time)
+  figure_time.appendChild(p_time)
+  section.appendChild(figure_time)
+  
+  section.appendChild(window.document.createElement('br'))
+  
+  //Parte 2
+
+  //Imagem Sleep
+  let figure_sleep = window.document.createElement('figure')
+  let img_sleep = window.document.createElement('img')
+  img_sleep.setAttribute('src',`${files}power.png`)
+  img_sleep.setAttribute('alt','Sleep AIR')
+  let p_sleep = window.document.createElement('figcaption')
+  p_sleep.innerText = 'Sleep'
+  figure_sleep.appendChild(img_sleep)
+  figure_sleep.appendChild(p_sleep)
+  section.appendChild(figure_sleep)
+
+  //Imagem Swing
+  let figure_swing = window.document.createElement('figure')
+  let img_swing = window.document.createElement('img')
+  img_swing.setAttribute('src',`${files}timer.png`)
+  img_swing.setAttribute('alt','Swing AIR')
+  let p_swing = window.document.createElement('figcaption')
+  p_swing.innerText = 'Swing'
+  figure_swing.appendChild(img_swing)
+  figure_swing.appendChild(p_swing)
+  section.appendChild(figure_swing)
+
+
+  section.appendChild(window.document.createElement('br'))
+
+  //Parte 3
+
+  //Imagem Aumentar Temperatura 
+  img_up_temp = window.document.createElement('img')
+  img_up_temp.setAttribute('class','air_temp')
+  img_up_temp.setAttribute('src',`${files}add.png`)
+  img_up_temp.setAttribute('alt','Aumentar Temperatura')
+  section.appendChild(img_up_temp)
+  //Texto Temperatura
+  p_temp = window.document.createElement('p')
+  p_temp.setAttribute('class','air_temp')
+  p_temp.innerText = 'Temp'
+  section.appendChild(p_temp)
+  //Imagem Diminuir Temperatura 
+  img_down_temp = window.document.createElement('img')
+  img_down_temp.setAttribute('class','air_temp')
+  img_down_temp.setAttribute('src',`${files}remove.png`)
+  img_down_temp.setAttribute('alt','Diminuir Temperatura')
+  section.appendChild(img_down_temp)
+  
+  
+  div.appendChild(section)
+}
+
 
 var audio = new Audio()
 function reproduzir_audio() {
-  audio.src = "files/audio.mp3"
+  audio.src = `${files}audio.mp3`
   audio.play()
 }

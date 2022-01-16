@@ -93,8 +93,6 @@ void apply_rule(byte * payload)
   }
 }
 
-
-
 void alterar_estado_lampada() {
   estado_interruptor_anterior = !estado_interruptor_atual;
   if (estado_lamp == 1) {

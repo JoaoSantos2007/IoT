@@ -1,0 +1,91 @@
+p{
+    font-size: 900px;
+    color: #FF0000;
+}
+
+section{
+    background: white;
+    border-radius:10px;
+    padding: 15px;
+    width: 500px;
+    margin: auto;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.418);
+}
+
+img#img-user{
+    border-radius: 360px;
+    cursor: pointer;
+}
+
+div#div-name{
+    align-items: center;
+    justify-content: center;
+    margin-left: 5%;
+    font-size: 32px;
+    font: bold;
+    color: red;
+    display: inline-block;
+    text-align: center;
+}
+
+input#btn-out{
+    background-color: red;
+    border-radius: 6px;
+    color: white;
+    font: bolder;
+    width: 70px;
+}
+
+input#btn-delete-user{
+    background-color: rgb(235, 153, 2);
+    border-radius: 6px;
+    color: white;
+}
+
+input#btn_verif_email{
+    background-color: blue;
+    color: white;
+    border-radius: 6px;
+}
+
+img#image-user{
+    border-radius: 360px;
+    width: 140px;
+    height: 140px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+div#teste3{
+    width: 100%;
+    margin-top: 8px;
+    border-radius: 10px;
+    background-color: darkred;
+}    
+
+img#cancel{
+    margin-left: 50%;
+    cursor: pointer;
+}
+
+img#check{
+    margin-left: 15%;
+    cursor: pointer;
+}
+
+img#edit_displayName{
+    margin-left: 10%;
+    cursor: pointer;
+}
+
+img#img_save_edit_displayName{
+    margin-left: 10%;
+    cursor: pointer;
+}
+
+img#img_cancel_edit_DisplayName{
+    margin-left: 10%;
+    cursor: pointer;
+}

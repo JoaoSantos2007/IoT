@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/Site/images/user.ico" type="image/x-icon">
+    <title>Update Image</title>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="/Site/user/style-user.css">
+    <link rel="stylesheet" href="/Site/menu/style.css">
+</head>
+
+<body>
+    <div id="menu">
+        <ul id='ul-menu'></ul>
+    </div>
+    <div id="teste3">
+        <strong>Digite a url de sua imagem:</strong>
+        <input id="url-image" type="text" name="" id="">
+        <img id="cancel" src="/Site/images/error.png" alt="" onclick="cancel_image()">
+        <img id="check" src="/Site/images/checked.png" alt="" onclick="change_image()">
+    </div>
+
+    <img id="image-user" src="/Site/images/user.png" alt="">
+    <script src="/Site/autentication_firebase.js"></script>
+    <script src="/Site/menu/menu.js"></script>
+    <script src="/Site/user/script_user.js"></script>
+    <script>
+        update_user_image()
+    </script>
+</body>
+
+</html>

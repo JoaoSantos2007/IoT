@@ -1,658 +1,327 @@
-//Firebase
+const files = "assets/"
 
-const Categoria = "devices"
-let existe = false
-let array_local = []
-let array_ID = []
+db.collection(Categoria).onSnapshot(function (documentos) {
+  documentos.docChanges().forEach(function (changes) {
+    const documento = changes.doc
+    let key = documento.id
+    console.log(key)
+    var dados = documento.data()
+    if (changes.type === "added") {
+      carregar_layout(dados,key, false)
 
-//Armazena as credenciais do Firebase em uma constante
-const firebaseConfig = {
-  apiKey: "AIzaSyDOCg6kqirThQKx3R6zd5VNphTqbbuA1Rc",
-  authDomain: "fir-crud-e99a4.firebaseapp.com",
-  projectId: "fir-crud-e99a4",
-  storageBucket: "fir-crud-e99a4.appspot.com",
-  messagingSenderId: "319998441027",
-  appId: "1:319998441027:web:01e4f3fe3d2a57dd3c46f6",
-  measurementId: "G-7437FP6V3J"
-};
+    } else if (changes.type === "modified") {
+      carregar_layout(dados,key, true)
 
-//Inicializa o Firebase com a constante contendo as credenciais do Firebase
-firebase.initializeApp(firebaseConfig)
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
-    var uid = user.uid;
-    // ...
-  } else {
-    // User is signed out
-    if (location.pathname == "/Site/login/index.html") {
-    } else {
-      window.location.href = ("/Site/login/index.html")
+    } else if (changes.type === "removed") {
+      var apagar = window.document.getElementById(key)
+      apagar.innerHTML = ""
     }
-  }
-});
-
-
-//Armazena as informações do database do firebase em uma variável
-let db = firebase.firestore();
+  })
+})
 
 
 
-//Inicio
-function iniciar_index(tipo = "normal") {
-  var div_lista = window.document.getElementById("lista")
-  div_lista.innerHTML = ""
+function carregar_layout(dados, key, modificar) {
+  //Dados do registro
+  const nome = dados.name
+  const lugar = dados.location
 
-  db.collection(Categoria).onSnapshot(function (documentos) {
-    documentos.docChanges().forEach(function (changes) {
-      const documento = changes.doc
-      const dados = documento.data()
-      let key = documento.id
-      if (changes.type === "added") {
-        if (tipo == "normal") {
-          criarItens(dados, key, false)
-        } else if (tipo == "local") {
-          for (var i in array_local) {
-            if (array_local[i] == dados.location) {
-              existe = true
-            }
-          }
-          if (existe) {
-            existe = false
-          } else {
-            var filtro_local = window.document.getElementById("filtro")
-            filtro_local.innerHTML += `<option value="${dados.location}">${dados.location}</option>`
-            array_local.push(dados.location)
-          }
-          criarItens(dados, key, false)
-        } else if (tipo == "ID") {
-          for (var i in array_ID) {
-            if (array_ID[i] == dados.deviceId) {
-              existe = true
-            }
-          }
-          if (existe) {
-            existe = false
-          } else {
-            var filtro = window.document.getElementById("filtro")
-            filtro.innerHTML += `<option value="${dados.deviceId}">${dados.deviceId}</option>`
-            array_ID.push(dados.deviceId)
-          }
-          criarItens(dados, key, false)
+  const main = window.document.querySelector('main')
+  
+  let section = window.document.createElement('section')
+  section.setAttribute('id', key)
+
+  let ul = window.document.createElement('ul')
+
+  //Cabeçalho do Registro
+  let item_header = window.document.createElement('li')
+  item_header.setAttribute('class','item_header')
+
+
+  //Nome do  Registro
+  let item_title = window.document.createElement('p')
+  item_title.setAttribute('class','item_title')
+  item_title.innerText = `${nome}`
+  item_header.appendChild(item_title)
+
+
+  //Imagens de editar e apagar registro
+  let div = window.document.createElement('div')
+  //Imagegem de Editar Registro
+  let img_edit = window.document.createElement('img')
+  img_edit.setAttribute('class','edit')
+  img_edit.setAttribute('src',`${files}edit.png`)
+  img_edit.setAttribute('alt','Imagegem de Editar Registro')
+  img_edit.setAttribute('onclick',`editar_registro(${key})`)
+  div.appendChild(img_edit)
+  //Imagem de Apagar Registro
+  let img_delete = window.document.createElement('img')
+  img_delete.setAttribute('class','delete')
+  img_delete.setAttribute('src',`${files}delete.png`)
+  img_delete.setAttribute('alt','Imagem de Apagar Registro')
+  img_delete.setAttribute('onclick',`deletar('${key}')`)
+  div.appendChild(img_delete)
+  item_header.appendChild(div)
+
+
+  //Lugar do Registro
+  item_location = window.document.createElement('p')
+  item_location.setAttribute('class','item_location')
+  item_location.innerText = `${lugar}`
+  item_header.appendChild(item_location)
+
+  ul.appendChild(item_header)
+
+  const obj = dados.data
+  Object.keys(obj).forEach((types) =>{
+    const obj_types = obj[types]
+
+    Object.keys(obj_types).forEach((names) =>{
+      let li_items = window.document.createElement('li')
+      li_items.setAttribute('class','items')
+      
+      //Icons
+      let img_icon = window.document.createElement('img')
+      img_icon.setAttribute('class','icons')
+      img_icon.setAttribute('src',`${files}${types}.png`)
+      img_icon.setAttribute('alt',``)
+      li_items.appendChild(img_icon)
+  
+      //Item Name
+      let item_name = window.document.createElement('p')
+      item_name.innerText = `${names}`
+      li_items.appendChild(item_name)
+
+      ul.appendChild(li_items)
+
+
+      let div_contents = window.document.createElement('div')
+      div_contents.setAttribute('class','contents')
+      const obj_name = obj_types[names]
+      if('settings' in obj_name){
+        switch(types){
+          case 'light':
+            const valor = obj_name.settings.btn
+            type_light(div_contents,key,valor,names)
+            break
+          case 'tv':
+            type_tv(div_contents)
+            break
+          case 'air':
+            type_air(div_contents)
+            break
         }
-
-
-      } else if (changes.type === "modified") {
-        criarItens(dados, key, true)
-
-      } else if (changes.type === "removed") {
-        var apagar = window.document.getElementById(key)
-        apagar.innerHTML = ""
+        
+      }else{
+        let p_value = window.document.createElement('p')
+        p_value.innerText=`${obj_name.value}`
+        div_contents.appendChild(p_value)
       }
+
+      li_items.appendChild(div_contents)
     })
+    
   })
+
+
+  section.appendChild(ul)
+  main.appendChild(section)
 }
 
-//Tipos
-function criarItens(dados, key, modificar) {
-  var filtro = String((window.document.getElementById("filtro").value))
-  if (filtro == "all" || filtro == dados.type || filtro == dados.location || filtro == dados.deviceId) {
-    if (dados.type == "light") tipo_light(dados, key, modificar)
-    else if (dados.type == "umidade") tipo_umidade(dados, key, modificar)
-    else if (dados.type == "temperatura") tipo_temperatura(dados, key, modificar)
-    else if (dados.type == "proximidade") tipo_proximidade(dados, key, modificar)
-    else if (dados.type == "luminosidade") tipo_luminosidade(dados, key, modificar)
-    else if (dados.type == "tv") tipo_tv(dados, key, modificar)
-    else if (dados.type == "fan") tipo_fan(dados, key, modificar)
-    else if (dados.type == "air") tipo_air(dados, key, modificar)
-    else if (dados.type == "presenca") tipo_presenca(dados, key, modificar)
+function type_light(div,key,valor,name){
+  let btn = window.document.createElement('input')
+  btn.setAttribute('type','checkbox')
+  btn.setAttribute('class','liga-desliga__checkbox')
+  btn.setAttribute('id',`liga-desliga_${name}`)
+  btn.setAttribute('onclick',`acionar_botao(${key})`)
+  if(valor){
+    btn.setAttribute('checked','true')
   }
+  let label = window.document.createElement('label')
+  label.setAttribute('for',`liga-desliga_${name}`)
+  label.setAttribute('class','liga-desliga__botao')
+  div.appendChild(btn)
+  div.appendChild(label)
 }
 
-function tipo_light(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var settings = dados.settings
-  var lugar = dados.location
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/light.png" alt="light"> `
-  section.innerHTML += `<img id = "edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += `<img id = "delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome} `
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong> ${lugar}`
-  section.innerHTML += `</p>`
-  Object.entries(settings).forEach(
-    ([_key, value]) => {
-    section.innerHTML += `<p>`
-    section.innerHTML += `<strong>${_key}: </strong>${value} `
-    section.innerHTML += `</p>`
-     });
-  section.innerHTML += `<div>`
-  if (dados.currentValue == "true") {
-    section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_${key}" onclick="acionar_botao('${key}')" checked>`
-  } else {
-    section.innerHTML += `<input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_${key}" onclick="acionar_botao('${key}')">`
-  }
-  section.innerHTML += `<label for="liga-desliga_${key}" class="liga-desliga__botao"></label>`
-  section.innerHTML += `</div>`
-  if (modificar == false) {
-    div_lista.appendChild(section)
-  }
+function type_tv(div){
+  let section = window.document.createElement('section')
+  section.setAttribute('class','tv')
+
+  //Parte 1
+
+  //Imagem Power
+  let figure_power = window.document.createElement('figure')
+  let img_power = window.document.createElement('img')
+  img_power.setAttribute('src',`${files}power.png`)
+  img_power.setAttribute('alt','Ligar e Desligar TV')
+  let p_power = window.document.createElement('figcaption')
+  p_power.innerText = 'Power'
+  figure_power.appendChild(img_power)
+  figure_power.appendChild(p_power)
+  section.appendChild(figure_power)
+  //Imagem Source
+  let figure_source = window.document.createElement('figure')
+  let img_source = window.document.createElement('img')
+  img_source.setAttribute('src',`${files}source.png`)
+  img_source.setAttribute('alt','Source TV')
+  let p_source = window.document.createElement('figcaption')
+  p_source.innerText = 'Source'
+  figure_source.appendChild(img_source)
+  figure_source.appendChild(p_source)
+  section.appendChild(figure_source)
+  //Imagem Menu
+  let figure_menu = window.document.createElement('figure')
+  let img_menu = window.document.createElement('img')
+  img_menu.setAttribute('src',`${files}menu.png`)
+  img_menu.setAttribute('alt','Menu TV')
+  let p_menu = window.document.createElement('figcaption')
+  p_menu.innerText = 'Menu'
+  figure_menu.appendChild(img_menu)
+  figure_menu.appendChild(p_menu)
+  section.appendChild(figure_menu)
+  
+  section.appendChild(window.document.createElement('br'))
+  
+  //Parte 2
+
+  //Imagem Aumentar canal 
+  img_up_channel = window.document.createElement('img')
+  img_up_channel.setAttribute('class','tv_channel')
+  img_up_channel.setAttribute('src',`${files}up.png`)
+  img_up_channel.setAttribute('alt','Aumentar Canal')
+  section.appendChild(img_up_channel)
+  //Texto Channel
+  p_channel = window.document.createElement('p')
+  p_channel.setAttribute('class','tv_channel')
+  p_channel.innerText = 'Channel'
+  section.appendChild(p_channel)
+  //Imagem Diminuir canal 
+  img_down_channel = window.document.createElement('img')
+  img_down_channel.setAttribute('class','tv_channel')
+  img_down_channel.setAttribute('src',`${files}down.png`)
+  img_down_channel.setAttribute('alt','Diminuir Canal')
+  section.appendChild(img_down_channel)
+
+  section.appendChild(window.document.createElement('br'))
+
+  //Parte 3
+
+  //Imagem Aumentar volume 
+  img_up_volume = window.document.createElement('img')
+  img_up_volume.setAttribute('class','tv_volume')
+  img_up_volume.setAttribute('src',`${files}up.png`)
+  img_up_volume.setAttribute('alt','Aumentar volume')
+  section.appendChild(img_up_volume)
+  //Texto Channel
+  p_volume = window.document.createElement('p')
+  p_volume.setAttribute('class','tv_volume')
+  p_volume.innerText = 'Volume'
+  section.appendChild(p_volume)
+  //Imagem Diminuir canal 
+  img_down_volume = window.document.createElement('img')
+  img_down_volume.setAttribute('class','tv_volume')
+  img_down_volume.setAttribute('src',`${files}down.png`)
+  img_down_volume.setAttribute('alt','Diminuir Canal')
+  section.appendChild(img_down_volume)
+  
+
+  div.appendChild(section)
 }
 
-function tipo_umidade(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var lugar = dados.location
-  var valor = dados.currentValue
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/umidade.png" alt="umidade">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<strong>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<span id="div_valor">Valor:</span>`
-  section.innerHTML += `<span id="valor">${valor}</span>`
-  section.innerHTML += `</p>`
-  section.innerHTML += `</strong>`
-  if (modificar == false) {
-    div_lista.appendChild(section)
-  }
+function type_air(div){
+  let section = window.document.createElement('section')
+  section.setAttribute('class','air')
+
+  //Parte 1
+
+  //Imagem Power
+  let figure_power = window.document.createElement('figure')
+  let img_power = window.document.createElement('img')
+  img_power.setAttribute('src',`${files}power.png`)
+  img_power.setAttribute('alt','Ligar e Desligar AR')
+  let p_power = window.document.createElement('figcaption')
+  p_power.innerText = 'Power'
+  figure_power.appendChild(img_power)
+  figure_power.appendChild(p_power)
+  section.appendChild(figure_power)
+  //Imagem Invert
+  let figure_invert = window.document.createElement('figure')
+  let img_invert = window.document.createElement('img')
+  img_invert.setAttribute('src',`${files}menu.png`)
+  img_invert.setAttribute('alt','Invert AIR')
+  let p_invert = window.document.createElement('figcaption')
+  p_invert.innerText = 'Invert'
+  figure_invert.appendChild(img_invert)
+  figure_invert.appendChild(p_invert)
+  section.appendChild(figure_invert)
+  //Imagem Time
+  let figure_time = window.document.createElement('figure')
+  let img_time = window.document.createElement('img')
+  img_time.setAttribute('src',`${files}timer.png`)
+  img_time.setAttribute('alt','Time AIR')
+  let p_time = window.document.createElement('figcaption')
+  p_time.innerText = 'Time'
+  figure_time.appendChild(img_time)
+  figure_time.appendChild(p_time)
+  section.appendChild(figure_time)
+  
+  section.appendChild(window.document.createElement('br'))
+  
+  //Parte 2
+
+  //Imagem Sleep
+  let figure_sleep = window.document.createElement('figure')
+  let img_sleep = window.document.createElement('img')
+  img_sleep.setAttribute('src',`${files}power.png`)
+  img_sleep.setAttribute('alt','Sleep AIR')
+  let p_sleep = window.document.createElement('figcaption')
+  p_sleep.innerText = 'Sleep'
+  figure_sleep.appendChild(img_sleep)
+  figure_sleep.appendChild(p_sleep)
+  section.appendChild(figure_sleep)
+
+  //Imagem Swing
+  let figure_swing = window.document.createElement('figure')
+  let img_swing = window.document.createElement('img')
+  img_swing.setAttribute('src',`${files}timer.png`)
+  img_swing.setAttribute('alt','Swing AIR')
+  let p_swing = window.document.createElement('figcaption')
+  p_swing.innerText = 'Swing'
+  figure_swing.appendChild(img_swing)
+  figure_swing.appendChild(p_swing)
+  section.appendChild(figure_swing)
+
+
+  section.appendChild(window.document.createElement('br'))
+
+  //Parte 3
+
+  //Imagem Aumentar Temperatura 
+  img_up_temp = window.document.createElement('img')
+  img_up_temp.setAttribute('class','air_temp')
+  img_up_temp.setAttribute('src',`${files}add.png`)
+  img_up_temp.setAttribute('alt','Aumentar Temperatura')
+  section.appendChild(img_up_temp)
+  //Texto Temperatura
+  p_temp = window.document.createElement('p')
+  p_temp.setAttribute('class','air_temp')
+  p_temp.innerText = 'Temp'
+  section.appendChild(p_temp)
+  //Imagem Diminuir Temperatura 
+  img_down_temp = window.document.createElement('img')
+  img_down_temp.setAttribute('class','air_temp')
+  img_down_temp.setAttribute('src',`${files}remove.png`)
+  img_down_temp.setAttribute('alt','Diminuir Temperatura')
+  section.appendChild(img_down_temp)
+  
+  
+  div.appendChild(section)
 }
 
-function tipo_presenca(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var lugar = dados.location
-  var valor = dados.currentValue
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/camera.png" alt="presença">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<strong>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<span id="div_valor">Valor:</span>`
-  section.innerHTML += `<span id="valor">${valor}</span>`
-  section.innerHTML += `</p>`
-  section.innerHTML += `</strong>`
-  if (modificar == false) {
-    div_lista.appendChild(section)
-  }
-}
-
-function tipo_temperatura(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var lugar = dados.location
-  var valor = dados.currentValue
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/temperatura.png" alt="temperatura">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<strong>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<span id="div_valor">Valor:</span>`
-  section.innerHTML += `<span id="valor">${valor}</span>`
-  section.innerHTML += `</p>`
-  section.innerHTML += `</strong>`
-  if (modificar == false) {
-    div_lista.appendChild(section)
-  }
-}
-
-function tipo_proximidade(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var lugar = dados.location
-  var valor = dados.currentValue
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/proximidade.png" alt="proximidade">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<strong>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<span id="div_valor">Valor:</span>`
-  section.innerHTML += `<span id="valor">${valor}</span>`
-  section.innerHTML += `</p>`
-  section.innerHTML += `</strong>`
-  if (modificar == false) {
-    div_lista.appendChild(section)
-  }
-}
-
-function tipo_luminosidade(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var lugar = dados.location
-  var valor = dados.currentValue
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/luminosidade.png" alt="luminosidade">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += ` <img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<strong>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<span id="div_valor">Valor:</span>`
-  section.innerHTML += `<span id="valor">${valor}</span>`
-  section.innerHTML += `</p>`
-  section.innerHTML += `</strong>`
-  if (modificar == false) {
-    div_lista.appendChild(section)
-  }
-}
-
-function tipo_tv(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var lugar = dados.location
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/tv.png" alt="tv">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="tv_actions('${key}','tag#power_tv')">`
-  section.innerHTML += `<img id="source_button" src="/Site/images/source.png" alt="source" onclick="tv_actions('${key}','tag#source_tv')">`
-  section.innerHTML += `<img id="menu_button" src="/Site/images/menu.png" alt="menu" onclick="tv_actions('${key}','tag#menu_tv')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div>`
-  section.innerHTML += `<label for="power_button" id="power_button">power</label>`
-  section.innerHTML += `<label for="source_button" id="source_button">source</label>`
-  section.innerHTML += `<label for="menu_button" id="menu_button">menu</label>`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div id="canal">`
-  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="tv_actions('${key}','tag#up_channel')">`
-  section.innerHTML += `<label for="channel" id="channel">canal</label>`
-  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down" onclick="tv_actions('${key}','tag#down_channel')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div id="volume">`
-  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="tv_actions('${key}','tag#up_volume')">`
-  section.innerHTML += `<label for="volume" id="volume">volume</label>`
-  section.innerHTML += `<img id="down_button_volume" src="/Site/images/down.png" alt="down" onclick="tv_actions('${key}','tag#down_volume')">`
-  section.innerHTML += `</div>`
-  if (modificar == false) {
-    div_lista.appendChild(section)
-  }
-}
-
-function tipo_fan(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var lugar = dados.location
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/fan.png" alt="ventilador">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="fan_actions('${key}','tag#power_fan')">`
-  section.innerHTML += `<img id="invert_button" src="/Site/images/source.png" alt="invert" onclick="fan_actions('${key}','tag#invert_fan')">`
-  section.innerHTML += `<img id="time_button" src="/Site/images/chronometer.png" alt="time" onclick="fan_actions('${key}','tag#time_fan')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div>`
-  section.innerHTML += `<label for="power_button" id="power_button">power</label>`
-  section.innerHTML += `<label for="invert_button" id="invert_button">invert</label>`
-  section.innerHTML += `<label for="menu_button" id="time_button">time</label>`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div id="button_fan">`
-  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="fan_actions('${key}','tag#up_fan')">`
-  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down" onclick="fan_actions('${key}','tag#down_fan')">`
-  section.innerHTML += `</div>`
-  if (modificar == false) {
-    div_lista.appendChild(section)
-  }
-}
-
-function tipo_air(dados, key, modificar) {
-  var div_lista = window.document.querySelector('div#lista')
-  if (modificar == false) {
-    var section = window.document.createElement('section')
-    section.setAttribute('id', key)
-  } else {
-    var section = window.document.getElementById(key)
-    section.innerHTML = ""
-  }
-  var nome = dados.name
-  var lugar = dados.location
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img src="/Site/images/snow.png" alt="AC">`
-  section.innerHTML += `<img id="edit" src="/Site/images/edit.png" alt="edit" onclick="editar_registro('${key}')">`
-  section.innerHTML += `<img id="delete" src="/Site/images/delete.png" alt="delete" onclick="deletar('${key}')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Nome: </strong>${nome}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<p>`
-  section.innerHTML += `<strong>Local: </strong>${lugar}`
-  section.innerHTML += `</p>`
-  section.innerHTML += `<div>`
-  section.innerHTML += `<img id="power_button" src="/Site/images/power.png" alt="power" onclick="air_actions('${key}','tag#power_air')">`
-  section.innerHTML += `<img id="invert_button" src="/Site/images/source.png" alt="invert" onclick="air_actions('${key}','tag#invert_air')">`
-  section.innerHTML += `<img id="time_button" src="/Site/images/chronometer.png" alt="time" onclick="air_actions('${key}','tag#time_air')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div>`
-  section.innerHTML += `<label for="power_button" id="power_button">power</label>`
-  section.innerHTML += `<label for="invert_button" id="invert_button">invert</label>`
-  section.innerHTML += `<label for="menu_button" id="time_button">time</label>`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div id="button_air">`
-  section.innerHTML += `<img id="up_button" src="/Site/images/up.png" alt="up" onclick="air_actions('${key}','tag#up_air')">`
-  section.innerHTML += `<label for="temp" id="temp">Temp</label>`
-  section.innerHTML += `<img id="down_button" src="/Site/images/down.png" alt="down" onclick="air_actions('${key}','tag#down_air')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div id="button_air2">`
-  section.innerHTML += `<img id="sleep_button" src="/Site/images/power.png" alt="sleep" onclick="air_actions('${key}','tag#sleep_air')">`
-  section.innerHTML += `<img id="swing_button" src="/Site/images/power.png" alt="swing" onclick="air_actions('${key}','tag#swing_air')">`
-  section.innerHTML += `</div>`
-  section.innerHTML += `<div>`
-  section.innerHTML += `<label for="sleep_button" id="sleep_button">sleep</label>`
-  section.innerHTML += `<label for="swing_button" id="swing_button">swing</label>`
-  section.innerHTML += `</div>`
-  if (modificar == false) {
-    div_lista.appendChild(section)
-  }
-}
-
-
-//Ações
-function acionar_botao(chave) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(chave).get().then(function (doc) {
-    dados = doc.data()
-    valor_atual = dados.currentValue
-    if (valor_atual == "false") {
-      db.collection(Categoria).doc(chave).update({
-        'currentValue': 'true'
-      })
-    } else {
-      db.collection(Categoria).doc(chave).update({
-        'currentValue': 'false'
-      })
-    }
-  })
-}
-
-function tv_actions(key, atualizar) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).update({
-    'currentValue': atualizar
-  })
-}
-
-function fan_actions(key, atualizar) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).update({
-    'currentValue': atualizar
-  })
-}
-
-function air_actions(key, atualizar) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).update({
-    'currentValue': atualizar
-  })
-}
-
-function deletar(chave) {
-  reproduzir_audio()
-  if (window.confirm("Você realmente quer apagar esse registro?")) {
-    db.collection(Categoria).doc(chave).delete()
-  }
-}
-
-function criar_registro() {
-  reproduzir_audio()
-  var type = String((window.document.getElementById("txttype").value))
-  var name = String((window.document.getElementById("txtname").value))
-  var local = String((window.document.getElementById("txtlocation").value))
-  var id = Number((window.document.getElementById("txtid").value))
-  db.collection(Categoria).doc().set({
-    'deviceId': id,
-    'type': type,
-    'name': name,
-    'location': local,
-    'currentValue': ' - - '
-  })
-  window.alert("Registro criado")
-  setInterval(function () {
-    window.location.href = ("/Site/index.html")
-  }, 1000)
-}
-
-function editar_registro(key) {
-  reproduzir_audio()
-  db.collection(Categoria).doc(key).get().then(function (doc) {
-    var dados = doc.data()
-    var id = dados.deviceId
-    var nome = dados.name
-    var lugar = dados.location
-    var tipo = dados.type
-    section = document.getElementById(key)
-    section.innerHTML = ""
-    section.innerHTML += "<div>"
-    section.innerHTML += `id: `
-    section.innerHTML += `<input type="number" name="txtid" id="txtid_${key}" value = "${id}">`
-    section.innerHTML += `</div>`
-    section.innerHTML += `<div>`
-    section.innerHTML += `name:`
-    section.innerHTML += `<input type="text" name="txtname" id="txtname_${key}" value = "${nome}">`
-    section.innerHTML += `</div>`
-    section.innerHTML += `<div>`
-    section.innerHTML += `location:`
-    section.innerHTML += `<input type="text" name="txtlocation" id="txtlocation_${key}" value = "${lugar}">`
-    section.innerHTML += `</div>`
-    section.innerHTML += `<div>`
-    section.innerHTML += `type:`
-    select = document.createElement('select')
-    select.setAttribute('id', 'txttype_' + key)
-    if (tipo == "light") select.innerHTML += `<option value="light" selected>Luz</option>`
-    else select.innerHTML += `<option value="light">Luz</option>`
-
-    if (tipo == "temperatura") select.innerHTML += `<option value="temperatura" selected>Temperatura</option>`
-    else select.innerHTML += `<option value="temperatura">Temperatura</option>`
-
-    if (tipo == "proximidade") select.innerHTML += `<option value="proximidade" selected>Proximidade</option>`
-    else select.innerHTML += `<option value="proximidade">Proximidade</option>`
-
-    if (tipo == "luminosidade") select.innerHTML += `<option value="luminosidade" selected>Luminosidade</option>`
-    else select.innerHTML += `<option value="luminosidade">Luminosidade</option>`
-
-    if (tipo == "tv") select.innerHTML += `<option value="tv" selected>TV</option>`
-    else select.innerHTML += `<option value="tv">TV</option>`
-
-    if (tipo == "air") select.innerHTML += `<option value="air" selected>Ar-Condicionado</option>`
-    else select.innerHTML += `<option value="air">Ar-Condicionado</option>`
-
-    if (tipo == "fan") select.innerHTML += `<option value="fan" selected>Ventilador</option>`
-    else select.innerHTML += `<option value="fan">Ventilador</option>`
-
-    if (tipo == "umidade") select.innerHTML += `<option value="umidade" selected>Umidade</option>`
-    else select.innerHTML += `<option value="umidade">Umidade</option>`
-
-    if (tipo == "presenca") select.innerHTML += `<option value="presenca" selected>Presença</option>`
-    else select.innerHTML += `<option value="presenca">Presença</option>`
-
-    section.appendChild(select)
-    section.innerHTML += `</div>`
-    section.innerHTML += `<div>`
-    section.innerHTML += `<input type="button" value="Submit" onclick="enviar('${key}')">`
-    section.innerHTML += `<input type="button" value="Cancelar" onclick="location.reload()">`
-    section.innerHTML += `</div>`
-  })
-}
-
-function enviar(key) {
-  reproduzir_audio()
-  var type_enviar = String((window.document.getElementById("txttype_" + key).value))
-  var name_enviar = String((window.document.getElementById("txtname_" + key).value))
-  var local_enviar = String((window.document.getElementById("txtlocation_" + key).value))
-  var id_enviar = Number((window.document.getElementById("txtid_" + key).value))
-  db.collection(Categoria).doc(key).update({
-    'name': name_enviar,
-    'type': type_enviar,
-    'location': local_enviar,
-    'deviceId': id_enviar,
-  })
-}
 
 var audio = new Audio()
 function reproduzir_audio() {
-  audio.src = "audios/audio.mp3"
+  audio.src = `${files}audio.mp3`
   audio.play()
-}
-
-
-function login() {
-  var email = String(document.getElementById("email-field").value)
-  var password = String(document.getElementById("password-field").value)
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(function (firebaseUser) {
-      // Success 
-      window.location.href = ("/Site/index.html")
-    })
-    .catch(function (error) {
-      // Error Handling
-      window.alert("Email ou senha errado!")
-    });
-}
-
-function desconectar() {
-  firebase.auth().signOut().then(() => {
-    // Sign-out successful.
-  }).catch((error) => {
-    // An error happened.
-  });
-}
-
-function carregar_dados_usuario() {
-  var div_name = window.document.getElementById("div-name")
-  var div_email = window.document.getElementById("div-email")
-  var div_foto = window.document.getElementById("div-foto")
-  var div_email_verif = window.document.getElementById("div-email_verif")
-
-  const user = firebase.auth().currentUser;
-  if (user != null) {
-    // The user object has basic properties such as display name, email, etc.
-    const displayName = user.displayName;
-    const email = user.email;
-    const photoURL = user.photoURL;
-    const emailVerified = user.emailVerified;
-
-    // The user's ID, unique to the Firebase project. Do NOT use
-    // this value to authenticate with your backend server, if
-    // you have one. Use User.getToken() instead.
-    const uid = user.uid;
-
-    div_name.innerHTML += `${displayName}`
-    div_email.innerHTML += `${email}`
-    div_foto.innerHTML += `${photoURL}`
-    div_email_verif.innerHTML = `${emailVerified}`
-  }
 }

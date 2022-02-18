@@ -139,12 +139,12 @@ delete_done = threading.Event()
 def on_snapshot(col_snapshot, changes, read_time):
     for change in changes:
         if change.type.name == 'ADDED':
-            if change.document.get('eventType') in ['read-sensor','action-device']:
+            if change.document.get('eventType') in ['read-sensor','action-device','action-esp']:
                 deviceId = change.document.get('deviceId')
                 eventType = change.document.get('eventType')
-                #action = change.document.get('action')
+                action = change.document.get('action')
                 topico_envio = "esp-" + str(deviceId)
-                print(f'New msg: ', deviceId, eventType, topico_envio)
+                print(f'New msg: ', deviceId, eventType, topico_envio, action), 
                 # if(eventType == "light"):
                 #     publish(deviceId, type, currentValue,name, location, topico_envio)
 

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="shortcut icon" href="../assets/favicon-site.ico" type="image/x-icon">
+        <title>Alekão - Configuração</title>
+        <link rel="stylesheet" href="../assets/reset.css">
+        <link rel="stylesheet" href="../style.css">
+        <link rel="stylesheet" href="config.css">
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+    </head>
+
+    <body>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../cloud/cloud.html">Cloud</a></li>
+                <li><a href="../credits/credits.html">Créditos</a></li>
+                <li><a  href="../createRecord/create.html"><img src="../assets/add.png" alt="Imagem ancorada para a tela de criação de registros"></a></li>
+                <li><a href="../config/config.html"><img src="../assets/config.png" alt="Imagem ancorada para a tela de configuração do usuário"></a></li>
+            </ul>  
+        </nav>
+        <header>
+            <p class="title">Definições de Usuário</h1>
+        </header>
+
+        <main>
+            <section class="userConfig">
+
+                <div class="div-userImage_displayName">
+                    <img class="userImage" id="userImage" src="../assets/bidu.png" alt="Imagem do Usuário">
+                    <p class="displayName" id="displayName">Display Name</p>
+                    <img class="editImage" id="editImage" src="../assets/edit.png" alt="Editar Imagem de Usuário" onclick="">
+                </div>
+
+                <div class="div-email">
+                    <p class="emailText">Email: </p>
+                    <p class="email" id="email"> email@gmail.com</p>
+                </div>
+
+                <div class="div-verifEmail" id="div-verifEmail">
+                    <p class="text_verifEmail">Verificar Email</p>
+                    <input class="verifEmail" id="verifEmail" type="button" value="Verificar!" onclick="verifEmail()">
+                </div>
+                
+                <div class="div-logout_deleteAccount">
+                    <input class="logout" id="logout" type="button" value="Logout" onclick="desconectar()">
+                    <input class="deleteAccount" id="deleteAccount" type="button" value="Delete Account" onclick="deleteAccount()">
+                </div>
+
+            </section> 
+        </main>
+
+        <footer>
+            <p>IOT Project &copy;</p>
+        </footer>
+        
+        <script src="../autentication_firebase.js"></script>
+        <script src="config.js"></script>
+    </body>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+    <head>
+        <meta charset="UTF-8">
+        <link rel="shortcut icon" href="../assets/favicon-site.ico" type="image/x-icon">
+        <link rel="stylesheet" href="../assets/reset.css">
+        <link rel="stylesheet" href="login.css">
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+        <title>Login</title>
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+    </head>
+
+    <body>
+        <header>
+            <img src="../assets/iot.png" alt="Imagem para decoração da tela de login" class="img-principal">
+        </header>
+        
+        <main>
+            <section class="login">
+
+                <p class="login-text">Login do Usuário</p>
+                
+                <div class="email">
+                    <img src="../assets/email.png" alt="">
+                    <input type="email" id="email" placeholder="Email">
+                </div>
+                
+                <div class="password">
+                    <img src="../assets/view.png" alt="" id="img-pasword">
+                    <input type="password" id="password" placeholder="Password">
+                </div>
+                
+                <input type="button" value="Login" class="botao" onclick="login()">
+            </section>
+        </main>
+
+        <footer>
+            <p class="copyright">IOT Project &copy; </p>  
+        </footer>
+
+        
+    </body>
+    <script src="../autentication_firebase.js"></script>
+    <script src="login.js"></script>
+
+</html>

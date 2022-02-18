@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel="shortcut icon" href="assets/favicon-site.ico" type="image/x-icon">
+        <title>Alekão</title>
+        <link rel="stylesheet" href="assets/reset.css">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="style-home.css">
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+
+    </head>
+
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="cloud/cloud.html">Cloud</a></li>
+                    <li><a href="credits/credits.html">Créditos</a></li>
+                    <li><a  href="createRecord/create.html"><img src="assets/add.png" alt="Imagem ancorada para a tela de criação de registros"></a></li>
+                    <li><a href="config/config.html"><img src="assets/config.png" alt="Imagem ancorada para a tela de configuração do usuário"></a></li>
+                </ul>  
+            </nav>
+        </header>
+
+        <main>
+            <!-- <section>
+                <ul>
+                    <li class="item_header">
+                        <p class="item_title">Nome</p>   
+                        <div>
+                            <img class="edit" src="assets/edit.png" alt="edit" onclick="editar_registro('chave')">
+                            <img class="delete" src="assets/delete.png" alt="delete" onclick="deletar('chave')">
+                        </div>
+                        <p class="item_location">Local</p>
+                    </li>
+                    <li class="items">
+                        <img class="icons" src="assets/light.png" alt="light.png">
+                        <p>Lâmpada</p>
+                        <div class="contents">
+                            <input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_id" onclick="acionar_botao('chave')">
+                            <label for="liga-desliga_id" class="liga-desliga__botao"></label>
+                        </div>
+                    </li>
+                    <li class="items">
+                        <img class="icons" src="assets/light.png" alt="light.png">
+                        <p>Lâmpada</p>
+                        <div class="contents">
+                            <input type="checkbox" class="liga-desliga__checkbox" id="liga-desliga_id1" onclick="acionar_botao('chave')">
+                            <label for="liga-desliga_id1" class="liga-desliga__botao"></label>
+                        </div>
+                    </li>
+                    <li class="items">
+                        <img class="icons" src="assets/umidade.png">
+                        <p>Umidade</p>
+                        <div class="contents">
+                            <p>45%</p>
+                        </div>
+                    </li> -->
+                    <!-- <li class="items">
+                        <img class="icons" src="assets/tv.png">
+                        <p>TV</p>
+                        <div class="contents">
+                            <section class="tv">
+                                <figure>
+                                    <img src="assets/power.png" alt="">
+                                    <figcaption>Power</figcaption>-
+                                </figure>
+
+                                <figure>
+                                    <img src="assets/source.png" alt=""> 
+                                    <figcaption>Source</figcaption>
+                                </figure>
+
+                                <figure>
+                                    <img src="assets/menu.png" alt="">
+                                    <figcaption>Menu</figcaption>
+                                </figure>
+
+                                <br>
+
+
+                                <img class="tv_channel" src="assets/up.png" alt="">
+                                <p class="tv_channel">Channel</p>
+                                <img class="tv_channel" src="assets/down.png" alt="">
+
+                                <br>
+
+                                <img class="tv_volume" src="assets/up.png" alt="">
+                                <p class="tv_volume">Volume</p>
+                                <img class="tv_volume" src="assets/down.png" alt="">
+                            </section>
+                        </div>
+                    </li> -->
+                    <!-- <li class="items">
+                        <img class="icons" src="assets/air.png">
+                        <p>Ar-Condicionado</p>
+                        <div class="contents">
+                            <section class="air">
+                                <figure>
+                                    <img src="assets/power.png" alt="">
+                                    <figcaption>Power</figcaption>
+                                </figure>
+
+                                <figure>
+                                    <img src="assets/menu.png" alt=""> 
+                                    <figcaption>Invert</figcaption>
+                                </figure>
+
+                                <figure>
+                                    <img src="assets/timer.png" alt="">
+                                    <figcaption>Time</figcaption>
+                                </figure>
+
+                                <br>
+
+
+                                <figure>
+                                    <img class="" src="assets/power.png" alt="">
+                                    <figcaption>sleep</figcaption>
+                                </figure>
+                                <figure>
+                                    <img class="" src="assets/timer.png" alt="">
+                                    <figcaption>Swing</figcaption>
+                                </figure>
+                                
+                                
+
+                                <br>
+
+                                <img class="air_temp" src="assets/add.png" alt="">
+                                <p class="air_temp">Temp</p>
+                                <img class="air_temp" src="assets/remove.png" alt="">
+                            </section>
+                        </div>
+                    </li> -->
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>IOT Project &copy;</p>
+        </footer>
+        
+    </body>
+
+    <script type="" src="autentication_firebase.js"></script>
+    <script src="script.js"></script>
+</html>

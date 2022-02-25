@@ -1,0 +1,19 @@
+nav{
+    font: normal 32px Arial;
+    background-color: darkred;
+    list-style: none;
+    
+}
+nav li{
+    margin: 0 90px;
+    display: inline;
+}
+
+nav a{
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+a:hover{
+    color: #000000;
+}

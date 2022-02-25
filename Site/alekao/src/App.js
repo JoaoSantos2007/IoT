@@ -1,7 +1,13 @@
-import React,{Component} from "react"
+import React from "react"
+import './assets/reset.css';
+import Rotas from "./routes";
 
-class App extends Component{
-
+function App(){
+    return (
+        <div>
+            <Rotas/>
+        </div>
+    )
 }
 
-export default App
+export default App;

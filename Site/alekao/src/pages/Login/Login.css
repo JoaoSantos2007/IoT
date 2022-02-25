@@ -1,0 +1,107 @@
+.loginContents{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #CCCCCC;
+    
+}
+  
+.img-principal{
+  position: absolute;
+  width: 47%;
+  height: 100%;
+}
+
+.login{
+  margin-top: 8%;
+  padding-top: 30px;
+  position: absolute;
+  margin-left: 55%;
+  width: 40%;
+  height: 30%;
+  background: white;
+}
+
+.login-text{
+  position: relative;
+  text-align: center;
+  font-size: 70px;
+  font-weight: bold;
+  color: rgb(255,0,0);
+  margin: 0 auto;
+}
+
+.email{
+  position: relative;
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
+}
+
+.email img{
+  position: absolute;
+  margin: auto 5px;
+}
+
+.email input{
+  width: 400px;
+  height: 27px;
+  text-align: center;
+  background: #CCCCCC;
+  border: 2.3px solid #000000;
+  border-radius: 6px;
+}
+
+.password{
+  position: relative;
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
+}
+
+.password img{
+  position: absolute;
+  margin: auto 5px;
+  cursor: pointer;
+}
+
+.password input{
+  width: 400px;
+  height: 27px;
+  text-align: center;
+  background: #CCCCCC;
+  border: 2.3px solid #000000;
+  border-radius: 6px;
+}
+
+.botao{
+  margin: 10px auto;
+  display: block;
+  width: 120px;
+  height: 35px;
+  background: rgb(92, 92, 255);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 2.5px;
+  transition: 500ms all;
+}
+
+.botao:hover{
+  background: rgb(11, 11, 235);
+  transform: scale(1.2);
+}
+
+.divFooterLogin{
+  position: absolute;
+  margin-top: 38%;
+  margin-left: 65%;
+}
+
+.divFooterLogin p{
+  font-size: 70px;
+  color: #000000;
+}

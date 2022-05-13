@@ -24,17 +24,17 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 
 
-firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-    } else {
-        // User is signed out
-        if (location.pathname.split('/')[8] == "login.html") {
-            return
-        } else {
-            window.location.href = ("../login/login.html")
-        }
-    }
-});
+// firebase.auth().onAuthStateChanged((user) => {
+//     if (user) {
+//     } else {
+//         // User is signed out
+//         if (location.pathname.split('/')[8] == "login.html") {
+//             return
+//         } else {
+//             window.location.href = ("../login/login.html")
+//         }
+//     }
+// });
 
 //Armazena as informações do database do firebase em uma variável
 let db = firebase.firestore();

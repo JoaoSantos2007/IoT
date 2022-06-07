@@ -1,0 +1,102 @@
+.title{
+    color: rgb(255,0,0);
+    text-align: center;
+    font-size: 64px;
+    margin: 30px 0px;
+}
+
+.userConfig{
+    background: rgb(170,170,170);
+    width: 40%;
+    margin: 100px auto;
+    border-radius: 10px;
+    padding: 20px 30px;
+}
+
+.userImage{
+    border-radius: 360px;
+    height: 64px;
+    width: 64px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.displayName{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 42px;
+    
+}
+
+.editImage{
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.div-email,.div-verifEmail,.div-logout_deleteAccount{
+    margin-top: 15px;
+}
+
+.emailText,.email{
+    font-size: 32px;
+    display: inline-block;
+}
+
+.emailText{
+    font-weight: bold;
+}
+
+.div-verifEmail{
+    display: none;
+}
+
+.text_verifEmail{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.verifEmail{
+    display: inline-block;
+    height: 42px;
+    width: 160px;
+    border: none;
+    background: rgb(46, 46, 230);
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+}
+
+.div-logout_deleteAccount{
+    margin-top: 30px;
+    text-align: center;
+}
+
+.logout,.deleteAccount{
+    height: 42px;
+    width: 160px;
+    margin: 0px 30px;
+    font-size: 20px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+}
+
+.logout{
+    background: rgb(223, 148, 35);
+}
+
+.deleteAccount{
+    background: rgb(207, 38, 38);
+}
+
+footer{
+    margin-top: 15%;
+}

@@ -26,6 +26,10 @@ class tagModel{
         }
     }
 
+    static getUserID(tag){
+        return tags[tag].userID
+    }
+
     static deleteTAG(tag){
         delete tags[tag]
     }

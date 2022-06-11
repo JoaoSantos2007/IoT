@@ -74,6 +74,24 @@ class loginQuery{
         })
     }
 
+    static getUserByID(userID){
+        return new Promise((resolve,reject) => {
+            const cmd = `SELECT email,displayName,photoURL FROM users WHERE id = '${userID}'`
+
+            dbLOGIN.query(cmd, (err,results,fields) => {
+                if(err) throw err;
+
+                const user = {
+                    'email': results[0].email,
+                    'displayName': results[0].displayName,
+                    'photoURL': results[0].photoURL
+                }
+                
+                resolve(user)
+            })
+        })
+    }
+
     static getUserIDByEmail(email){
         return new Promise( (resolve,reject) => {
             const cmd = `SELECT id FROM users WHERE email = '${email}'`

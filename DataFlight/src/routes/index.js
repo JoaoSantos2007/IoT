@@ -1,6 +1,7 @@
 import express from 'express'
 import login from './loginRoutes.js'
-import tags from './tagRoutes.js'
+import tag from './tagRoutes.js'
+import user from './userRoutes.js'
 
 const routes = (app) => {
     app.route('/').get((req,res) => {
@@ -16,7 +17,8 @@ const routes = (app) => {
     app.use(
         express.json(),
         login,
-        tags
+        tag,
+        user
     )
 }
 

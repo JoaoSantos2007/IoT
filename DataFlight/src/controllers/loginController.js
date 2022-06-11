@@ -8,18 +8,22 @@ class loginController{
 
     static async loginAccount(req,res){
         const data = req.body
-
         let logged = false
         let tag = undefined
         
 
         const email = await loginQuery.getEmail(data.email)
         if(email){
-            if(loginModel.authentication(email,data.password)){
+            if(await loginModel.authentication(email,data.password)){
                 logged = true
+                const userID = await loginQuery.getUserIDByEmail(email)
 
-                const newTAG = tagModel.addTAG(await loginQuery.getUserIDByEmail(email))
+                const existingTAG = await tagModel.getTAG(userID)
+                if(!! existingTAG){
+                    tagModel.deleteTAG(existingTAG)
+                }
 
+                const newTAG = tagModel.addTAG(userID)
                 tag = newTAG
             }
         }
@@ -29,7 +33,7 @@ class loginController{
             'loginTAG': tag
         }
 
-        res.status(200).json(msg)
+        res.status(200).json(JSON.stringify(msg))
         
     }
 

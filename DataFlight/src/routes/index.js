@@ -7,6 +7,12 @@ const routes = (app) => {
         res.status(200).send('API data flight')
     })
 
+    app.use((req,res,next) => {
+        res.set('Access-Control-Allow-Origin','*')
+        res.set('Access-Control-Allow-Headers','*')
+        next()
+    })
+
     app.use(
         express.json(),
         login,

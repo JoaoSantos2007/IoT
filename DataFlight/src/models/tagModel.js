@@ -15,8 +15,19 @@ class tagModel{
     }
 
     static validateTAG(tag){
-        if(tags[tag]) return true
-        else return false
+        return !! tags[tag]
+    }
+
+    static getTAG(userID){
+        for(const index in tags){
+            if(tags[index].userID == userID){
+                return tags[index].tag
+            }
+        }
+    }
+
+    static deleteTAG(tag){
+        delete tags[tag]
     }
 
 

@@ -44,9 +44,9 @@ body{
   width: 400px;
   height: 27px;
   text-align: center;
-  background: #CCCCCC;
-  border: 2.3px solid #000000;
-  border-radius: 6px;
+  border: none;
+  outline: none;
+  border-bottom: #000000 1.5px solid;
 }
 
 .password{
@@ -67,9 +67,9 @@ body{
   width: 400px;
   height: 27px;
   text-align: center;
-  background: #CCCCCC;
-  border: 2.3px solid #000000;
-  border-radius: 6px;
+  border: none;
+  outline: none;
+  border-bottom: #000000 1.5px solid;
 }
 
 .botao{

@@ -83,9 +83,9 @@ class loginQuery{
 
                 let data = []
 
-                for(let row in results){
-                    data.push(row)
-                }
+                results.forEach(row => {
+                    data.push(row.id)
+                })
 
                 resolve(data[0])
             })

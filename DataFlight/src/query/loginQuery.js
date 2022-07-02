@@ -2,121 +2,54 @@ import dbLOGIN from '../config/mysql_connection.js'
 import GenerateCode from '../scripts/GenerateCode.js'
 
 class loginQuery{
-    constructor(){}
-
-    static getEmails(){
-        return new Promise(function(resolve, reject) {
-            dbLOGIN.query('SELECT email FROM users', function  (err,results,fields){
-                if(err) throw err;
-
-                let data = []
-
-                results.forEach(row => {
-                    data.push(row.email)
-                })
-
-                resolve(data)
-            })
-        });
-    }
-
-    static getEmail(email){
-       return new Promise(function(resolve, reject) {
-           const cmd = `SELECT email FROM users WHERE email = '${email}'`
-
-           dbLOGIN.query(cmd, (err,results,fields) => {
-               if(err) throw err;
-
-               let data = []
-
-               results.forEach(row => {
-                   data.push(row.email)
-               })
-
-               resolve(data[0])
-           })
-       }) 
-    }
-
-    static getUsers(){
-        return new Promise( (resolve,reject) => {
-            const cmd = 'SELECT * FROM users;'
-            dbLOGIN.query(cmd,(err,results,fields) => {
-                if(err) throw err;
-
-                let data = []
-
-                results.forEach(row => {
-                    data.push(row)
-                })
-
-                resolve(data)
-            })
-            
-        })
-    }
-
-    static getUserByEmail(email){
-        return new Promise((resolve,reject) => {
-            const cmd = `SELECT * FROM users WHERE email = '${email}'`
-
-            dbLOGIN.query(cmd, (err,results,fields) => {
-                if(err) throw err;
-
-                let data = []
-
-                results.forEach(row => {
-                    data.push(row)
-                })
-
-                resolve(data[0])
-            })
-        })
-    }
-
-    static getUserByID(userID){
-        return new Promise((resolve,reject) => {
-            const cmd = `SELECT email,displayName,photoURL FROM users WHERE id = '${userID}'`
-
-            dbLOGIN.query(cmd, (err,results,fields) => {
-                if(err) throw err;
-
-                const user = {
-                    'email': results[0].email,
-                    'displayName': results[0].displayName,
-                    'photoURL': results[0].photoURL
-                }
-                
-                resolve(user)
-            })
-        })
-    }
-
-    static getUserIDByEmail(email){
-        return new Promise( (resolve,reject) => {
-            const cmd = `SELECT id FROM users WHERE email = '${email}'`
-
-            dbLOGIN.query(cmd, (err,results,fields) => {
-                if(err) throw err;
-
-                let data = []
-
-                results.forEach(row => {
-                    data.push(row.id)
-                })
-
-                resolve(data[0])
-            })
-        })
-    }
-
     static createUser(data){
         return new Promise( (resolve,reject) => {
 
-            const cmd = `INSERT INTO users(id,displayName,email,Userpassword,photoURL) VALUES ('${GenerateCode()}','','${data.email}','${data.password}','${data.photoURL}')`
+            const cmd = `INSERT INTO users(id,displayName,email,Userpassword,photoURL) VALUES ('${GenerateCode()}','${data.displayName}','${data.email}','${data.password}','${data.photoURL}')`
 
             dbLOGIN.query(cmd, (err) => {
-                resolve(err)
+                resolve(!err)
+            })
+        })
+    }
+
+    static getUser(email=null,userID=null){
+        return new Promise((resolve,reject) => {
+            let cmd = ''
+            if(email){
+                cmd = `SELECT * FROM users WHERE email = '${email}'`
+            }else if(userID){
+                cmd = `SELECT * FROM users WHERE id = '${userID}'`
+            }
+            
+
+            dbLOGIN.query(cmd, (err,results,fields) => {
+                if(err) throw err;
+                if(!!results[0]) resolve(results[0])
+                else resolve(false)
+            })
+        })
+    }
+
+
+    static updateUser(data){
+        return new Promise((resolve,reject) => {
+            const cmd = `UPDATE users SET displayName='${data.displayName}', photoURL='${data.photoURL}' WHERE id = '${data.userID}'`
+
+            dbLOGIN.query(cmd, (err) => {
+                if(err) throw err
+                resolve(!err)
+            })
+        })
+    }
+
+    static deleteUser(data){
+        return new Promise((resolve,reject) => {
+            const cmd = `DELETE FROM users WHERE id = '${data.userID}'`
+
+            dbLOGIN.query(cmd, (err) => {
+                if(err) throw err
+                resolve(!err)
             })
         })
     }

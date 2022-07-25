@@ -1,0 +1,16 @@
+.logo{
+    display: flex;
+    text-align: center;
+    margin-bottom: 65px;
+    cursor: pointer;
+}
+
+.logo img{
+    width: 64px;
+    height: 64px;
+}
+
+.logo h1{
+    margin-left: 15px;
+    font-size: 64px;
+}

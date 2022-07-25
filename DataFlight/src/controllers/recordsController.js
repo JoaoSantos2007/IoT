@@ -16,14 +16,18 @@ class recordsController{
         const userTAG = req.query.tag
         const data = req.body
 
-        let statusCode = 500
+        let statusCode
 
         if(loginModel.validateTAG(userTAG)){
             const record = recordsModel.validateRecord(data)
             const created = await recordsQuery.createRecord(record)
+
+            statusCode = created ? 200 : 500
+        }else{
+            statusCode = 400
         }
         
-        res.status(200).send()
+        res.status(statusCode).send()
     }
 
 
@@ -31,12 +35,12 @@ class recordsController{
     static async getRecords(req,res){
         const userTAG = req.query.tag
 
-        let statusCode = 500
-        let records = null
+        let statusCode,records
         
         if(loginModel.validateTAG(userTAG)){
             records = await recordsQuery.getRecords()
-            statusCode = 200
+
+            statusCode = records ? 200 : 500
         }else{
             statusCode = 400
         }
@@ -50,12 +54,12 @@ class recordsController{
         const userTAG = req.query.tag
         const id = req.params.id
 
-        let statusCode = 500
-        let record
+        let statusCode,record
         
         if(loginModel.validateTAG(userTAG)){
             record = await recordsQuery.getRecords(id)
-            statusCode = 200
+
+            statusCode = record ? 200 : 500
         }else{
             statusCode = 400
         }
@@ -66,12 +70,22 @@ class recordsController{
 
     //Update a record
     static async updateRecord(req,res){
+        const userTAG = req.query.tag
+        const id = req.params.id
         const data = req.body
 
-        const record = recordsModel.validateRecord(data.record)
-        const updated = await recordsQuery.updateRecord(data.id,record)
+        let statusCode
 
-        res.status(200).send(updated)
+        if(loginModel.validateTAG(userTAG)){
+            const record = recordsModel.validateRecord(data)
+            const updated = await recordsQuery.updateRecord(id,record)
+
+            statusCode = updated ? 200 : 500
+        }else{
+            statusCode = 400
+        }
+
+        res.status(200).send()
     }
 
 
@@ -80,13 +94,12 @@ class recordsController{
         const userTAG = req.query.tag
         const id = req.params.id        
 
-        let statusCode = 500
+        let statusCode
 
         if(loginModel.validateTAG(userTAG)){
             const deleted = await recordsQuery.deleteRecord(id)
-            console.log(deleted)
 
-            statusCode = 200
+            statusCode = deleted ? 200 : 500
         }else{
             statusCode = 400
         }

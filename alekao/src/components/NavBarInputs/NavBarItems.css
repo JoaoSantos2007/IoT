@@ -1,0 +1,32 @@
+.items{
+    cursor: pointer;
+    display: flex;
+    width: 244px;
+    height: 48px;
+    text-align: center;
+    margin: 25px 0px;
+    /* background-color: red; */
+    /* justify-content: center; */
+    align-items: center;
+    border-radius: 5px;
+}
+
+.items img{
+    width: 24px;
+    height: 24px;
+    margin-left: 15px;
+}
+
+.items p{
+    margin-left: 10px;
+    font-size: 24px;
+    color: #7D7B7B;
+}
+
+.items:hover{
+    background-color: #2d68fe60;
+}
+
+.items:hover p{
+    color: #2D68FE;
+}

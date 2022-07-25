@@ -1,0 +1,21 @@
+.NavBar{
+    background-color: #FFF;
+    /* background-color: #E7E6E6; */
+    position: fixed;
+    height: 100%;
+    padding: 30px 15px;
+    box-shadow: 8px 0px 0 rgb(0,0,0,0.08);
+}
+
+.NavBar hr{
+    size: 7px;
+    margin: 60px 0px;
+}
+
+.NavBar .close{
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    justify-content: right;
+    align-content: ;
+}

@@ -57,7 +57,7 @@ class loginModel{
     static validateTAG(tag){
         if(!tag.startsWith('#')){
             tag = '#' + tag
-        }
+        }else return false
         return !!tags[tag]
     }
 

@@ -1,6 +1,8 @@
 import dbRECORDS from "../config/mongo_connection.js";
 import { ObjectId } from "mongodb";
 
+const recordCollection = dbRECORDS.collection("records")
+
 class recordsQuery{
 
     /*
@@ -9,26 +11,22 @@ class recordsQuery{
     ===========================================
     */
 
-
-    //read a record
-    static getRecords(id){
-        return new Promise((resolve, reject) => {
-
-            const filter = id ? {"_id": ObjectId(id)} : {}
-            
-            const results = dbRECORDS.collection("records").find(filter).toArray()
+    
+    //create a new record
+    static createRecord(record){
+        return new Promise((resolve,reject) => {
+            const results = recordCollection.insertOne(record).catch()
             resolve(results)
         })
     }
 
-    //create a new record
-    static createRecord(record){
-        return new Promise((resolve,reject) => {
-            dbRECORDS.collection("records").insertOne(record, (err) => {
-                if(err) throw err
-
-                resolve(!!err)
-            })
+    //read a record
+    static getRecords(id){
+        return new Promise((resolve, reject) => {
+            const filter = id ? {"_id": ObjectId(id)} : {}
+            
+            const results = recordCollection.find(filter).toArray()
+            resolve(results)
         })
     }
 
@@ -38,11 +36,8 @@ class recordsQuery{
         const doc = {$set: record}
 
         return new Promise((resolve,reject) => {
-            dbRECORDS.collection("records").updateOne(filter,doc,(err) => {
-                if(err) throw err
-
-                resolve(!!err)
-            })
+            const results = recordCollection.updateOne(filter,doc).catch()
+            resolve(results)
         })
     }
 
@@ -51,11 +46,8 @@ class recordsQuery{
         return new Promise((resolve, reject) => {
             const filter = {"_id": ObjectId(id)}
 
-            dbRECORDS.collection("records").deleteOne(filter, (err) => {
-                if(err) throw err
-                
-                resolve(!!err)
-            })
+            const results = recordCollection.deleteOne(filter).catch()
+            resolve(results)
         })
     }
 

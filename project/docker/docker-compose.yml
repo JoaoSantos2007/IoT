@@ -1,0 +1,76 @@
+version:  "3.0"
+
+services:  
+  mysql:
+    image: mysql:8.0.29
+    container_name: IOTmysql
+    networks:
+      - iotNetwork
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+    volumes:
+      - IOT_mysqlData:/var/lib/mysql
+      - IOT_mysqlConfig:/etc/mysql
+    restart: always
+
+  mongo:
+    image: mongo:5
+    container_name: IOTmongo
+    networks:
+      - iotNetwork
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_DATABASE: "${MONGO_DATABASE}"
+      - MONGO_USERNAME: "${MONGO_USERNAME}"
+      - MONGO_PASSWORD: "${MONGO_PASSWORD}"
+    volumes:
+      - IOT_mongo:/data/db
+    restart: always
+
+  influxdb:
+    image: influxdb:2.1
+    container_name: IOTinflux
+    networks:
+      - iotNetwork
+    ports:
+      - '8086:8086'
+    environment:
+      - INFLUX_USERNAME="${INFLUX_USERNAME}"
+      - INFLUX_PASSWORD="${INFLUX_PASSWORD}"
+      - INFLUX_ORG="${INFLUX_ORG}"
+      - INFLUX_BUCKET="${INFLUX_BUCKET}"
+    volumes:
+      - IOT_influx:/var/lib/influxdb
+    restart: always
+
+  dataflight:
+    depends_on:
+      - mysql
+      - mongo
+      - influxdb
+    container_name: IOTnode
+    build: ../src/DataFlight
+    command: npm start
+    networks:
+      - iotNetwork
+    ports:
+      - "3030:3030"
+    volumes:
+      - ../src/DataFlight:/api
+    restart: always
+
+networks:
+  iotNetwork:
+    driver: bridge
+
+volumes:
+  IOT_mysqlData:
+  IOT_mysqlConfig:
+  IOT_mongo:
+  IOT_influx:

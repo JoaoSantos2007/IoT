@@ -1,0 +1,73 @@
+body{
+    background: rgb(180, 176, 176);
+}
+
+.deviceMain{
+    /*background-color: #f1f3f9;*/
+    position: absolute;
+    margin-left: 94px;
+    width: calc(100% - 94px);
+    height: 100%;
+}
+
+.deviceHeader{
+    position: relative;
+    width: 100%;
+    height: 50%;
+    background: #0a3871;
+}
+
+.deviceControl{
+    position: absolute;
+    right: 2.5%;
+    height: 64px;
+    width: 154px;
+    background-color: white;
+    border-radius: 10px;
+    top: 1.75%;
+}
+
+
+
+.deviceControl .editIcon,.deviceControl .deleteIcon{
+    position: absolute;
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    border-radius: 32px;
+    background: rgba(0, 0, 0, 0.219);
+    cursor: pointer;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
+.deviceControl img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+.deviceControl .editIcon{
+    left: 10%;
+}
+.deviceControl .deleteIcon{
+    right: 10%;
+}
+
+.deviceControl .editIcon:hover,.deviceControl .deleteIcon:hover{
+    width: 60px;
+    height: 60px;
+}
+
+.deviceName{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    font-size: 3em;
+    color: white;
+    font-weight: bold;
+}

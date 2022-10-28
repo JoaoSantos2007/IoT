@@ -1,0 +1,13 @@
+.UpdateRoom_Main{
+    position: absolute;
+    margin-left: 94px;
+    width: calc(100% - 94px);
+    height: 100%;
+}
+
+.UpdateRoom_Main h1{
+    font-size: 5em;
+    font-weight: bold;
+    margin-top: 40px;
+    text-align: center;
+}

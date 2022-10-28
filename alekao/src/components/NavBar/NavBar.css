@@ -1,21 +1,29 @@
 .NavBar{
     background-color: #FFF;
-    /* background-color: #E7E6E6; */
     position: fixed;
+    display: block;
+    width: auto;
     height: 100%;
     padding: 30px 15px;
-    box-shadow: 8px 0px 0 rgb(0,0,0,0.08);
+    box-shadow: 4px 0px 0 rgb(0,0,0,0.08);
+    border-right: 1px solid black;
+     z-index: 1;
 }
 
 .NavBar hr{
-    size: 7px;
-    margin: 60px 0px;
+    width: auto;
+    size: 1px;
+    margin: 10px 0px;
 }
 
-.NavBar .close{
+.NavBar .changeMode{
     width: 24px;
     height: 24px;
+    margin-top: 20px;
+    margin-left: 15px;
     display: inline-block;
     justify-content: right;
     align-content: center;
+    cursor: pointer;
+    text-align: center;
 }

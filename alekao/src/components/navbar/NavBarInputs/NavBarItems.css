@@ -1,0 +1,26 @@
+.icon{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 7.5px;
+}
+
+.icon__img{
+    width: 24px;
+}
+
+.icon__text{
+    color: var(--cinza-suave);
+    font-size: 1.5rem;
+    margin-left: 20px;
+    display: none;
+}
+
+.icon:hover{
+    border-radius: 10px;
+    background-color: var(--azul-suave);
+}
+
+.icon:hover p{
+    color: var(--azul-claro);
+}

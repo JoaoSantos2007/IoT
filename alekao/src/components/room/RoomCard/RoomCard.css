@@ -1,0 +1,47 @@
+.RoomCard{
+    cursor: pointer;
+    width: 350px;
+    height: 200px;
+    background-color: white;
+    border-radius: 7px;
+    
+    box-shadow: 5px 5px 5px rgb(65, 65, 65);
+    transition: 200ms;
+    color: black;
+
+    margin: 20px;
+}
+
+.RoomCard .colorID{
+    height: 20px;
+    width: 100%;
+    background: black;
+    margin-bottom: 20px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+
+.RoomCard .nome{
+    text-align: center;
+    font-size: 3em;
+    font-weight: bold;
+}
+
+.RoomCard .local{
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2em;
+}
+
+.RoomCard:hover{
+    width: 400px;
+    height: 250px;
+}
+
+.RoomCard:hover .nome{
+    font-size: 4em;
+}
+
+.RoomCard:hover .local{
+    font-size: 2.5em;
+}

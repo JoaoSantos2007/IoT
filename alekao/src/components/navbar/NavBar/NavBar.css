@@ -1,16 +1,56 @@
 .NavBar{
-    background-color: var(--branco);
-    position: fixed;
-    height: 100%;
     z-index: 1;
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
+    position: fixed;
+    height: 100%;
+}
+
+nav.show{
+    height: 100%;
+}
+
+.NavBar__header{
+    width: 100%;
+    height: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: white;
+    display: none;
+    z-index: 1;
+}
+
+.displayNavBar{
+    content: url("../../../assets/icon/menu.svg");
+    cursor: pointer;
+    width: 39px;
+    height: 39px;
+    margin: 0 auto;
+}
+
+.NavBar__header img.show{
+    content: url("../../../assets/icon/cancel.svg");
+}
+
+.NavBar__main{
+    background-color: var(--branco);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     justify-content: space-around;
-    padding: 20px 20px;
+    padding: 0px 20px;
     transition: 200ms;
 }
 
+div.show{
+    display: flex;
+    background-color: var(--branco);
+}
+
 .NavBar__logo{
+    width: 39px;
     max-width: 100%;
     margin: 0 auto;
 }
@@ -21,10 +61,31 @@
     margin: 10px 0px;
 }
 
-.NavBar:hover .icon__text{
-    display: block;
+.NavBar .changeMode{
+    content: url("../../../assets/icon/east.svg");
+    width: 24px;
+    height: 24px;
+    margin: 0 auto;
 }
 
-.NavBar:hover .NavBar__logo{
-    max-width: 55%;
+.NavBar img.extend{
+    content: url("../../../assets/icon/west.svg");;
+}
+
+@media screen and (max-width: 786px) {
+    .NavBar{
+        right: 0;
+        height: auto;
+    }
+
+    .NavBar__main{
+        display: none;
+        height: calc(100% - 48px);
+        z-index: -32;
+    }
+
+    .NavBar__header{
+        display: block;
+        background: none;
+    }
 }

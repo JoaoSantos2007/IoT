@@ -5,6 +5,7 @@ import api from '../../../assets/services/api.js'
 
 import editIcon from "../../../assets/img/edit.png"
 import deleteIcon from "../../../assets/img/delete.png"
+import Panel from "../../../components/panel/Panel"
 
 
 
@@ -57,6 +58,8 @@ export const Device = () => {
                         </div>
                     </div>
                 </section>
+
+                <Panel type={device.type}/>
             </main>
         </>
     )

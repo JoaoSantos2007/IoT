@@ -1,0 +1,21 @@
+.fanPanel{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.fanPanel__config,.fanPanel__speed{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.fanPanel__config img,.fanPanel__speed img{
+    margin: 20px 0px;
+    cursor: pointer;
+}

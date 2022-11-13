@@ -1,0 +1,9 @@
+.panel{
+    width: 50%;
+    height: 300px;
+    background: var(--branco);
+    margin: 0 auto;
+    margin-top: 60px;
+    border-radius: 6px;
+    position: relative;
+}

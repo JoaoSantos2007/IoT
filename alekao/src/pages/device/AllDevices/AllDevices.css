@@ -1,0 +1,19 @@
+.createDevice__btn{
+    display: block;
+    margin-left: calc(100% - 64px);
+    margin-top: -60px;
+}
+
+.createDevice__img{
+    width: 64px;
+    height: 64px;
+}
+
+.deviceCards{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}

@@ -23,7 +23,10 @@ export const CreateDevice = () => {
     return(
         <>
             <main className="container">
-                <h1>New Device</h1>
+                <div className="container__header">
+                    <h1 className="container__name">New Device</h1>
+                </div>
+                
                 <DeviceCardModify save={onSave}/>
             </main>
         </>

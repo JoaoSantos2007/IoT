@@ -5,7 +5,7 @@ import mysqlConfig from './src/config/mysql.js';
 const port = process.env.PORT || 3030;
 const host = '0.0.0.0'
 
-mysqlConfig.authenticate()
+await mysqlConfig.authenticate()
   .then(() => {
     console.log("Connection estabilished with mysql");
   })

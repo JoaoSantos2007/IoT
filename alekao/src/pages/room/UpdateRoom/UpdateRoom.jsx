@@ -11,13 +11,13 @@ export const UpdateRoom = () => {
     
     const id = (useParams("id")).id
 
-    const onSave = (data) => {
+    const saveData = (data) => {
         api.put(`/rooms/${id}`,data)
         .then((res) => {
             navigate(-1)
         })
         .catch((err) => {
-            console.log(err)
+            console.log(err.message)
         })   
     }
 
@@ -35,10 +35,14 @@ export const UpdateRoom = () => {
 
     return(
         <>
-            <main className="UpdateRoom_Main">
-                <h1>Update Room</h1>
-                <RoomCardModify save={onSave} id={id} room={room}/>
+            <main className="container">
+                <div className="container__header">
+                    <h1 className="container__name">Update Room</h1>
+                </div>
 
+                <section className="updateRoom__container">
+                    <RoomCardModify save={saveData} id={id} room={room}/>
+                </section>                
             </main>
         </>
     )

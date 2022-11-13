@@ -1,63 +1,31 @@
 .deviceCard{
-    position: relative;
-    width: 350px;
-    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    width: 100%;
+    max-width: 450px;
+    height: 104px;
     background-color: white;
-    /*background-color: #3D3D40;*/
+    padding: 15px;
     border-radius: 7px;
     cursor: pointer;
-    margin-right: 30px;
-    margin-bottom: 30px;
-    box-shadow: 5px 5px 5px rgb(65, 65, 65);
+    margin: 30px 30px;
     transition: 200ms;
-    text-decoration: none;
-    color: black;
-}
-
-.deviceCard .colorID{
-    position: absolute;
-    height: 100%;
-    width: 20px;
-    background: black;
-    margin-bottom: 20px;
-    border-radius: 0 0 0;
-    border-top-left-radius: 7px;
-    border-bottom-left-radius: 7px;
-}
-
-.deviceCard .deviceIMG{
-    position: absolute;
-    top: 5px;
-    right: 20px;
-    width: 64px;
-    height: 64px;
-}
-
-.deviceCard .nome{
-    margin-top: 60px;
-    text-align: center;
-    font-size: 3em;
-    font-weight: bold;
-}
-
-.deviceCard .locationID{
-    position: absolute;
-    bottom: 5%;
-    font-size: 1em;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%);
 }
 
 .deviceCard:hover{
-    width: 400px;
-    height: 250px;
+    box-shadow: 5px 5px 5px #000;
+    max-width: 475px;
+    height: 129px;
 }
 
-.deviceCard:hover .nome{
-    font-size: 4em;
+.deviceCard__img{
+    border-right: 1px solid black;
+    padding-right: 20px;
+    margin-right: 20px;
 }
 
-.deviceCard:hover .type{
-    font-size: 2.5em;
+.deviceCard__name{
+    font-size: 2rem;
+    font-weight: bold;
 }

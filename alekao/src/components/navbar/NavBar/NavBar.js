@@ -1,8 +1,8 @@
-import React from "react"
+import React, { useState } from "react"
 import NavBarItems from "../NavBarInputs"
 import "./NavBar.css"
 
-import iotIMG from '../../../assets/icon/iot.svg'
+import iotIMG from '../../../assets/img/iot.png'
 import homeIMG from '../../../assets/icon/home.svg'
 import dashboardIMG from '../../../assets/icon/dashboard.svg'
 import deviceIMG from '../../../assets/icon/device.svg'
@@ -14,22 +14,41 @@ import settingsIMG from '../../../assets/icon/settings.svg'
 import accountIMG from '../../../assets/icon/account.svg'
 
 export const NavBar = () => {
+    const [mode,setMode] = useState("retract")
+    const [show,setShow] = useState("hidden")
+
+    const alterMode = () => {
+        if(mode === "extend") setMode("retract")
+        else setMode("extend")
+    }
+
+    const alterDisplay = () => {
+        if(show === "hidden") setShow("show")
+        else setShow("hidden")
+    }
+
     return(
-        <nav className="NavBar">
-            <img className="NavBar__logo" src={iotIMG} alt="iot logo"/>
-            <NavBarItems type="home" img = {homeIMG}/>
-            <NavBarItems type="dashboard" img = {dashboardIMG}/>
-            <NavBarItems type="devices" img = {deviceIMG}/>
-            <NavBarItems type="packages" img = {packagesIMG}/>
-            <NavBarItems type="tasks" img = {tasksIMG}/>
-            <NavBarItems type="events" img = {eventsIMG}/>
-            <NavBarItems type="messages" img = {messagesIMG}/>
-            <hr />
-            <NavBarItems type="settings" img = {settingsIMG}/>
-            <div className="teste">
-                <NavBarItems type="account" img = {accountIMG}/>
-            </div>
-            
-        </nav>
+        <>
+            <nav className={`NavBar ${show}`}>
+                <div className={`NavBar__header ${show}`}>
+                    <img className={`displayNavBar ${show}`} onClick={alterDisplay} alt="display navbar"/>
+                </div>
+                
+                <div className={`NavBar__main ${show}`}>
+                    <img className="NavBar__logo" src={iotIMG} alt="iot logo"/>
+                    <NavBarItems type="home" mode={mode} img = {homeIMG}/>
+                    <NavBarItems type="devices" mode={mode} img = {deviceIMG}/>
+                    <NavBarItems type="dashboard" mode={mode} img = {dashboardIMG}/>
+                    <NavBarItems type="packages" mode={mode} img = {packagesIMG}/>
+                    <NavBarItems type="tasks" mode={mode} img = {tasksIMG}/>
+                    <NavBarItems type="events" mode={mode} img = {eventsIMG}/>
+                    <NavBarItems type="messages" mode={mode} img = {messagesIMG}/>
+                    <hr />
+                    <NavBarItems type="settings" mode={mode} img = {settingsIMG}/>
+                    <NavBarItems type="account" mode={mode} img = {accountIMG}/>
+                    <img className={`changeMode ${mode}`} onClick={alterMode} alt="change mode"/>
+                </div>
+            </nav>
+        </>
     )
 }

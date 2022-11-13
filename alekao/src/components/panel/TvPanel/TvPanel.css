@@ -1,0 +1,90 @@
+.tvPanel{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.tvPanel img{
+    cursor: pointer;
+}
+
+/* Tv config */
+
+.tvPanel__config{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tvPanel__config__center{
+    margin: 20px 0px;
+}
+
+
+/* Tv Remote */
+
+.tvPanel__remote{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.tvPanel__remote__content{
+    background-color: #D9D9D9;
+    margin: 20px;
+    border-radius: 180px;
+    display: flex;
+    flex-direction: column;
+    padding: 20%;
+}
+
+.tvPanel__remote__content div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tvPanel__remote__content div p{
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Tv channel */
+
+.tvPanel__channel{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tvPanel__channel p{
+    margin: 20px 0px;
+    font-weight: bold;
+}
+
+/* Tv volume */
+
+.tvPanel__volume{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tvPanel__volume p{
+    margin: 20px 0px;
+    font-weight: bold;
+}

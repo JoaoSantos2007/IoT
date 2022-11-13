@@ -17,7 +17,7 @@ export const NavBarItems = (props) => {
     return(
         <div className="icon" onClick={toLink}>
             <img className="icon__img" src={img} alt={`${text} icon`}/>
-            <p className="icon__text">{text}</p>
+            <p className={`icon__text ${props.mode}`}>{text}</p>
         </div>
     )
 }

@@ -1,47 +1,33 @@
-.RoomCard{
-    cursor: pointer;
-    width: 350px;
-    height: 200px;
-    background-color: white;
-    border-radius: 7px;
-    
-    box-shadow: 5px 5px 5px rgb(65, 65, 65);
-    transition: 200ms;
-    color: black;
-
-    margin: 20px;
-}
-
-.RoomCard .colorID{
-    height: 20px;
+.roomCard{
     width: 100%;
-    background: black;
-    margin-bottom: 20px;
+    max-width: 400px;
+    height: 104px;
+    background-color: var(--branco);
+    display: flex;
+    align-items: center;
+    text-align: center;
+    border-radius: 7px;
+    margin: 20px 20px;
+    cursor: pointer;
+    transition: 200ms;
+}
+
+.roomCard:hover{
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.685);
+    max-width: 425px;
+    height: 129px;
+}
+
+.roomCard__color{
+    padding: 0;
+    height: 100%;
+    width: 30px;
     border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
+    border-bottom-left-radius: 7px;
 }
 
-.RoomCard .nome{
-    text-align: center;
-    font-size: 3em;
+.roomCard__name{
+    margin-left: 20px;
+    font-size: 2rem;
     font-weight: bold;
-}
-
-.RoomCard .local{
-    text-align: center;
-    margin-top: 20px;
-    font-size: 2em;
-}
-
-.RoomCard:hover{
-    width: 400px;
-    height: 250px;
-}
-
-.RoomCard:hover .nome{
-    font-size: 4em;
-}
-
-.RoomCard:hover .local{
-    font-size: 2.5em;
 }

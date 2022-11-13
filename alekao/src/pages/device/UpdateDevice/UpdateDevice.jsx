@@ -1,7 +1,9 @@
 import React,{useEffect,useState} from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import "./UpdateDevice.css"
+
 import DeviceCardModify from "../../../components/device/DeviceCardModify"
+import Loader from "../../../components/Loader"
 import api from "../../../assets/services/api.js"
 
 export const UpdateDevice = () => {
@@ -31,14 +33,16 @@ export const UpdateDevice = () => {
         })
     }
 
-    if(!device) return ""
+    if(!device) return <Loader />
 
     return(
         <>
-            <main className="UpdateDevice_Main">
-                <h1>Update Device</h1>
+            <main className="container">
+                <div className="container__header">
+                    <h1 className="container__name">Update Device</h1>
+                </div>
+                
                 <DeviceCardModify save={onSave} key={id} id={id} device={device}/>
-
             </main>
         </>
     )

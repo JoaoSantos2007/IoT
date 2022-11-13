@@ -25,4 +25,6 @@ const Rooms = dbMysql.define('rooms',{
     timestamps: false
 })
 
+await Rooms.sync()
+
 export default Rooms

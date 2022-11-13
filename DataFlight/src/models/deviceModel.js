@@ -32,4 +32,6 @@ const Devices = dbMysql.define('devices',{
     timestamps: false
 })
 
+await Devices.sync()
+
 export default Devices

@@ -8,22 +8,27 @@ import api from "../../../assets/services/api.js"
 
 export const CreateRoom = () => {
     const navigate = useNavigate()
-    const onSave = (data) => {
+
+    const saveData = (data) => {
         api.post("/rooms",data)
         .then((res) => {
             navigate(-1)
         })
         .catch((err) => {
-            console.log(err)
+            console.error(err)
         })   
     }
 
     return(
         <>
-            <main className="CreateRoom_Main">
-                <h1>New Room</h1>
-                <RoomCardModify save={onSave}/>
+            <main className="container">
+                <div className="container__header">
+                    <h1 className="container__name">Create Room</h1>
+                </div>
 
+                <section className="createRoom__container">
+                    <RoomCardModify save={saveData}/>
+                </section>                
             </main>
         </>
     )

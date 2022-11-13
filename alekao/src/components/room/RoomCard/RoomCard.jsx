@@ -9,10 +9,9 @@ export const RoomCard = (props) => {
     }
 
     return(
-        <section className="RoomCard" onClick={clicked}>
-                <div className="colorID" style={{"backgroundColor":props.colorID}}/>
-                <p className="nome">{props.nome}</p>
-                <p className="local">{props.local}</p>
+        <section className="roomCard" onClick={clicked}>
+                <div className="roomCard__color" style={{"backgroundColor":props.colorID}}/>
+                <p className="roomCard__name">{props.nome}</p>
         </section>
     )
 }

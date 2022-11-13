@@ -1,2 +1,2 @@
-import { NotFound } from "./NotFound.js";
+import { NotFound } from "./NotFound.jsx";
 export default NotFound

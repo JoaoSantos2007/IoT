@@ -1,66 +1,93 @@
 import Rooms from "../models/roomModel.js"
 import Devices from "../models/deviceModel.js"
 import randomID from "../scripts/randomID.js"
-import { where } from "sequelize"
 
 class roomController{
-    static async createRoom(req,res){
+
+    //Create room
+    static createRoom(req,res){
         const data = req.body
         
-        const room = await Rooms.create({
-            "id": randomID(),
+        Rooms.create({
+            "id": !data.id ? randomID() : data.id,
             "name": data.name,
-            "location": data.location,
             "colorID": data.colorID
         })
-
-        res.status(200).send(room)
-    }
-
-    static async getRooms(req,res){
-        const rooms = await Rooms.findAll()
-        
-        res.status(200).send(rooms)
-    }
-
-    static async getRoomsByID(req,res){
-        const id = req.params.id
-
-        const rooms = await Rooms.findByPk(id)
-
-        const devices = await Devices.findAll({
-            where: {
-                locationID: rooms.id
-            }
+        .then((room) => {
+            res.status(201).json({
+                "created": true,
+                "room": room
+            })
         })
-
-        const room = rooms.toJSON()
-        room["devices"] = devices
-
-        res.status(200).send(room)
+        .catch((err) => {
+            res.status(500).json(err)
+        })
     }
 
-    static async updateRoom(req,res){
+    //Read rooms
+    static getRooms(req,res){
         const id = req.params.id
+        
+        if(!!id){
+            Devices.findAll({
+                where: {
+                    roomID: id
+                }
+            })
+            .then((devices) => {
+                const room = req.room
+
+                room["devices"] = devices
+                
+                res.status(200).json(room)
+            })
+            .catch((err) => {
+                res.status(500).json(err)
+            })
+        }else{
+            Rooms.findAll()
+            .then((rooms) => {
+                res.status(200).json(rooms)
+            })
+            .catch((err) => {
+                res.status(500).json(err)
+            })
+        }
+    }
+
+    //Update room
+    static updateRoom(req,res){
+        const room = req.room
         const data = req.body
 
-        const room = await Rooms.findByPk(id)
-        
-        room.name = data.name
-        room.location = data.location
-        room.colorID = data.colorID
-        room.save()
-
-        res.status(200).send(room)
+        room.update({
+            "name": data.name,
+            "colorID": data.colorID
+        })
+        .then((room) => {
+            res.status(200).json({
+                "updated": true,
+                "room": room
+            })
+        })
+        .catch((err) => {
+            res.status(500).json(err)
+        })
     }
 
-    static async deleteRoom(req,res){
-        const id = req.params.id
+    //Delete room
+    static deleteRoom(req,res){
+        const room = req.room
 
-        const room = await Rooms.findByPk(id)
-        await room.destroy()
-
-        res.status(200).send('deleted')
+        room.destroy()
+        .then(() => {
+            res.status(200).json({
+                "deleted": true
+            })
+        })
+        .catch((err) => {
+            res.status(500).json(err)
+        })
     }
 }
 

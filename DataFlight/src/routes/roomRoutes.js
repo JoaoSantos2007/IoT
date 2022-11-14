@@ -6,7 +6,7 @@ const Router = express.Router()
 
 Router
     .get("/rooms",roomController.getRooms)
-    .get("/rooms/:id",roomValidator.getRoom(),roomController.getRoomsByID)
+    .get("/rooms/:id",roomValidator.getRoom(),roomController.getRooms)
     .post("/rooms",roomValidator.postRoom(),roomController.createRoom)
     .put("/rooms/:id",roomValidator.putRoom(),roomController.updateRoom)
     .delete("/rooms/:id",roomValidator.deleteRoom(),roomController.deleteRoom)

@@ -7,28 +7,24 @@ const Devices = dbMysql.define('devices',{
         allowNull: false,
         primaryKey: true
     },
-    "colorID" :{
-        type: DataTypes.STRING(30),
-        allowNull: false
-    },
     "name":{
         type: DataTypes.STRING(100),
         allowNull: false
     },
     "type": {
-        type: DataTypes.STRING(25),
+        type: DataTypes.STRING(30),
         allowNull: false
     },
     "value": {
         type: DataTypes.STRING(10),
+        allowNull: true,
         defaultValue: "false"
     },
-    "locationID": {
+    "roomID": {
         type: DataTypes.STRING(25),
         allowNull: false
     }
-},
-{
+},{
     timestamps: false
 })
 

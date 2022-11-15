@@ -1,19 +1,24 @@
 import { DataTypes } from "sequelize";
 import dbMysql from "../config/mysql.js";
 
-const Rooms = dbMysql.define(
-  "rooms",
+const Tags = dbMysql.define(
+  "tags",
   {
     id: {
-      type: DataTypes.STRING(25),
+      type: DataTypes.INTEGER(),
       allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
     },
-    name: {
-      type: DataTypes.STRING(100),
+    deviceID: {
+      type: DataTypes.STRING(25),
       allowNull: false,
     },
-    colorID: {
+    tag: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+    },
+    value: {
       type: DataTypes.STRING(50),
       allowNull: false,
     },
@@ -23,6 +28,6 @@ const Rooms = dbMysql.define(
   }
 );
 
-await Rooms.sync();
+await Tags.sync();
 
-export default Rooms;
+export default Tags;

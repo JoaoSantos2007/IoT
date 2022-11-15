@@ -1,6 +1,7 @@
 import express from "express";
 import room from "./roomRoutes.js";
 import device from "./deviceRoutes.js"
+import tag from "./tagsRoutes.js"
 
 const routes = (app) => {
   app.route("/").get((req, res) => {
@@ -17,7 +18,8 @@ const routes = (app) => {
   app.use(
     express.json(),
     room,
-    device
+    device,
+    tag
   );
 };
 

@@ -28,18 +28,18 @@ class roomController{
     static getRooms(req,res){
         const id = req.params.id
         
-        if(!!id){
+        if(id){
             Devices.findAll({
                 where: {
                     roomID: id
                 }
             })
             .then((devices) => {
-                const room = req.room
+                const room = req.room.toJSON()
 
                 room["devices"] = devices
                 
-                res.status(200).json(room)
+                res.status(200).send(room)
             })
             .catch((err) => {
                 res.status(500).json(err)

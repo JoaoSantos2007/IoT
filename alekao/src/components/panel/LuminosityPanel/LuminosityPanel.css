@@ -1,0 +1,17 @@
+.LuminosityPanel{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.LuminosityPanel__luminosity{
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.LuminosityPanel__luminosity span{
+    font-weight: normal;
+}

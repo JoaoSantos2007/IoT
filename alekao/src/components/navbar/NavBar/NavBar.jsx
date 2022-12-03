@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import NavBarItems from "../NavBarInputs"
 import "./NavBar.css"
 
@@ -13,9 +14,14 @@ import messagesIMG from '../../../assets/icon/messages.svg'
 import settingsIMG from '../../../assets/icon/settings.svg'
 import accountIMG from '../../../assets/icon/account.svg'
 
+import undoIMG from '../../../assets/icon/undo.svg'
+
+
 export const NavBar = () => {
+    const navigate = useNavigate()
+
     const [mode,setMode] = useState("retract")
-    const [show,setShow] = useState("hidden")
+    const [display,setDisplay] = useState("hidden")
 
     const alterMode = () => {
         if(mode === "extend") setMode("retract")
@@ -23,19 +29,24 @@ export const NavBar = () => {
     }
 
     const alterDisplay = () => {
-        if(show === "hidden") setShow("show")
-        else setShow("hidden")
+        if(display === "hidden") setDisplay("display")
+        else setDisplay("hidden")
+    }
+
+    const back = () => {
+        navigate(-1)
     }
 
     return(
         <>
-            <nav className={`NavBar ${show}`}>
-                <div className={`NavBar__header ${show}`}>
-                    <img className={`displayNavBar ${show}`} onClick={alterDisplay} alt="display navbar"/>
+            <nav className="NavBar">
+                <div className={`NavBar__header NavBar__header__${display}`}>
+                    <img className={`menu menu__${display}`} onClick={alterDisplay} alt="display navbar"/>
                 </div>
                 
-                <div className={`NavBar__main ${show}`}>
+                <div className={`NavBar__main NavBar__main__${display}`}>
                     <img className="NavBar__logo" src={iotIMG} alt="iot logo"/>
+                    
                     <NavBarItems type="home" mode={mode} img = {homeIMG}/>
                     <NavBarItems type="devices" mode={mode} img = {deviceIMG}/>
                     <NavBarItems type="dashboard" mode={mode} img = {dashboardIMG}/>
@@ -43,10 +54,13 @@ export const NavBar = () => {
                     <NavBarItems type="tasks" mode={mode} img = {tasksIMG}/>
                     <NavBarItems type="events" mode={mode} img = {eventsIMG}/>
                     <NavBarItems type="messages" mode={mode} img = {messagesIMG}/>
+
                     <hr />
+
                     <NavBarItems type="settings" mode={mode} img = {settingsIMG}/>
                     <NavBarItems type="account" mode={mode} img = {accountIMG}/>
-                    <img className={`changeMode ${mode}`} onClick={alterMode} alt="change mode"/>
+                    <img className={`NavBar__mode NavBar__mode__${mode}`} onClick={alterMode} alt="change mode"/>
+                    <img className="NavBar__back" src={undoIMG} alt="back page" onClick={back}/>
                 </div>
             </nav>
         </>

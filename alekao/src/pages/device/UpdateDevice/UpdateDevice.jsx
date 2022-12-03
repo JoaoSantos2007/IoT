@@ -42,7 +42,10 @@ export const UpdateDevice = () => {
                     <h1 className="container__name">Update Device</h1>
                 </div>
                 
-                <DeviceCardModify save={onSave} key={id} id={id} device={device}/>
+                <div className="updateDevice">
+                    <DeviceCardModify save={onSave} key={id} id={id} device={device}/>
+                </div>
+                
             </main>
         </>
     )

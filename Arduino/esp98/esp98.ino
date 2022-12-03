@@ -2,7 +2,6 @@
 #include <WiFi.h>
 #include <ArduinoJson.h>
 #include <PubSubClient.h>
-#include <DHT.h>
 
 //Instance wifi and mqtt objects
 WiFiClient espClient;
@@ -16,26 +15,26 @@ long lastWIFIReconnectAttempt = 0;
 
 
 //MQTT variables
-#define SUBSCRIBE_TOPIC "IOT_97"
+#define SUBSCRIBE_TOPIC "IOT_98"
 #define PUBLISH_TOPIC "IOT_main"
-#define ID_MQTT  "esp97"
+#define ID_MQTT  "esp98"
 long lastMQTTReconnectAttempt = 0;
 const char* broker = "192.168.15.45";
 const int port = 1883;
 void mqtt_callback(char* topic, byte* payload, unsigned int length);
 
-//DHT variables
-#define DHTPIN 16 // pino que estamos conectado
-#define DHTTYPE DHT11 // DHT 11
-DHT dht(DHTPIN, DHTTYPE);//Instance dht object
-String tempID = "mgLHEmGgS9FTsw2ma3JDSzM8J";
-String humidityID = "rnwagTOTzyMuq3fcvc1UgO5gn";
-String luminosityID = "8prfQoLy0Q12GigDr63xc9FJj";
-int ldr = 27;
-
 long lastDebounceTime = 0;
-long debounceDelay = 10000;
+long debounceDelay = 0;
 
+//Light variables
+const int switch1_PIN = 32;
+const int switch2_PIN = 33;
+const int light1_PIN = 27;
+const int light2_PIN = 26;
+String light1ID = "xuglNeOB090txQR8CGUFRzDO4";
+String light2ID = "nxMnT7LWL1X1vUH4qowm6To0f";
+int switch1 = 0;
+int switch2 = 0;
 
 
 //Verif wifi and mqtt connetions
@@ -134,6 +133,18 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length){
 
   StaticJsonDocument<2048> doc;
   deserializeJson(doc, payload);
+
+  if(doc["deviceID"] == light1ID){
+    if(doc["tag"] == "#lightBTN"){
+      updateLightState(light1_PIN);
+      sendSwitch1();
+    }
+  }else if(doc["deviceID"] == light2ID){
+    if(doc["tag"] == "#lightBTN"){
+      updateLightState(light2_PIN);
+      sendSwitch2();
+    }
+  }
 }
 
 
@@ -170,77 +181,56 @@ boolean reconnectMQTT() {
 ======================================
 */
 
-//Read temperature
-float readTemperature(){
-  return dht.readTemperature();
-}
 
-//Read humidity
-float readHumidity(){
-  return dht.readHumidity();
-}
-
-float readLuminosity(){
-  return analogRead(ldr);
-};
-
-void readSensors(){
-  String temp = String(readTemperature());
-  String humidity = String(readHumidity());
-  String luminosity = String(readLuminosity());
-
-  Serial.println(readLuminosity());
-
-  sendTemp(temp);
-  sendHumidity(humidity);
-  sendLuminosity(luminosity);
+//update light state
+void updateLightState(int light_pin){
+  int newState = !digitalRead(light_pin);
+  digitalWrite(light_pin,newState);
 }
 
 
-/*
-===============================
-        Send Messages
-===============================
-*/
+//read light switches
+void readSwitches(){
+  if(switch1 != digitalRead(switch1_PIN)){
+    switch1 = !switch1;
+    updateLightState(light1_PIN);
+    sendSwitch1();
+  }
 
-//Send temp
-void sendTemp(String temp){
-  StaticJsonDocument<256> doc;
-
-  doc["deviceID"] = tempID;
-  doc["type"] = "read-sensor";
-  doc["value"] = temp;
-
-  sendMessage(doc);
+  if(switch2 != digitalRead(switch2_PIN)){
+    switch2 = !switch2;
+    updateLightState(light2_PIN);
+    sendSwitch2();
+  }
 }
 
-void sendHumidity(String humidity){
-  StaticJsonDocument<256> doc;
-
-  doc["deviceID"] = humidityID;
-  doc["type"] = "read-sensor";
-  doc["value"] = humidity;
-
-  sendMessage(doc);
-}
-
-void sendLuminosity(String luminosity){
-  StaticJsonDocument<256> doc;
-
-  doc["deviceID"] = luminosityID;
-  doc["type"] = "read-sensor";
-  doc["value"] = luminosity;
-
-  sendMessage(doc);
-}
 
 //Send
+void sendSwitch1(){
+  StaticJsonDocument<256> doc;
+
+  doc["deviceID"] = light1ID;
+  doc["type"] = "read-sensor";
+  doc["value"] = digitalRead(light1_PIN);
+
+  sendMessage(doc);
+}
+
+void sendSwitch2(){
+  StaticJsonDocument<256> doc;
+
+  doc["deviceID"] = light2ID;
+  doc["type"] = "read-sensor";
+  doc["value"] = digitalRead(light2_PIN);
+
+  sendMessage(doc);
+}
+
 void sendMessage(StaticJsonDocument<256> doc){
   char out[256];
   serializeJson(doc, out);
   client.publish(PUBLISH_TOPIC, out);
 }
-
 
 /*
 ======================================
@@ -252,7 +242,10 @@ void sendMessage(StaticJsonDocument<256> doc){
 
 //Setup function
 void setup(){
-  pinMode(ldr, INPUT);
+  pinMode(switch1_PIN,INPUT);
+  pinMode(switch2_PIN,INPUT);
+  pinMode(light1_PIN,OUTPUT);
+  pinMode(light2_PIN,OUTPUT);
   Serial.begin(115200);
   Serial.println("started");
 
@@ -265,9 +258,6 @@ void setup(){
 
 //Loop function
 void loop(){
+  readSwitches();
   verifConnections();
-  if((millis() - lastDebounceTime) >= debounceDelay){
-    readSensors();
-    lastDebounceTime = millis();
-  }
 }

@@ -3,9 +3,11 @@ import { useNavigate, useParams } from "react-router-dom"
 import "./Device.css"
 import api from '../../../assets/services/api.js'
 
-import editIcon from "../../../assets/img/edit.png"
-import deleteIcon from "../../../assets/img/delete.png"
+import editIcon from "../../../assets/icon/edit.svg"
+import deleteIcon from "../../../assets/icon/delete.svg"
 import Panel from "../../../components/panel/Panel"
+
+import Loader from "../../../components/Loader"
 
 
 
@@ -13,7 +15,7 @@ export const Device = () => {
     const navigate = useNavigate()
     const id = (useParams("id")).id
 
-    const [device,setDevice] = useState({})
+    const [device,setDevice] = useState()
 
     useEffect(() => {
         api.get(`/devices/${id}`)
@@ -44,22 +46,25 @@ export const Device = () => {
         }
     }
 
+    if(!device) return <Loader />
+
+
     return(
         <>
-            <main className='container deviceMain'>
-                <section className="deviceHeader">
-                    <h1 className="deviceName">{device.name}</h1>
-                    <div className="deviceControl">
-                        <div className="editIcon" onClick={updateDevice}>
-                            <img src={editIcon} alt="edit btn"/>
+            <main className='container device'>
+                <section className="device__header">
+                    <div className="device__controls">
+                        <div className="device__controls__btn">
+                            <img src={editIcon} alt="edit btn" onClick={updateDevice}/>
+                            <img src={deleteIcon} alt="delete btn" onClick={deleteDevice}/>
                         </div>
-                        <div className="deleteIcon" onClick={deleteDevice}>
-                            <img src={deleteIcon} alt="delete btn"/>
-                        </div>
+                    </div>
+                    <div className="device__name__div">
+                        <p className="device__name">{device.name}</p>
                     </div>
                 </section>
 
-                <Panel type={device.type}/>
+                <Panel type={device.type} device={device}/>
             </main>
         </>
     )

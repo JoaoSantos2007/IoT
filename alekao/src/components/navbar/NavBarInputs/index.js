@@ -1,2 +1,2 @@
-import { NavBarItems } from "./NavBarItems.js";
+import { NavBarItems } from "./NavBarItems.jsx";
 export default NavBarItems

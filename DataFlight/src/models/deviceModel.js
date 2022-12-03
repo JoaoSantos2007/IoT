@@ -23,6 +23,10 @@ const Devices = dbMysql.define('devices',{
     "roomID": {
         type: DataTypes.STRING(25),
         allowNull: false
+    },
+    "mqttID": {
+        type: DataTypes.INTEGER(),
+        allowNull: false
     }
 },{
     timestamps: false

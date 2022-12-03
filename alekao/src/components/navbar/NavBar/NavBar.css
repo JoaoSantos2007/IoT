@@ -2,15 +2,11 @@
     z-index: 1;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
     position: fixed;
     height: 100%;
 }
 
-nav.show{
-    height: 100%;
-}
-
+/* Navbar Header */
 .NavBar__header{
     width: 100%;
     height: 48px;
@@ -22,17 +18,23 @@ nav.show{
     z-index: 1;
 }
 
-.displayNavBar{
+nav .NavBar__header__display{
+    display: flex;
+    background-color: white;
+}
+
+.menu{
     content: url("../../../assets/icon/menu.svg");
     cursor: pointer;
-    width: 39px;
-    height: 39px;
+    width: 80%;
     margin: 0 auto;
 }
 
-.NavBar__header img.show{
+.menu__display{
     content: url("../../../assets/icon/cancel.svg");
 }
+
+/* NavBar Main */
 
 .NavBar__main{
     background-color: var(--branco);
@@ -44,7 +46,7 @@ nav.show{
     transition: 200ms;
 }
 
-div.show{
+.NavBar .NavBar__main__display{
     display: flex;
     background-color: var(--branco);
 }
@@ -61,27 +63,31 @@ div.show{
     margin: 10px 0px;
 }
 
-.NavBar .changeMode{
-    content: url("../../../assets/icon/east.svg");
+.NavBar__back{
+    width: 40px;
+    max-width: 100%;
+    cursor: pointer;
+    margin: 0 auto;
+}
+
+.NavBar__mode{
+    content: url("../../../assets/icon/tab.svg");
     width: 24px;
     height: 24px;
     margin: 0 auto;
 }
 
-.NavBar img.extend{
+.NavBar__mode__extend{
     content: url("../../../assets/icon/west.svg");;
 }
 
-@media screen and (max-width: 786px) {
-    .NavBar{
-        right: 0;
-        height: auto;
-    }
+/* Responsive Navbar */
 
+@media screen and (max-width: 786px) {
     .NavBar__main{
         display: none;
         height: calc(100% - 48px);
-        z-index: -32;
+        z-index: -1;
     }
 
     .NavBar__header{

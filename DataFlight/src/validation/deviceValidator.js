@@ -36,6 +36,7 @@ class deviceValidator{
             body("type").trim().isString().isLength({min: 1,max: 30}),
             body("value").isLength({max: 10}),
             body("roomID").trim().isString().isLength({min: 25,max: 25}),
+            body("mqttID").isInt(),
             (req, res, next) => {
                 const errors = validationResult(req);
                 if (!errors.isEmpty()) {
@@ -56,6 +57,7 @@ class deviceValidator{
             body("type").trim().isString().isLength({min: 1,max: 30}),
             body("value").isLength({max: 10}),
             body("roomID").trim().isString().isLength({max: 25}),
+            body("mqttID").isInt(),
             param("id").trim().isString().isLength({max: 25}).custom(async (value) => {
                 device = await Devices.findByPk(value)
 

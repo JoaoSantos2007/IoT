@@ -1,10 +1,11 @@
 import express from "express";
+import cookieParser from 'cookie-parser'
 import room from "./roomRoutes.js";
 import device from "./deviceRoutes.js"
 import tag from "./tagsRoutes.js"
 import user from "./userRoutes.js"
 import auth from "./authRoutes.js"
-import cookieParser from 'cookie-parser'
+import events from "./eventRoutes.js"
 
 const routes = (app) => {
   app.route("/").get((req, res) => {
@@ -26,7 +27,8 @@ const routes = (app) => {
     device,
     tag,
     user,
-    auth
+    auth,
+    events
   );
 };
 

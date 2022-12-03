@@ -1,24 +1,28 @@
 .room__id{
-    margin-top: -60px;
+    margin-top: -54px;
     text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    color: rgb(39, 39, 231);
 }
 
-.room__control{
-    margin-top: -32px;
+.room__header{
     display: flex;
-    justify-content: space-around;
-    width: 150px;
-    padding: 10px 0px;
-    border-radius: 16px;
-    position: absolute;
-    right: 0%;
-    margin-bottom: 60px;
+    justify-content: flex-end;
+    width: 100%;
 }
 
-.room__control img{
+.room__controls{
+    margin-right: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 156px;
+}
+
+.room__controls img{
     cursor: pointer;
 }
-
 
 .room__main{
     width: 100%;
@@ -26,4 +30,10 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+@media screen and (max-width: 786px) {
+    .room__controls{
+        margin-right: 0px;
+    }
 }

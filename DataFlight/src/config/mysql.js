@@ -13,4 +13,15 @@ const dbMysql = new Sequelize(
   }
 )
 
+//Mysql Connection
+dbMysql.authenticate()
+    .then(() => {
+    console.log("Connection estabilished with mysql");
+    })
+    .catch((err) => {
+    console.log("Failed to sync db: " + err.message);
+    });
+
+await dbMysql.sync()
+
 export default dbMysql;

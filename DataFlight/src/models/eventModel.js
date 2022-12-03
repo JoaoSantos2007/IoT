@@ -1,46 +1,55 @@
 import {Point} from "@influxdata/influxdb-client"
-import {org,bucket} from "../config/influx.js"
+import {client,org,bucket} from "../config/influx.js"
 
-class eventModel{
-
-    static addEvent(){
+class Events{
+    static create(event){
         const writeApi = client.getWriteApi(org, bucket)
         
-        const point = new Point('')
-        .stringField("value","")
+        const point = new Point('IOT')
+        .stringField("type", event.type)
+        .stringField("deviceID", event.deviceID)
+        .stringField("tag", event.tag)
+        .stringField("value", event.value)
+
         writeApi.writePoint(point)
         
-        return writeApi
-            .close()
-            .then(() => {
-                console.log('FINISHED')
-            })
-            .catch(err => {
-                console.error(err)
-                console.log('Finished ERROR')
-            })
+        return writeApi.close()
     }
 
-    static readEvent(){
+    static findAll(){
         const queryApi = client.getQueryApi(org)
+        const query = `from(bucket: "IOTDB") |> range(start: -24h)`
+        
+        return new Promise((resolve, reject) => {
+            const obj = {}
 
-        const query = `from(bucket: "IOTDB") |> range(start: -1h)`
-        
-        queryApi.queryRows(query, {
-            next(row, tableMeta) {
-            const o = tableMeta.toObject(row)
-            console.log(`${o._time} ${o._measurement}: ${o._field}=${o._value}`)
-            },
-            error(error) {
-            console.error(error)
-            console.log('Finished ERROR')
-            },
-            complete() {
-            console.log('Finished SUCCESS')
-            },
+            queryApi.queryRows(query,{
+                next(row, tableMeta) {
+                    const o = tableMeta.toObject(row)
+    
+                    //Converte dados para objeto
+                    if(!obj[o._time]) obj[o._time] = {}
+                    obj[o._time][o._field] = o._value
+                },            
+                error(err) {
+                    reject(err)
+                },
+                complete() {
+                    let data = []
+
+                    //Convert a object array in a array
+                    Object.keys(obj).forEach((timestamp) => {
+                        let event = obj[timestamp]
+                        event.timestamp = timestamp
+                        
+                        data.push(event)
+                    })
+
+                    resolve(data)
+                },
+            })  
         })
-        
     }
 }
 
-export default eventModel
+export default Events

@@ -11,7 +11,8 @@ class deviceController{
             "name": data.name,
             "type": data.type,
             "roomID": data.roomID,
-            "value": data.value
+            "value": data.value,
+            "mqttID": data.mqttID
         })
         .then((device)=> {
             res.status(201).json({
@@ -50,7 +51,8 @@ class deviceController{
             "name": data.name,
             "type": data.type,
             "value": data.value,
-            "roomID": data.roomID
+            "roomID": data.roomID,
+            "mqttID": data.mqttID
         })
         .then((device) => {
             res.status(200).json({

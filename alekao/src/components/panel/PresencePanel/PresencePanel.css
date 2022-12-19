@@ -1,0 +1,17 @@
+.PresencePanel{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.PresencePanel__presence{
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.PresencePanel__presence span{
+    font-weight: normal;
+}

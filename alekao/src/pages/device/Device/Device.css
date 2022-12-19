@@ -1,49 +1,27 @@
-body{
-    background: rgb(180, 176, 176);
-}
-
 .device__header{
-    width: 100%;
-    height: 50%;
-    background: #0a3871;
+    margin-top: -56px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
 }
 
 .device__controls{
-    width: 100%;
-    height: 64px;
+    margin-right: 25px;
     display: flex;
-    justify-content: flex-end;
-}
-
-.device__controls__btn{
-    background-color: var(--branco);
-    width: 100%;
-    max-width: 160px;
-    border-radius: 20px;
-    display: flex;
+    flex-direction: row;
     justify-content: space-around;
-    align-items: center;
-    padding: 5px;
+    width: 156px;
 }
 
-.device__controls__btn img{
+.device__controls img{
     cursor: pointer;
-    height: 90%;
 }
 
-.device__name__div{
+.device__main{
     width: 100%;
-    height: calc(100% - 64px);
     display: flex;
-    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
-}
-
-.device__name{
-    font-size: 3rem;
-    color: white;
-    font-weight: bold;
+    align-items: center;
 }

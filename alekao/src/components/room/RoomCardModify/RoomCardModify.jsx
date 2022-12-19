@@ -2,18 +2,31 @@ import React, {useState} from "react"
 import { useNavigate } from "react-router-dom"
 import './RoomCardModify.css'
 
-import cancelIcon from "../../../assets/icon/cancel.svg"
-import confirmIcon from "../../../assets/icon/confirm.svg"
-
-
 export const RoomCardModify = (props) => {
     const navigate = useNavigate()
 
+    class alter{
+        static name(event){
+            setName(event.target.value)
+        }
+
+        static colorID(event){
+            setColorID(event.target.value)
+        }
+
+        static id(event){
+            setID(event.target.value)
+        }
+    }
+    
+
     const room = props.room ? props.room : {
+        "id": "",
         "name":"",
         "colorID": ""
     }
 
+    const [id,setID] = useState(room.id)
     const [name,setName] = useState(room.name)
     const [colorID,setColorID] = useState(room.colorID)
 
@@ -22,7 +35,9 @@ export const RoomCardModify = (props) => {
         navigate(-1)
     }
 
-    function save(){
+    function save(event){
+        event.preventDefault()
+        
         const data = {
             name,
             colorID
@@ -31,30 +46,20 @@ export const RoomCardModify = (props) => {
         props.save(data)
     }
 
-    function alterName(event){
-        setName(event.target.value)
-    }
-
-    function alterColor(event){
-        setColorID(event.target.value)
-    }
-
 
     return(
         <>
-            <section className="roomCardModify">
-                <div className="roomCardModify__main">
-                    <input type="color" onChange={alterColor} className="roomCardModify__color" value={colorID} />
-                    <input type="text" onChange={alterName} className="roomCardModify__name" placeholder="Room Name" value={name} />
-                </div>
+            <form className="roomForm" onSubmit={save}>
+                <input type="text" onChange={alter.id} className="roomForm__id" placeholder="randomID" value={id} />
+                <input type="text" onChange={alter.name} className="roomForm__name" placeholder="name" value={name} />
+                <input type="color" onChange={alter.colorID} className="roomForm__color" value={colorID} />
+                
 
-                <hr />
-
-                <div className="roomCardModify__footer">
-                    <img src={cancelIcon} alt="cancel" onClick={cancel}/>
-                    <img src={confirmIcon} alt="confirm" onClick={save}/>
+                <div className="deviceForm__footer">
+                    <input className="deviceForm__submit" type="submit" value="Done"/>
+                    <input className="deviceForm__cancel" type="button" value="Cancel" onClick={cancel}/>
                 </div>
-            </section>
+            </form>
         </>
     )
 }

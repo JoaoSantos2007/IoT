@@ -55,6 +55,8 @@ class Fast{
         "tag": event.tag,
       }
 
+      console.log(msg,topic)
+
       this.sendMessage(topic,msg)
     })
   }

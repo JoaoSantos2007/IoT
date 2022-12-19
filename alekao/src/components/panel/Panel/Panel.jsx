@@ -3,6 +3,7 @@ import FanPanel from '../FanPanel'
 import HumidityPanel from '../HumidityPanel'
 import LightPanel from '../LightPanel'
 import LuminosityPanel from '../LuminosityPanel'
+import PresencePanel from '../PresencePanel'
 import TemperaturePanel from '../TemperaturePanel'
 import TvPanel from '../TvPanel'
 import "./Panel.css"
@@ -31,6 +32,9 @@ export const Panel = (props) => {
                 break
             case "luminosity":
                 panel=<LuminosityPanel device={device} />
+                break
+            case "presence":
+                panel=<PresencePanel device={device} />
                 break
             default:
                 panel=''

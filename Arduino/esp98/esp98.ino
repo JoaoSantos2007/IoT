@@ -2,6 +2,7 @@
 #include <WiFi.h>
 #include <ArduinoJson.h>
 #include <PubSubClient.h>
+#include <DHT.h>
 
 //Instance wifi and mqtt objects
 WiFiClient espClient;
@@ -23,19 +24,33 @@ const char* broker = "192.168.15.45";
 const int port = 1883;
 void mqtt_callback(char* topic, byte* payload, unsigned int length);
 
-long lastDebounceTime = 0;
-long debounceDelay = 0;
-
 //Light variables
-const int switch1_PIN = 32;
-const int switch2_PIN = 33;
-const int light1_PIN = 27;
-const int light2_PIN = 26;
-String light1ID = "xuglNeOB090txQR8CGUFRzDO4";
-String light2ID = "nxMnT7LWL1X1vUH4qowm6To0f";
+const int switch1_PIN = 22;
+const int switch2_PIN = 23;
+const int light1_PIN = 21;
+const int light2_PIN = 15;
 int switch1 = 0;
 int switch2 = 0;
 
+//DHT variables
+#define DHTPIN 2 // pino que estamos conectado
+#define DHTTYPE DHT11 // DHT 11
+DHT dht(DHTPIN, DHTTYPE);//Instance dht object
+
+//Sensor IDs
+String light1ID = "xuglNeOB090txQR8CGUFRzDO4";
+String light2ID = "nxMnT7LWL1X1vUH4qowm6To0f";
+String tempID = "DfcGoUL0ekm3nHld05nO92aet";
+String humidityID = "80zaKecCN3BHoySpqeyFKP6aq";
+String luminosityID = "rajnlBHMTZTp7ExxR06OjjQyT";
+String presenceID = "mf0Zl2dadFnz607ipnZ4MAqve";
+
+//Delay time
+long lastDebounceTime = 0;
+long debounceDelay = 10000;
+
+int PIN_LUMINOSIDADE = 26;
+int PIN_PRESENCA = 25;
 
 //Verif wifi and mqtt connetions
 void verifConnections(){
@@ -204,6 +219,72 @@ void readSwitches(){
   }
 }
 
+String readDHTTemperature()
+{
+  float t = dht.readTemperature();
+  if (isnan(t))
+  {
+    return "0";
+  }
+  else
+  {
+    return String(t);
+  }
+}
+
+String readDHTHumidity()
+{
+  float h = dht.readHumidity();
+  if (isnan(h))
+  {
+    return "0";
+  }
+  else
+  {
+    return String(h);
+  }
+}
+
+String readLDRLuminosidade()
+{
+  float v = analogRead(PIN_LUMINOSIDADE);
+  if (isnan(v))
+  {
+    return "0";
+  }
+  else
+  {
+    return String(v);
+  }
+}
+
+String readPIRPresenca()
+{
+  bool p = digitalRead(PIN_PRESENCA);
+  if (isnan(p)){
+    return "0";
+  }else{
+    return String(p);
+  }
+}
+
+void readSensors(){
+  String temp = readDHTTemperature();
+  String humdity = readDHTHumidity();
+  String luminosity = readLDRLuminosidade();
+  String presence = readPIRPresenca();
+
+  sendTemparature(temp);
+  sendHumidity(humdity);
+  sendLuminosity(luminosity);
+  sendPresence(presence);
+}
+
+/*
+==============================
+        Mqtt send
+==============================
+*/
 
 //Send
 void sendSwitch1(){
@@ -222,6 +303,47 @@ void sendSwitch2(){
   doc["deviceID"] = light2ID;
   doc["type"] = "read-sensor";
   doc["value"] = digitalRead(light2_PIN);
+
+  sendMessage(doc);
+}
+
+//Send temp
+void sendTemparature(String temp){
+  StaticJsonDocument<256> doc;
+
+  doc["deviceID"] = tempID;
+  doc["type"] = "read-sensor";
+  doc["value"] = temp;
+
+  sendMessage(doc);
+}
+
+void sendHumidity(String humidity){
+  StaticJsonDocument<256> doc;
+
+  doc["deviceID"] = humidityID;
+  doc["type"] = "read-sensor";
+  doc["value"] = humidity;
+
+  sendMessage(doc);
+}
+
+void sendLuminosity(String luminosity){
+  StaticJsonDocument<256> doc;
+
+  doc["deviceID"] = luminosityID;
+  doc["type"] = "read-sensor";
+  doc["value"] = luminosity;
+
+  sendMessage(doc);
+}
+
+void sendPresence(String presence){
+  StaticJsonDocument<256> doc;
+
+  doc["deviceID"] = presenceID;
+  doc["type"] = "read-sensor";
+  doc["value"] = presence;
 
   sendMessage(doc);
 }
@@ -260,4 +382,9 @@ void setup(){
 void loop(){
   readSwitches();
   verifConnections();
+  
+  if((millis() - lastDebounceTime) >= debounceDelay){
+    readSensors();
+    lastDebounceTime = millis();
+  }
 }

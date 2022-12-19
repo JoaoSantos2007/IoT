@@ -16,11 +16,22 @@ export const Device = () => {
     const id = (useParams("id")).id
 
     const [device,setDevice] = useState()
+    const [deviceColor,setDeviceColor] = useState()
 
     useEffect(() => {
         api.get(`/devices/${id}`)
         .then((res) => {
             setDevice(res.data)
+        })
+        .catch((err) => {
+            console.error(err)
+        })
+
+        if(!device && !deviceColor) return
+
+        api.get(`/rooms/${device.roomID}`)
+        .then((res) => {
+            setDeviceColor(res.data.colorID)
         })
         .catch((err) => {
             console.error(err)
@@ -46,25 +57,27 @@ export const Device = () => {
         }
     }
 
-    if(!device) return <Loader />
+    if(!device && !deviceColor) return <Loader />
 
+    console.log(deviceColor)
 
     return(
         <>
             <main className='container device'>
-                <section className="device__header">
-                    <div className="device__controls">
-                        <div className="device__controls__btn">
-                            <img src={editIcon} alt="edit btn" onClick={updateDevice}/>
-                            <img src={deleteIcon} alt="delete btn" onClick={deleteDevice}/>
-                        </div>
-                    </div>
-                    <div className="device__name__div">
-                        <p className="device__name">{device.name}</p>
-                    </div>
+                <section className='container__header' style={{"background": deviceColor}}>
+                    <p className='container__name'>{device.name}</p>                    
                 </section>
 
-                <Panel type={device.type} device={device}/>
+                <section className='device__header'>
+                    <div className="device__controls">
+                        <img src={editIcon} alt="edit room" onClick={updateDevice}/>
+                        <img src={deleteIcon} alt="delete room" onClick={deleteDevice}/>
+                    </div>       
+                </section>
+
+                <section className="device__main">
+                    <Panel type={device.type} device={device}/>
+                </section>
             </main>
         </>
     )

@@ -2,7 +2,7 @@
     width: 100%;
     max-width: 400px;
     height: 104px;
-    background-color: var(--branco);
+    background-color: var(--cor-card);
     display: flex;
     align-items: center;
     text-align: center;
@@ -13,7 +13,7 @@
 }
 
 .roomCard:hover{
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.685);
+    box-shadow: 5px 5px 5px var(--cor-sombra);
     max-width: 425px;
     height: 129px;
 }
@@ -30,4 +30,5 @@
     margin-left: 20px;
     font-size: 2rem;
     font-weight: bold;
+    color: var(--cor-fonte);
 }

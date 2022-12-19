@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     padding: 30px;
-    background-color: var(--branco);
+    background-color: var(--cor-card);
 }
 
 .deviceForm > input{
@@ -12,8 +12,14 @@
     font-size: 1.25rem;
     outline: none;
     border: none;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid var(--cor-borda);
     margin: 10px 0px;
+    background-color: var(--cor-card);
+    color: var(--cor-fonte);
+}
+
+.deviceForm > input::placeholder{
+    color: var(--cor-fonte);
 }
 
 .deviceForm__footer{
@@ -31,18 +37,18 @@
     border: none;
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--branco);
+    color: var(--cor-fonte);
     cursor: pointer;
 }
 
 .deviceForm__footer input:hover{
-    box-shadow: 3px 3px 3px black;
+    box-shadow: 3px 3px 3px var(--cor-sombra);
 }
 
 .deviceForm__submit{
-    background-color: #0F0;
+    background-color: var(--cor-confirm);
 }
 
 .deviceForm__cancel{
-    background-color: #F00;
+    background-color: var(--cor-cancel);
 }
